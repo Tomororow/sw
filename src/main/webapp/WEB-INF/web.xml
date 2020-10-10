@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+
+	<display-name>Archetype Created Web Application</display-name>
+
+	<!-- Spring和mybatis的配置文件 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring.xml;classpath:spring-mybatis.xml</param-value>
+	</context-param>
+
+	<!-- webapp root path 注入项目路径 -->
+	<!-- <context-param> <param-name>webAppRootKey</param-name> <param-value>surface_water.root</param-value> 
+		</context-param> -->
+
+	<!-- 日志配置 -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>classpath:log4j.properties</param-value>
+	</context-param>
+
+	<!-- 编码过滤器 start -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<async-supported>true</async-supported>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 编码过滤器 end -->
+
+	<!-- Druid WebStatFilter用于采集web-jdbc关联监控的数据 start -->
+	<filter>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<!-- 经常需要排除一些不必要的url，比如.js,/jslib/等等。配置在init-param中 -->
+			<param-name>exclusions</param-name>
+			<param-value>*.wpd,*.wcs,*.html,*.js,*.css,*.gif,*.jpg,*.png,*.ico,*.cur,*.swf,*.xml,*.json,*.pdf,*.xls,*.xlsx,*.doc,*.docx,/druid/*</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>sessionStatEnable</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>sessionStatMaxCount</param-name>
+			<param-value>300</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>profileEnable</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>DruidStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+		<init-param>
+			<param-name>resetEnable</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>DruidStatView</servlet-name>
+		<url-pattern>/druid/*</url-pattern>
+	</servlet-mapping>
+	<!-- Druid WebStatFilter用于采集web-jdbc关联监控的数据 end -->
+
+	<!-- Spring监听器 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- 防止Spring内存溢出监听器 -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>com.zyjz.site.controller.ServletListenerController</listener-class>
+	</listener>
+
+	<!-- SpringMVC核心分发器:DispatcherServlet -->
+	<servlet>
+		<servlet-name>SpringMVC</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- 定义Servlet的初始化参数(包括参数名和参数值) 在Servlet类中通过ServletConfig类的来访问这些参数 -->
+		<init-param>
+			<!-- 环境配置文件 -->
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring-mvc.xml</param-value>
+		</init-param>
+		<!-- 启动顺序,指定当前Web应用启动时装载Servlet的次序.让这个Servlet随Servletp容器一起启动 -->
+		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>SpringMVC</servlet-name>
+		<!-- 指定访问这个Servlet的URL,这里给出的是对于整个Web应用的相对URL路径会拦截/结尾的请求 -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<!-- 配置404与500错误处理 srart -->
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/views/common/500.jsp</location>
+	</error-page>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/common/404.jsp</location>
+	</error-page>
+	<!-- 配置404与500错误处理 end -->
+
+	<!-- Session超时60分钟(零或负数表示会话永不超时) -->
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+
+
+	<!-- 项目加载首页 -->
+	<welcome-file-list>
+		<welcome-file>/index.jsp</welcome-file>
+	</welcome-file-list>
+
+</web-app>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.bigdata.dao.ReservoirLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.bigdata.entity.ReservoirLevel" >
+    <id column="Id" property="id" jdbcType="VARCHAR" />
+    <result column="WaterLevel" property="waterlevel" jdbcType="DECIMAL" />
+    <result column="WaterFlow" property="waterflow" jdbcType="DECIMAL" />
+    <result column="Capacity" property="capacity" jdbcType="DECIMAL" />
+    <result column="ReservoirCode" property="reservoircode" jdbcType="VARCHAR" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="EditTime" property="edittime" jdbcType="TIMESTAMP" />
+    <result column="BackupOne" property="backupone" jdbcType="VARCHAR" />
+    <result column="BackupTwo" property="backuptwo" jdbcType="VARCHAR" />
+    <result column="BackupThree" property="backupthree" jdbcType="VARCHAR" />
+    <result column="BackupFour" property="backupfour" jdbcType="VARCHAR" />
+    <result column="BackupFive" property="backupfive" jdbcType="VARCHAR" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    Id, WaterLevel, WaterFlow, Capacity, ReservoirCode, CreateTime, EditTime, BackupOne, 
+    BackupTwo, BackupThree, BackupFour, BackupFive, Remark
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from reservoir_level
+    where Id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectLevelAndCapacityByCode" resultType="com.zyjz.bigdata.entity.ReservoirLevel" parameterType="java.lang.String" >
+    SELECT timetable.hour hour, ifnull(sumtable.waterlevelAvgPerHour, 0) waterlevelAvgPerHour,ifnull(sumtable.capacityAvgPerHour, 0) capacityAvgPerHour
+    FROM (SELECT 0 hour UNION ALL SELECT 1 hour UNION ALL SELECT 2 hour UNION ALL SELECT 3 hour UNION ALL SELECT 4 hour UNION ALL SELECT 5 hour UNION ALL SELECT 6 hour UNION ALL SELECT 7 hour UNION ALL SELECT 8 hour UNION ALL SELECT 9 hour UNION ALL SELECT 10 hour UNION ALL SELECT 11 hour UNION ALL SELECT 12 hour UNION ALL SELECT 13 hour UNION ALL SELECT 14 hour UNION ALL SELECT 15 hour UNION ALL SELECT 16 hour UNION ALL SELECT 17 hour UNION ALL SELECT 18 hour UNION ALL SELECT 19 hour UNION ALL SELECT 20 hour UNION ALL SELECT 21 hour UNION ALL SELECT 22 hour UNION ALL SELECT 23 hour) timetable
+    LEFT JOIN( SELECT ReservoirCode,  ROUND(AVG(WaterLevel),3) as waterlevelAvgPerHour ,ROUND(AVG(Capacity),3) as capacityAvgPerHour,HOUR(CreateTime) as hour
+    FROM reservoir_level
+    WHERE  ReservoirCode = #{reservoirCode,jdbcType=VARCHAR}
+    <if test="createTime != null and createTime!=null">
+      and CreateTime BETWEEN CONCAT(#{createTime,jdbcType=VARCHAR},' 00:00:00') AND CONCAT(#{createTime,jdbcType=VARCHAR},' 23:59:59')
+    </if>
+    GROUP BY HOUR(CreateTime)
+    ) sumtable ON timetable.hour = sumtable.hour ORDER BY timetable.hour
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from reservoir_level
+    where Id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.zyjz.bigdata.entity.ReservoirLevel" >
+    insert into reservoir_level (Id, WaterLevel, WaterFlow, 
+      Capacity, ReservoirCode, CreateTime, 
+      EditTime, BackupOne, BackupTwo, 
+      BackupThree, BackupFour, BackupFive, 
+      Remark)
+    values (#{id,jdbcType=VARCHAR}, #{waterlevel,jdbcType=DECIMAL}, #{waterflow,jdbcType=DECIMAL}, 
+      #{capacity,jdbcType=DECIMAL}, #{reservoircode,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{edittime,jdbcType=TIMESTAMP}, #{backupone,jdbcType=VARCHAR}, #{backuptwo,jdbcType=VARCHAR}, 
+      #{backupthree,jdbcType=VARCHAR}, #{backupfour,jdbcType=VARCHAR}, #{backupfive,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.zyjz.bigdata.entity.ReservoirLevel" >
+    insert into reservoir_level
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="waterlevel != null" >
+        WaterLevel,
+      </if>
+      <if test="waterflow != null" >
+        WaterFlow,
+      </if>
+      <if test="capacity != null" >
+        Capacity,
+      </if>
+      <if test="reservoircode != null" >
+        ReservoirCode,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="edittime != null" >
+        EditTime,
+      </if>
+      <if test="backupone != null" >
+        BackupOne,
+      </if>
+      <if test="backuptwo != null" >
+        BackupTwo,
+      </if>
+      <if test="backupthree != null" >
+        BackupThree,
+      </if>
+      <if test="backupfour != null" >
+        BackupFour,
+      </if>
+      <if test="backupfive != null" >
+        BackupFive,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="waterlevel != null" >
+        #{waterlevel,jdbcType=DECIMAL},
+      </if>
+      <if test="waterflow != null" >
+        #{waterflow,jdbcType=DECIMAL},
+      </if>
+      <if test="capacity != null" >
+        #{capacity,jdbcType=DECIMAL},
+      </if>
+      <if test="reservoircode != null" >
+        #{reservoircode,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edittime != null" >
+        #{edittime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backupone != null" >
+        #{backupone,jdbcType=VARCHAR},
+      </if>
+      <if test="backuptwo != null" >
+        #{backuptwo,jdbcType=VARCHAR},
+      </if>
+      <if test="backupthree != null" >
+        #{backupthree,jdbcType=VARCHAR},
+      </if>
+      <if test="backupfour != null" >
+        #{backupfour,jdbcType=VARCHAR},
+      </if>
+      <if test="backupfive != null" >
+        #{backupfive,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.bigdata.entity.ReservoirLevel" >
+    update reservoir_level
+    <set >
+      <if test="waterlevel != null" >
+        WaterLevel = #{waterlevel,jdbcType=DECIMAL},
+      </if>
+      <if test="waterflow != null" >
+        WaterFlow = #{waterflow,jdbcType=DECIMAL},
+      </if>
+      <if test="capacity != null" >
+        Capacity = #{capacity,jdbcType=DECIMAL},
+      </if>
+      <if test="reservoircode != null" >
+        ReservoirCode = #{reservoircode,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="edittime != null" >
+        EditTime = #{edittime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backupone != null" >
+        BackupOne = #{backupone,jdbcType=VARCHAR},
+      </if>
+      <if test="backuptwo != null" >
+        BackupTwo = #{backuptwo,jdbcType=VARCHAR},
+      </if>
+      <if test="backupthree != null" >
+        BackupThree = #{backupthree,jdbcType=VARCHAR},
+      </if>
+      <if test="backupfour != null" >
+        BackupFour = #{backupfour,jdbcType=VARCHAR},
+      </if>
+      <if test="backupfive != null" >
+        BackupFive = #{backupfive,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.bigdata.entity.ReservoirLevel" >
+    update reservoir_level
+    set WaterLevel = #{waterlevel,jdbcType=DECIMAL},
+      WaterFlow = #{waterflow,jdbcType=DECIMAL},
+      Capacity = #{capacity,jdbcType=DECIMAL},
+      ReservoirCode = #{reservoircode,jdbcType=VARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      EditTime = #{edittime,jdbcType=TIMESTAMP},
+      BackupOne = #{backupone,jdbcType=VARCHAR},
+      BackupTwo = #{backuptwo,jdbcType=VARCHAR},
+      BackupThree = #{backupthree,jdbcType=VARCHAR},
+      BackupFour = #{backupfour,jdbcType=VARCHAR},
+      BackupFive = #{backupfive,jdbcType=VARCHAR},
+      Remark = #{remark,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

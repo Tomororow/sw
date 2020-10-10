@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.CalCanalInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.CalCanalInfo" >
+     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sysarea_id" property="sysareaId" jdbcType="VARCHAR" />
+    <result column="syswaterarea_id" property="syswaterareaId" jdbcType="VARCHAR" />
+    <result column="sysarea_code" property="sysareaCode" jdbcType="VARCHAR" />
+    <result column="syswaterarea_code" property="syswaterareaCode" jdbcType="VARCHAR" />
+    <result column="canal_photo_code" property="canalPhotoCode" jdbcType="VARCHAR" />
+    <result column="canal_photo" property="canalPhoto" jdbcType="VARCHAR" />
+    <result column="canal_code" property="canalCode" jdbcType="VARCHAR" />
+    <result column="canal_name" property="canalName" jdbcType="VARCHAR" />
+    <result column="decision_area" property="decisionArea" jdbcType="DECIMAL" />
+    <result column="mathing" property="mathing" jdbcType="DECIMAL" />
+    
+    <result column="canal_length" property="canalLength" jdbcType="DECIMAL" />
+    <result column="canal_parent_id" property="canalParentId" jdbcType="VARCHAR" />
+    <result column="canallevel_code" property="canallevelCode" jdbcType="INTEGER" />
+    <result column="canalmaterial_code" property="canalmaterialCode" jdbcType="VARCHAR" />
+    <result column="canaltype_code" property="canaltypeCode" jdbcType="INTEGER" />
+    <result column="canalusetype_code" property="canalusetypeCode" jdbcType="VARCHAR" />
+    <result column="irrigated_area_name" property="irrigatedAreaName" jdbcType="VARCHAR" />
+    <result column="canal_design_flow" property="canalDesignFlow" jdbcType="DECIMAL" />
+    <result column="canal_reality_flow" property="canalRealityFlow" jdbcType="DECIMAL" />
+    <result column="canal_irrigated_acreage" property="canalIrrigatedAcreage" jdbcType="DECIMAL" />
+    <result column="canal_perfect_rate" property="canalPerfectRate" jdbcType="DECIMAL" />
+    <result column="canal_ratio" property="canalRatio" jdbcType="DECIMAL" />
+    <result column="canal_build_time" property="canalBuildTime" jdbcType="TIMESTAMP" />
+    <result column="canal_repair_time" property="canalRepairTime" jdbcType="TIMESTAMP" />
+    <result column="canal_addr" property="canalAddr" jdbcType="VARCHAR" />
+    <result column="canal_slope" property="canalSlope" jdbcType="DECIMAL" />
+    <result column="canal_rough" property="canalRough" jdbcType="DECIMAL" />
+    <result column="canal_angle" property="canalAngle" jdbcType="DECIMAL" />
+    <result column="canal_height" property="canalHeight" jdbcType="DECIMAL" />
+    <result column="canal_wight" property="canalWight" jdbcType="DECIMAL" />
+    <result column="cci_create_time" property="cciCreateTime" jdbcType="TIMESTAMP" />
+    <result column="cci_edit_time" property="cciEditTime" jdbcType="TIMESTAMP" />
+    <result column="cci_remark" property="cciRemark" jdbcType="VARCHAR" />
+
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, sysarea_id, syswaterarea_id, sysarea_code, syswaterarea_code, canal_photo_code, 
+    canal_photo, canal_code, canal_name,decision_area ,mathing,canal_length, canal_parent_id, canallevel_code, 
+    canalmaterial_code, canaltype_code, canalusetype_code, irrigated_area_name, canal_design_flow, 
+    canal_reality_flow, canal_irrigated_acreage, canal_perfect_rate, canal_ratio, canal_build_time, 
+    canal_repair_time, canal_addr, canal_slope, canal_rough, canal_angle, canal_height, 
+    canal_wight, cci_create_time, cci_edit_time, cci_remark
+  </sql>
+
+  <select id="findCanalById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from cal_canal_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!--根据父id查询子集-->
+  <select id="getcalList" resultMap="BaseResultMap" parameterType="map" >
+    select c.*,a.area_name as aname,w.water_area_name as wname from cal_canal_info c LEFT JOIN sys_area a ON c.sysarea_id=a.id LEFT JOIN sys_water_area w ON c.syswaterarea_id=w.id
+    where canal_parent_id in
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+    order by canallevel_code
+  </select>
+<!--渠道闸门信息查询-->
+  <select id="getsluiceList" resultMap="BaseResultMap" parameterType="com.zyjz.sysmanage.entity.CalCanalInfo">
+    select
+    cci.*,ccs.id as sluiceid,ccs.canal_id as canalId,ccs.sluice_code as sluiceCode,ccs.sluice_photo as sluicePhoto,ccs.sluice_photo_no as sluicePhotoNo,
+    ccs.sluice_type as sluiceType,ccs.sluice_repair_time as sluiceRepairTime,ccs.sluice_build_time as sluiceBuildTime,ccs.ccs_remark as ccsulRemark
+    from  cal_canal_info cci right JOIN cal_canal_sluice ccs on cci.id = ccs.canal_id
+    where cci.id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item.id,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+  <!--渠道照片查询-->
+  <select id="getphotoList" resultMap="BaseResultMap" parameterType="com.zyjz.sysmanage.entity.CalCanalInfo">
+    select
+    cci.*,cch.canal_id as phtotcanalId,cch.canal_photoImg as canalPhotoimg,cch.ccp_remark as ccphotoRemark
+    from  cal_canal_info cci right JOIN cal_canal_photo cch on cci.id = cch.canal_id
+    where cci.id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item.id,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+  <!--渠道建筑物信息查询-->
+  <select id="getbulidingList" resultMap="BaseResultMap" parameterType="com.zyjz.sysmanage.entity.CalCanalInfo">
+    select
+    cci.*,ccb.id as buildingid,ccb.canal_id as buildcanalId,ccb.building_code as buildingCode,ccb.building_name as buildingName,ccb.building_type as buildingType,
+    ccb.building_photo as buildingPhoto,ccb.building_photo_no as buildingPhotoNo,ccb.building_build_time as buildingBuildTime,ccb.building_repair_time as buildingRepairTime,ccb.ccb_remark as ccbremark
+    from  cal_canal_info cci right JOIN cal_canal_building ccb on cci.id = ccb.canal_id
+    where cci.id in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item.id,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from cal_canal_info
+    where 1=1
+    <if test="id!=null and id!=''">
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="canalCode!=null and canalCode!=''">
+      and canal_code = #{canalCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+  
+  <select id="findCanalsByLevel" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_info
+    where canallevel_code = #{canallevelCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findMinCode" resultMap="BaseResultMap" parameterType="com.zyjz.sysmanage.entity.CalCanalInfo" >
+  		select canal_code from cal_canal_info where canallevel_code = ( select min(canallevel_code) from cal_canal_info order by canallevel_code)
+  </select>
+ 
+  <select id="findAllCanalsByWaterAreaCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_info
+    where canal_code = #{waterAreaCode,jdbcType=VARCHAR}
+    order by canallevel_code asc
+  </select>
+  
+  <!--   根据渠道名称查询 -->
+  <select id="selectCanalName" resultMap="BaseResultMap" parameterType="java.lang.String">
+      select
+       <include refid="Base_Column_List" />
+       from cal_canal_info
+       where canal_name = #{canalName,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据id集合查询 -->
+  <select id="findCanalsByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_info
+    where 
+     1=1
+     and
+    id in 
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">  
+        #{id}  
+    </foreach>
+    order by canallevel_code asc
+  </select>
+  
+  <select id="slectMin" resultMap="BaseResultMap" parameterType="java.util.List">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from cal_canal_info where canallevel_code = (select min(canallevel_code) from cal_canal_info)
+  </select>
+
+  <!--根据渠道编码和权限级别查找最后一个子渠道-->
+  <select id="selectChildCalCanalByCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from cal_canal_info
+    where canal_code like concat(#{code,jdbcType=VARCHAR},'%')
+    and canallevel_code = #{level,jdbcType=VARCHAR}
+    ORDER BY canal_code DESC limit 1
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cal_canal_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.CalCanalInfo" >
+    insert into cal_canal_info (id, sysarea_id, syswaterarea_id, 
+      sysarea_code, syswaterarea_code, canal_photo_code, 
+      canal_photo, canal_code, canal_name, decision_area,mathing,
+      canal_length, canal_parent_id, canallevel_code, 
+      canalmaterial_code, canaltype_code, canalusetype_code, 
+      irrigated_area_name, canal_design_flow, canal_reality_flow, 
+      canal_irrigated_acreage, canal_perfect_rate, 
+      canal_ratio, canal_build_time, canal_repair_time, 
+      canal_addr, canal_slope, canal_rough, 
+      canal_angle, canal_height, canal_wight, 
+      cci_create_time, cci_edit_time, cci_remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{sysareaId,jdbcType=VARCHAR}, #{syswaterareaId,jdbcType=VARCHAR}, 
+      #{sysareaCode,jdbcType=VARCHAR}, #{syswaterareaCode,jdbcType=VARCHAR}, #{canalPhotoCode,jdbcType=VARCHAR}, 
+      #{canalPhoto,jdbcType=VARCHAR}, #{canalCode,jdbcType=VARCHAR}, #{canalName,jdbcType=VARCHAR}, #{decisionArea,jdbcType=DECIMAL},#{mathing,jdbcType=DECIMAL},
+      #{canalLength,jdbcType=DECIMAL}, #{canalParentId,jdbcType=VARCHAR}, #{canallevelCode,jdbcType=INTEGER}, 
+      #{canalmaterialCode,jdbcType=VARCHAR}, #{canaltypeCode,jdbcType=INTEGER}, #{canalusetypeCode,jdbcType=VARCHAR}, 
+      #{irrigatedAreaName,jdbcType=VARCHAR}, #{canalDesignFlow,jdbcType=DECIMAL}, #{canalRealityFlow,jdbcType=DECIMAL}, 
+      #{canalIrrigatedAcreage,jdbcType=DECIMAL}, #{canalPerfectRate,jdbcType=DECIMAL}, 
+      #{canalRatio,jdbcType=DECIMAL}, #{canalBuildTime,jdbcType=TIMESTAMP}, #{canalRepairTime,jdbcType=TIMESTAMP}, 
+      #{canalAddr,jdbcType=VARCHAR}, #{canalSlope,jdbcType=DECIMAL}, #{canalRough,jdbcType=DECIMAL}, 
+      #{canalAngle,jdbcType=DECIMAL}, #{canalHeight,jdbcType=DECIMAL}, #{canalWight,jdbcType=DECIMAL}, 
+      #{cciCreateTime,jdbcType=TIMESTAMP}, #{cciEditTime,jdbcType=TIMESTAMP}, #{cciRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.CalCanalInfo" >
+  
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		
+  		SELECT UUID()
+  	</selectKey>
+    insert into cal_canal_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysareaId != null" >
+        sysarea_id,
+      </if>
+      <if test="syswaterareaId != null" >
+        syswaterarea_id,
+      </if>
+      <if test="sysareaCode != null" >
+        sysarea_code,
+      </if>
+      <if test="syswaterareaCode != null" >
+        syswaterarea_code,
+      </if>
+      <if test="canalPhotoCode != null" >
+        canal_photo_code,
+      </if>
+      <if test="canalPhoto != null" >
+        canal_photo,
+      </if>
+      <if test="canalCode != null" >
+        canal_code,
+      </if>
+      <if test="canalName != null" >
+        canal_name,
+      </if>
+      <if test="decisionArea != null" >
+        decision_area,
+      </if>
+      
+      <if test="mathing != null" >
+        mathing,
+      </if>
+      
+      <if test="canalLength != null" >
+        canal_length,
+      </if>
+      <if test="canalParentId != null" >
+        canal_parent_id,
+      </if>
+      <if test="canallevelCode != null" >
+        canallevel_code,
+      </if>
+      <if test="canalmaterialCode != null" >
+        canalmaterial_code,
+      </if>
+      <if test="canaltypeCode != null" >
+        canaltype_code,
+      </if>
+      <if test="canalusetypeCode != null" >
+        canalusetype_code,
+      </if>
+      <if test="irrigatedAreaName != null" >
+        irrigated_area_name,
+      </if>
+      <if test="canalDesignFlow != null" >
+        canal_design_flow,
+      </if>
+      <if test="canalRealityFlow != null" >
+        canal_reality_flow,
+      </if>
+      <if test="canalIrrigatedAcreage != null" >
+        canal_irrigated_acreage,
+      </if>
+      <if test="canalPerfectRate != null" >
+        canal_perfect_rate,
+      </if>
+      <if test="canalRatio != null" >
+        canal_ratio,
+      </if>
+      <if test="canalBuildTime != null" >
+        canal_build_time,
+      </if>
+      <if test="canalRepairTime != null" >
+        canal_repair_time,
+      </if>
+      <if test="canalAddr != null" >
+        canal_addr,
+      </if>
+      <if test="canalSlope != null" >
+        canal_slope,
+      </if>
+      <if test="canalRough != null" >
+        canal_rough,
+      </if>
+      <if test="canalAngle != null" >
+        canal_angle,
+      </if>
+      <if test="canalHeight != null" >
+        canal_height,
+      </if>
+      <if test="canalWight != null" >
+        canal_wight,
+      </if>
+      <if test="cciCreateTime != null" >
+        cci_create_time,
+      </if>
+      <if test="cciEditTime != null" >
+        cci_edit_time,
+      </if>
+      <if test="cciRemark != null" >
+        cci_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sysareaId != null" >
+        #{sysareaId,jdbcType=VARCHAR},
+      </if>
+      <if test="syswaterareaId != null" >
+        #{syswaterareaId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysareaCode != null" >
+        #{sysareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="syswaterareaCode != null" >
+        #{syswaterareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="canalPhotoCode != null" >
+        #{canalPhotoCode,jdbcType=VARCHAR},
+      </if>
+      <if test="canalPhoto != null" >
+        #{canalPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="canalCode != null" >
+        #{canalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="canalName != null" >
+        #{canalName,jdbcType=VARCHAR},
+      </if>
+       <if test="decisionArea != null" >
+        #{decisionArea,jdbcType=DECIMAL},
+      </if>
+      <if test="mathing != null" >
+        #{mathing,jdbcType=DECIMAL},
+      </if>
+      
+      
+      <if test="canalLength != null" >
+        #{canalLength,jdbcType=DECIMAL},
+      </if>
+      <if test="canalParentId != null" >
+        #{canalParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="canallevelCode != null" >
+        #{canallevelCode,jdbcType=INTEGER},
+      </if>
+      <if test="canalmaterialCode != null" >
+        #{canalmaterialCode,jdbcType=VARCHAR},
+      </if>
+      <if test="canaltypeCode != null" >
+        #{canaltypeCode,jdbcType=INTEGER},
+      </if>
+      <if test="canalusetypeCode != null" >
+        #{canalusetypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="irrigatedAreaName != null" >
+        #{irrigatedAreaName,jdbcType=VARCHAR},
+      </if>
+      <if test="canalDesignFlow != null" >
+        #{canalDesignFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="canalRealityFlow != null" >
+        #{canalRealityFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="canalIrrigatedAcreage != null" >
+        #{canalIrrigatedAcreage,jdbcType=DECIMAL},
+      </if>
+      <if test="canalPerfectRate != null" >
+        #{canalPerfectRate,jdbcType=DECIMAL},
+      </if>
+      <if test="canalRatio != null" >
+        #{canalRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="canalBuildTime != null" >
+        #{canalBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="canalRepairTime != null" >
+        #{canalRepairTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="canalAddr != null" >
+        #{canalAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="canalSlope != null" >
+        #{canalSlope,jdbcType=DECIMAL},
+      </if>
+      <if test="canalRough != null" >
+        #{canalRough,jdbcType=DECIMAL},
+      </if>
+      <if test="canalAngle != null" >
+        #{canalAngle,jdbcType=DECIMAL},
+      </if>
+      <if test="canalHeight != null" >
+        #{canalHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="canalWight != null" >
+        #{canalWight,jdbcType=DECIMAL},
+      </if>
+      <if test="cciCreateTime != null" >
+        #{cciCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cciEditTime != null" >
+        #{cciEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cciRemark != null" >
+        #{cciRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.CalCanalInfo" >
+     update cal_canal_info
+    <set >
+      <if test="sysareaId != null" >
+        sysarea_id = #{sysareaId,jdbcType=VARCHAR},
+      </if>
+      <if test="syswaterareaId != null" >
+        syswaterarea_id = #{syswaterareaId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysareaCode != null" >
+        sysarea_code = #{sysareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="syswaterareaCode != null" >
+        syswaterarea_code = #{syswaterareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="canalPhotoCode != null" >
+        canal_photo_code = #{canalPhotoCode,jdbcType=VARCHAR},
+      </if>
+      <if test="canalPhoto != null" >
+        canal_photo = #{canalPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="canalCode != null" >
+        canal_code = #{canalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="canalName != null" >
+        canal_name = #{canalName,jdbcType=VARCHAR},
+      </if>
+      <if test="decisionArea != null" >
+        decision_area = #{decisionArea,jdbcType=DECIMAL},
+      </if>
+       <if test="mathing != null" >
+        mathing = #{mathing,jdbcType=DECIMAL},
+      </if>
+      
+      <if test="canalLength != null" >
+        canal_length = #{canalLength,jdbcType=DECIMAL},
+      </if>
+      <if test="canalParentId != null" >
+        canal_parent_id = #{canalParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="canallevelCode != null" >
+        canallevel_code = #{canallevelCode,jdbcType=INTEGER},
+      </if>
+      <if test="canalmaterialCode != null" >
+        canalmaterial_code = #{canalmaterialCode,jdbcType=VARCHAR},
+      </if>
+      <if test="canaltypeCode != null" >
+        canaltype_code = #{canaltypeCode,jdbcType=INTEGER},
+      </if>
+      <if test="canalusetypeCode != null" >
+        canalusetype_code = #{canalusetypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="irrigatedAreaName != null" >
+        irrigated_area_name = #{irrigatedAreaName,jdbcType=VARCHAR},
+      </if>
+      <if test="canalDesignFlow != null" >
+        canal_design_flow = #{canalDesignFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="canalRealityFlow != null" >
+        canal_reality_flow = #{canalRealityFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="canalIrrigatedAcreage != null" >
+        canal_irrigated_acreage = #{canalIrrigatedAcreage,jdbcType=DECIMAL},
+      </if>
+      <if test="canalPerfectRate != null" >
+        canal_perfect_rate = #{canalPerfectRate,jdbcType=DECIMAL},
+      </if>
+      <if test="canalRatio != null" >
+        canal_ratio = #{canalRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="canalBuildTime != null" >
+        canal_build_time = #{canalBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="canalRepairTime != null" >
+        canal_repair_time = #{canalRepairTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="canalAddr != null" >
+        canal_addr = #{canalAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="canalSlope != null" >
+        canal_slope = #{canalSlope,jdbcType=DECIMAL},
+      </if>
+      <if test="canalRough != null" >
+        canal_rough = #{canalRough,jdbcType=DECIMAL},
+      </if>
+      <if test="canalAngle != null" >
+        canal_angle = #{canalAngle,jdbcType=DECIMAL},
+      </if>
+      <if test="canalHeight != null" >
+        canal_height = #{canalHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="canalWight != null" >
+        canal_wight = #{canalWight,jdbcType=DECIMAL},
+      </if>
+      <if test="cciCreateTime != null" >
+        cci_create_time = #{cciCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cciEditTime != null" >
+        cci_edit_time = #{cciEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cciRemark != null" >
+        cci_remark = #{cciRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.CalCanalInfo" >
+    update cal_canal_info
+    set sysarea_id = #{sysareaId,jdbcType=VARCHAR},
+      syswaterarea_id = #{syswaterareaId,jdbcType=VARCHAR},
+      sysarea_code = #{sysareaCode,jdbcType=VARCHAR},
+      syswaterarea_code = #{syswaterareaCode,jdbcType=VARCHAR},
+      canal_photo_code = #{canalPhotoCode,jdbcType=VARCHAR},
+      canal_photo = #{canalPhoto,jdbcType=VARCHAR},
+      canal_code = #{canalCode,jdbcType=VARCHAR},
+      canal_name = #{canalName,jdbcType=VARCHAR},
+      canal_length = #{canalLength,jdbcType=DECIMAL},
+      canal_parent_id = #{canalParentId,jdbcType=VARCHAR},
+      canallevel_code = #{canallevelCode,jdbcType=INTEGER},
+      canalmaterial_code = #{canalmaterialCode,jdbcType=VARCHAR},
+      canaltype_code = #{canaltypeCode,jdbcType=INTEGER},
+      canalusetype_code = #{canalusetypeCode,jdbcType=VARCHAR},
+      irrigated_area_name = #{irrigatedAreaName,jdbcType=VARCHAR},
+      canal_design_flow = #{canalDesignFlow,jdbcType=DECIMAL},
+      canal_reality_flow = #{canalRealityFlow,jdbcType=DECIMAL},
+      canal_irrigated_acreage = #{canalIrrigatedAcreage,jdbcType=DECIMAL},
+      canal_perfect_rate = #{canalPerfectRate,jdbcType=DECIMAL},
+      canal_ratio = #{canalRatio,jdbcType=DECIMAL},
+      canal_build_time = #{canalBuildTime,jdbcType=TIMESTAMP},
+      canal_repair_time = #{canalRepairTime,jdbcType=TIMESTAMP},
+      canal_addr = #{canalAddr,jdbcType=VARCHAR},
+      canal_slope = #{canalSlope,jdbcType=DECIMAL},
+      canal_rough = #{canalRough,jdbcType=DECIMAL},
+      canal_angle = #{canalAngle,jdbcType=DECIMAL},
+      canal_height = #{canalHeight,jdbcType=DECIMAL},
+      canal_wight = #{canalWight,jdbcType=DECIMAL},
+      cci_create_time = #{cciCreateTime,jdbcType=TIMESTAMP},
+      cci_edit_time = #{cciEditTime,jdbcType=TIMESTAMP},
+      cci_remark = #{cciRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查全部 -->
+  <select id="findAllCanal" resultMap="BaseResultMap">
+    select 
+    *
+    from cal_canal_info
+  </select>
+
+  <!--根据canal_code查询当前节点的信息-->
+  <select id="findCanalCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select  <include refid="Base_Column_List" />
+    from cal_canal_info where canal_code = #{canalCode}
+  </select>
+  
+  <!-- 查全部 -->
+  <select id="findCanalByLevel" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select 
+    *
+    from cal_canal_info
+    where 
+    
+    canallevel_code = #{canallevelCode,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 根据父级id查询 -->
+   <select id="findCanalByPId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_info
+    where canal_parent_id = #{canalParentId,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="findCanalByCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select 
+    *
+    from cal_canal_info
+    where 
+    
+    canal_code = #{canalCode,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <!-- 分页查询 -->
+  <select id="selectCalCanalInfoById" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select *
+    from cal_canal_info
+    where 1=1
+    <if test="id != null and id !=''">
+    and id = #{id,jdbcType=VARCHAR}
+    or canal_parent_id = #{canalParentId,jdbcType=VARCHAR}
+    </if>
+    order by canallevel_code
+  </select>
+
+    <!-- 根据syswaterarea_id集合查询 -->
+    <select id="findCanalsBySysWaterAreaCode" resultMap="BaseResultMap" parameterType="java.util.List">
+        select
+        <include refid="Base_Column_List" />
+        from cal_canal_info
+        where 1=1
+        and syswaterarea_id in
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        order by canallevel_code asc
+    </select>
+
+    <!-- 根据sysarea_id集合查询 -->
+    <select id="findCanalsBySysAreaCode" resultMap="BaseResultMap" parameterType="java.util.List">
+        select
+        <include refid="Base_Column_List" />
+        from cal_canal_info
+        where 1=1
+        and sysarea_id in
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        order by canallevel_code asc
+    </select>
+
+  <!--bigData-->
+  <!-- 根据canalCode查询子集 -->
+  <select id="findSubsetInfoByCanalCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from cal_canal_info
+    where canal_parent_id = (SELECT id from cal_canal_info where canal_code = #{canalCode,jdbcType=VARCHAR})
+  </select>
+</mapper>

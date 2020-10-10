@@ -1,0 +1,20 @@
+.el-table thead{color:#4b5261;font-weight:600;font-size: 15px }
+.contEnt{width:100%;height:auto;display: flex}
+.contEnt>div:nth-child(1){border: solid 1px green;width:50%;height:450px;}
+.contEnt>div:nth-child(2){border: solid 1px blue;width:50%;height:450px;}
+.contEnt>div:nth-child(1) div:nth-child(1){border: solid 1px #000;width:100%;height:100%}
+.contEnt>div:nth-child(1) div:nth-child(2){border: solid 1px #000;width:100%;height:20%}
+/*视频样式控制*/
+#videoCtr:hover{background:#0000008c;cursor: pointer}
+#videoCtr img:hover{cursor:pointer}
+#videoCtr{width: 35px;height: 35px;position: relative;bottom: 65px;left: 60%;cursor: pointer;line-height: 40px;border-radius: 50%;}
+#yuntai,#yuntai div{border:solid 1px #8e8a8a;border-radius: 50%;}
+#yuntai .el-icon-caret-top{position: absolute!important;font-size:35px;left:37px;top:-5px;}
+#yuntai .el-icon-caret-top:hover{color: #0468bf;cursor:pointer}
+#yuntai .el-icon-caret-right{position: absolute!important;font-size:35px;right:0;top:35px;}
+#yuntai .el-icon-caret-right:hover{color: #0468bf;cursor:pointer}
+#yuntai .el-icon-caret-bottom{position: absolute!important;font-size:35px;left:37px;bottom:0px;}
+#yuntai .el-icon-caret-bottom:hover{color: #0468bf;cursor:pointer}
+#yuntai .el-icon-caret-left{position: absolute!important;font-size:35px;top:35px;}
+#yuntai .el-icon-caret-left:hover{color: #0468bf;cursor:pointer}
+.el-dialog{height: auto;}

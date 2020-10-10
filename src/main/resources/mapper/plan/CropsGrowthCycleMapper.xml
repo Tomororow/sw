@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.CropsGrowthCycleMapper">
+	<resultMap id="BaseResultMap" type="com.zyjz.plan.entity.CropsGrowthCycle" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="cycle_code" property="cycleCode" jdbcType="INTEGER" />
+    <result column="cycle_name" property="cycleName" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="cgc_create_time" property="cgcCreateTime" jdbcType="TIMESTAMP" />
+    <result column="cgc_edit_time" property="cgcEditTime" jdbcType="TIMESTAMP" />
+    <result column="cgc_remark" property="cgcRemark" jdbcType="VARCHAR" />
+    <result column="sysarea_code" property="sysareaCode" jdbcType="VARCHAR" />
+    <result column="state_date" property="stateDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="consumed_water" property="consumedWater" jdbcType="DECIMAL" />
+    <result column="net_irrigation" property="netIrrigation" jdbcType="DECIMAL" />
+    <result column="evapotranspiration" property="evapotranspiration" jdbcType="DECIMAL" />
+    <result column="growth_period_rainfall" property="growthPeriodRainfall" jdbcType="DECIMAL" />
+    <result column="groundwater" property="groundwater" jdbcType="DECIMAL" />
+    <result column="growth_period_soil_start" property="growthPeriodSoilStart" jdbcType="DECIMAL" />
+    <result column="growth_period_soil_end" property="growthPeriodSoilEnd" jdbcType="DECIMAL" />
+    <result column="comm1" property="comm1" jdbcType="VARCHAR" />
+    <result column="comm2" property="comm2" jdbcType="VARCHAR" />
+    <result column="comm3" property="comm3" jdbcType="VARCHAR" />
+    <result column="comm4" property="comm4" jdbcType="VARCHAR" />
+    <result column="comm5" property="comm5" jdbcType="VARCHAR" />
+    <result column="net_irrigation_scientific" property="netIrrigationScientific" jdbcType="DECIMAL" />
+    <result column="comm6" property="comm6" jdbcType="VARCHAR" />
+    <result column="comm7" property="comm7" jdbcType="VARCHAR" />
+    <result column="comm8" property="comm8" jdbcType="VARCHAR" />
+    <result column="comm9" property="comm9" jdbcType="VARCHAR" />
+    <result column="comm10" property="comm10" jdbcType="VARCHAR" />
+  </resultMap>
+	
+	<!-- 农作物生长周期通用查询基础列 -->
+	<sql id="Base_Column_List">
+		 id, cycle_code, cycle_name, description, cgc_create_time, cgc_edit_time, cgc_remark, 
+    sysarea_code, state_date, end_date, consumed_water, net_irrigation, evapotranspiration, 
+    growth_period_rainfall, groundwater, growth_period_soil_start, growth_period_soil_end, 
+    comm1, comm2, comm3, comm4, comm5, net_irrigation_scientific, comm6, comm7, comm8, 
+    comm9, comm10
+	</sql>
+	<!-- 根据土地类型、农作物类型查询农作物信息 -->
+	<select id="findGrowthCycleBy_soilType_cropsType" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from crops_growth_cycle
+		where comm2 = #{comm2,jdbcType=VARCHAR} and comm3=#{comm3,jdbcType=VARCHAR}
+	</select>
+	
+	
+	
+	
+	
+	<select id="findCropsTypeIdGrowthCycleList" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from crops_growth_cycle
+		where comm2 = #{comm2,jdbcType=VARCHAR} order by cycle_code
+	</select>
+	
+	
+	
+	<!-- 根根据AreaCode获取农作物生长周期  liyue-->
+	<select id="findAreaCropsGrowthCycleList" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from crops_growth_cycle
+		where sysarea_code = #{sysareaCode,jdbcType=VARCHAR} order by cycle_code
+	</select>
+	
+	
+	<!-- 农作物种类分页列表信息查询 -->
+	<select id="findCropsGrowthByAreaCodes" resultMap="BaseResultMap" parameterType="java.util.List" >
+		select 
+		 <include refid="Base_Column_List" />
+		from crops_growth_cycle  where sysarea_code in 
+		 <foreach collection="list" index="index" item="sysareaCode" open="(" separator="," close=")">  
+       			 #{sysareaCode}  
+    	</foreach>
+		order by cycle_code
+	</select>
+	
+	<!-- 农作物信息查询 -->
+	<select id="getCropsCycleList" resultMap="BaseResultMap" parameterType="map" >
+		select * from crops_growth_cycle cgc
+		order by cgc.cycle_code
+	</select>
+	
+	<!-- 根据主键查询 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from crops_growth_cycle
+		where id = #{id,jdbcType=VARCHAR} order by cycle_code
+	</select>
+	
+	<select id="getCycleNameList" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from crops_growth_cycle
+		where cycle_code = #{cycleCode,jdbcType=VARCHAR} order by cycle_code
+	</select>
+	
+	<!-- 根据Id删除 -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from crops_growth_cycle
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.zyjz.plan.entity.CropsGrowthCycle">
+		 insert into crops_growth_cycle (id, cycle_code, cycle_name, 
+      description, cgc_create_time, cgc_edit_time, 
+      cgc_remark, sysarea_code, state_date, 
+      end_date, consumed_water, net_irrigation, 
+      evapotranspiration, growth_period_rainfall, 
+      groundwater, growth_period_soil_start, growth_period_soil_end, 
+      comm1, comm2, comm3, 
+      comm4, comm5, net_irrigation_scientific, 
+      comm6, comm7, comm8, 
+      comm9, comm10)
+    values (#{id,jdbcType=VARCHAR}, #{cycleCode,jdbcType=INTEGER}, #{cycleName,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{cgcCreateTime,jdbcType=TIMESTAMP}, #{cgcEditTime,jdbcType=TIMESTAMP}, 
+      #{cgcRemark,jdbcType=VARCHAR}, #{sysareaCode,jdbcType=VARCHAR}, #{stateDate,jdbcType=TIMESTAMP}, 
+      #{endDate,jdbcType=TIMESTAMP}, #{consumedWater,jdbcType=DECIMAL}, #{netIrrigation,jdbcType=DECIMAL}, 
+      #{evapotranspiration,jdbcType=DECIMAL}, #{growthPeriodRainfall,jdbcType=DECIMAL}, 
+      #{groundwater,jdbcType=DECIMAL}, #{growthPeriodSoilStart,jdbcType=DECIMAL}, #{growthPeriodSoilEnd,jdbcType=DECIMAL}, 
+      #{comm1,jdbcType=VARCHAR}, #{comm2,jdbcType=VARCHAR}, #{comm3,jdbcType=VARCHAR}, 
+      #{comm4,jdbcType=VARCHAR}, #{comm5,jdbcType=VARCHAR}, #{netIrrigationScientific,jdbcType=DECIMAL}, 
+      #{comm6,jdbcType=VARCHAR}, #{comm7,jdbcType=VARCHAR}, #{comm8,jdbcType=VARCHAR}, 
+      #{comm9,jdbcType=VARCHAR}, #{comm10,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 有选择性的插入数据 -->
+	<insert id="insertSelective" parameterType="com.zyjz.plan.entity.CropsGrowthCycle">
+	 insert into crops_growth_cycle
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cycleCode != null" >
+        cycle_code,
+      </if>
+      <if test="cycleName != null" >
+        cycle_name,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="cgcCreateTime != null" >
+        cgc_create_time,
+      </if>
+      <if test="cgcEditTime != null" >
+        cgc_edit_time,
+      </if>
+      <if test="cgcRemark != null" >
+        cgc_remark,
+      </if>
+      <if test="sysareaCode != null" >
+        sysarea_code,
+      </if>
+      <if test="stateDate != null" >
+        state_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="consumedWater != null" >
+        consumed_water,
+      </if>
+      <if test="netIrrigation != null" >
+        net_irrigation,
+      </if>
+      <if test="evapotranspiration != null" >
+        evapotranspiration,
+      </if>
+      <if test="growthPeriodRainfall != null" >
+        growth_period_rainfall,
+      </if>
+      <if test="groundwater != null" >
+        groundwater,
+      </if>
+      <if test="growthPeriodSoilStart != null" >
+        growth_period_soil_start,
+      </if>
+      <if test="growthPeriodSoilEnd != null" >
+        growth_period_soil_end,
+      </if>
+      <if test="comm1 != null" >
+        comm1,
+      </if>
+      <if test="comm2 != null" >
+        comm2,
+      </if>
+      <if test="comm3 != null" >
+        comm3,
+      </if>
+      <if test="comm4 != null" >
+        comm4,
+      </if>
+      <if test="comm5 != null" >
+        comm5,
+      </if>
+      <if test="netIrrigationScientific != null" >
+        net_irrigation_scientific,
+      </if>
+      <if test="comm6 != null" >
+        comm6,
+      </if>
+      <if test="comm7 != null" >
+        comm7,
+      </if>
+      <if test="comm8 != null" >
+        comm8,
+      </if>
+      <if test="comm9 != null" >
+        comm9,
+      </if>
+      <if test="comm10 != null" >
+        comm10,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="cycleCode != null" >
+        #{cycleCode,jdbcType=INTEGER},
+      </if>
+      <if test="cycleName != null" >
+        #{cycleName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcCreateTime != null" >
+        #{cgcCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgcEditTime != null" >
+        #{cgcEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgcRemark != null" >
+        #{cgcRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="sysareaCode != null" >
+        #{sysareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stateDate != null" >
+        #{stateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consumedWater != null" >
+        #{consumedWater,jdbcType=DECIMAL},
+      </if>
+      <if test="netIrrigation != null" >
+        #{netIrrigation,jdbcType=DECIMAL},
+      </if>
+      <if test="evapotranspiration != null" >
+        #{evapotranspiration,jdbcType=DECIMAL},
+      </if>
+      <if test="growthPeriodRainfall != null" >
+        #{growthPeriodRainfall,jdbcType=DECIMAL},
+      </if>
+      <if test="groundwater != null" >
+        #{groundwater,jdbcType=DECIMAL},
+      </if>
+      <if test="growthPeriodSoilStart != null" >
+        #{growthPeriodSoilStart,jdbcType=DECIMAL},
+      </if>
+      <if test="growthPeriodSoilEnd != null" >
+        #{growthPeriodSoilEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="comm1 != null" >
+        #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        #{comm5,jdbcType=VARCHAR},
+      </if>
+      <if test="netIrrigationScientific != null" >
+        #{netIrrigationScientific,jdbcType=DECIMAL},
+      </if>
+      <if test="comm6 != null" >
+        #{comm6,jdbcType=VARCHAR},
+      </if>
+      <if test="comm7 != null" >
+        #{comm7,jdbcType=VARCHAR},
+      </if>
+      <if test="comm8 != null" >
+        #{comm8,jdbcType=VARCHAR},
+      </if>
+      <if test="comm9 != null" >
+        #{comm9,jdbcType=VARCHAR},
+      </if>
+      <if test="comm10 != null" >
+        #{comm10,jdbcType=VARCHAR},
+      </if>
+    </trim>
+	</insert>
+	
+	<!-- 根据主键有选择性的修改 -->
+	<update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.CropsGrowthCycle">
+		update crops_growth_cycle
+    <set >
+      <if test="cycleCode != null" >
+        cycle_code = #{cycleCode,jdbcType=INTEGER},
+      </if>
+      <if test="cycleName != null" >
+        cycle_name = #{cycleName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcCreateTime != null" >
+        cgc_create_time = #{cgcCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgcEditTime != null" >
+        cgc_edit_time = #{cgcEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgcRemark != null" >
+        cgc_remark = #{cgcRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="sysareaCode != null" >
+        sysarea_code = #{sysareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stateDate != null" >
+        state_date = #{stateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consumedWater != null" >
+        consumed_water = #{consumedWater,jdbcType=DECIMAL},
+      </if>
+      <if test="netIrrigation != null" >
+        net_irrigation = #{netIrrigation,jdbcType=DECIMAL},
+      </if>
+      <if test="evapotranspiration != null" >
+        evapotranspiration = #{evapotranspiration,jdbcType=DECIMAL},
+      </if>
+      <if test="growthPeriodRainfall != null" >
+        growth_period_rainfall = #{growthPeriodRainfall,jdbcType=DECIMAL},
+      </if>
+      <if test="groundwater != null" >
+        groundwater = #{groundwater,jdbcType=DECIMAL},
+      </if>
+      <if test="growthPeriodSoilStart != null" >
+        growth_period_soil_start = #{growthPeriodSoilStart,jdbcType=DECIMAL},
+      </if>
+      <if test="growthPeriodSoilEnd != null" >
+        growth_period_soil_end = #{growthPeriodSoilEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="comm1 != null" >
+        comm1 = #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        comm2 = #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        comm3 = #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        comm4 = #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        comm5 = #{comm5,jdbcType=VARCHAR},
+      </if>
+      <if test="netIrrigationScientific != null" >
+        net_irrigation_scientific = #{netIrrigationScientific,jdbcType=DECIMAL},
+      </if>
+      <if test="comm6 != null" >
+        comm6 = #{comm6,jdbcType=VARCHAR},
+      </if>
+      <if test="comm7 != null" >
+        comm7 = #{comm7,jdbcType=VARCHAR},
+      </if>
+      <if test="comm8 != null" >
+        comm8 = #{comm8,jdbcType=VARCHAR},
+      </if>
+      <if test="comm9 != null" >
+        comm9 = #{comm9,jdbcType=VARCHAR},
+      </if>
+      <if test="comm10 != null" >
+        comm10 = #{comm10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 根据主键修改 -->
+	<update id="updateByPrimaryKey" parameterType="com.zyjz.plan.entity.CropsGrowthCycle">
+		update crops_growth_cycle
+    set cycle_code = #{cycleCode,jdbcType=INTEGER},
+      cycle_name = #{cycleName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      cgc_create_time = #{cgcCreateTime,jdbcType=TIMESTAMP},
+      cgc_edit_time = #{cgcEditTime,jdbcType=TIMESTAMP},
+      cgc_remark = #{cgcRemark,jdbcType=VARCHAR},
+      sysarea_code = #{sysareaCode,jdbcType=VARCHAR},
+      state_date = #{stateDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      consumed_water = #{consumedWater,jdbcType=DECIMAL},
+      net_irrigation = #{netIrrigation,jdbcType=DECIMAL},
+      evapotranspiration = #{evapotranspiration,jdbcType=DECIMAL},
+      growth_period_rainfall = #{growthPeriodRainfall,jdbcType=DECIMAL},
+      groundwater = #{groundwater,jdbcType=DECIMAL},
+      growth_period_soil_start = #{growthPeriodSoilStart,jdbcType=DECIMAL},
+      growth_period_soil_end = #{growthPeriodSoilEnd,jdbcType=DECIMAL},
+      comm1 = #{comm1,jdbcType=VARCHAR},
+      comm2 = #{comm2,jdbcType=VARCHAR},
+      comm3 = #{comm3,jdbcType=VARCHAR},
+      comm4 = #{comm4,jdbcType=VARCHAR},
+      comm5 = #{comm5,jdbcType=VARCHAR},
+      net_irrigation_scientific = #{netIrrigationScientific,jdbcType=DECIMAL},
+      comm6 = #{comm6,jdbcType=VARCHAR},
+      comm7 = #{comm7,jdbcType=VARCHAR},
+      comm8 = #{comm8,jdbcType=VARCHAR},
+      comm9 = #{comm9,jdbcType=VARCHAR},
+      comm10 = #{comm10,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+</mapper>

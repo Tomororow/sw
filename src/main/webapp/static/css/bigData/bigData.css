@@ -1,0 +1,398 @@
+@font-face{
+  font-family: yjsz;
+  src:url('/surface_water/static/fonts/yjsz.ttf');
+}
+html,body{background:#020b54;overflow: hidden;margin: 0;height: 100%}
+[v-cloak] {
+    display: none;
+}
+#bigData{width:100%;height: 100%;border:solid 1px #fff}
+.header{width: 100%;height: 12%;background: url('/surface_water/static/images/bigData/header.png') no-repeat;background-size:100%}
+.header ul{list-style: none;margin: 0;padding: 0;height: 55%;}
+.header ul li{float:left;color: #fff;}
+.header ul li:nth-child(1){width:20%;height: 50px;line-height:50px;padding-left: 30px;box-sizing:border-box;color: #65d2ff;font-size:13px;}
+.header ul li:nth-child(3){width:20%;height: 50px;line-height:50px;box-sizing:border-box;color: #65d2ff;font-size:13px;}
+.gradient-text{
+	background-image:-webkit-linear-gradient(bottom,#fff,#d4feff,#00fbff);
+	-webkit-background-clip:text;
+	-webkit-text-fill-color:transparent;  
+	width:60%;height:65px;line-height: 65px;
+	font-weight: 600;font-size:30px;text-align: center
+} 
+#weatherImg{width: 20px;height: 20px;vertical-align: middle;margin-bottom: 5px;}
+.enterSystem{
+	cursor:pointer;
+    width: 150px;
+    height: 40px;
+    position: absolute;
+    right: 30px;border-radius:10px;
+    font-weight:800;line-height:40px;color:#fff;box-sizing:border-box;padding-left:10px;
+    background-image:-webkit-linear-gradient(bottom,#71b1f4,#1659e7,#324adf);
+}
+.enterSystem span{cursor: pointer;}
+.enterSystem:hover{right:31px;margin-top: 2px;color:#59eef5;cursor: pointer;}
+#go{
+    margin-left: 12px;
+    background: #5fadfe;
+    padding: 3px;
+    font-size: 14px;
+    border-radius: 20px;
+	color:#0827a5;
+}
+.content{
+    width: 100%;
+    height: 87.7%;
+}
+
+.clear{clear: both;display: none; }
+/*------------------------------------------START----------------------------------------------------------------*/
+/*------左中右三块-------*/
+.content ul{list-style: none;padding: 0;margin: 0;height: 100%;}
+.content ul li:nth-child(1){list-style: none;padding: 0;margin: 0;height: 100%;width: 33%;float: left;}
+.content ul li:nth-child(2){list-style: none;padding: 0;margin: 0;height: 100%;width: 34%;float: left;}
+.content ul li:nth-child(3){list-style: none;padding: 0;margin: 0;height: 100%;width: 33%;float: left;}
+.moduleLabelStyle{display: flex; width: 95%}/*站点监测模块顶部标签样式设置*/
+
+/*----------------左边css样式--------------*/
+/*----------左上---------*/
+/*水资源曲线图 */
+#stackAreaName{
+    border:solid 1px #2e47ea85;
+    border-radius:10px;
+    background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;
+    background-size:cover;
+    height: 57%;
+    width:95%;
+    margin: 0 15px 45px 15px;
+}
+#stackAreaName>div:nth-child(1){height: 8%;width:100%;display:inline-flex}
+#stackAreaName>div:nth-child(1) span{color: #1365c1;font-size: 13px;}
+#stackAreaName>div:nth-child(1) span:nth-child(1){line-height:3;width:33%;padding-left:20px}
+#stackAreaName>div:nth-child(1) span:nth-child(2){line-height:3;width:33%;}
+#stackAreaName>div:nth-child(1) span:nth-child(3){line-height:3;width:33%;}
+#stackAreaName ul{list-style: none;margin-left:6%;display: flex;height:5%;}
+#stackAreaName ul li{border: none;padding:0;margin: 0;font-weight: 700;font-family: '宋体';width:auto;float:left;}
+#stackAreaName ul li:nth-child(1){color: #ffffff;}
+#stackAreaName ul li:nth-child(3){color: #146fc7;}
+#stackAreaName #stackContent{height: 87%;}
+#stackContent>div:nth-child(1){height: 50%}
+#stackContent>div:nth-child(2){height: 50%}
+
+/*----------左下---------*/
+/*渠道饼状图*/
+#aPlanContent{
+    border:solid 1px #2e47ea85;
+    border-radius:10px;
+    background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;
+    background-size:cover;
+    height: 30%;
+    width:95%;
+    margin: 0 15px 15px 15px;
+}
+#aPlanContent>div:nth-child(1){padding:15px 0 0 0;height: 20%;}
+#aPlanContent div:nth-child(1) span{color: #1365c1;font-size: 13px;}
+#aPlanContent div:nth-child(1) span:nth-child(1){margin-left: 20px}
+#aPlanContent div:nth-child(1) span:nth-child(2){margin-left: 100px}
+#aPlanContent div:nth-child(1) span:nth-child(3){margin-left: 100px}
+/*环形饼状图非进度条颜色设置*/
+.el-progress-circle>svg>path:nth-child(1){stroke:#00a1e4}
+#aPlanContent>div:nth-child(2){height: 10%;text-align: center;color: #fff}
+#aPlanContent>div:nth-child(3){height: 60%}
+#aPlanContent>div:nth-child(3)>table{width: 100%;height: 100%}
+#aPlanContent>div:nth-child(3)>table>tbody>tr>td{text-align: center}
+#aPlanContent>div:nth-child(3)>table>tbody>tr>td>div:nth-child(2){margin-top: 15px}
+#aPlanContent>div:nth-child(3)>table>tbody>tr>td>div:nth-child(2)>span{color: #64bcff;font-size: 10px;}
+
+    /*----------------中间css样式-----------------*/
+/*----------中上---------*/
+/*水库水源*/
+#reservoirWater{
+    border:solid 1px #2e47ea85;
+    border-bottom:dashed 1px #2e47ea85;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+    background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;
+    background-size:cover;
+    height: 16%;
+    width:95%;
+    margin: 0 15px 0 15px;
+}
+#reservoirWater>div:nth-child(1){height: 30%}
+#reservoirWater>div:nth-child(1) span{color: #1365c1;font-size: 16px;margin-left: 20px;line-height:50px}
+#reservoirWater ul{height: 70%}
+#reservoirWater ul>li>div:nth-child(1) span {color: #586be9;font-size: 10px;margin-left: 20px}
+#reservoirWater::-webkit-scrollbar{display: none;}
+#reservoirWater ul li{border: none;float:none;height:12px;line-height: 12px;width: 90%;padding:15px 0 15px 0}
+.useCess{display:flex;width: 95%;}
+.useCess>div:nth-child(1){color: #fff;font-size:12px;float:left;width: 27%}
+.useCess>div:nth-child(2){float:left;width:65%;background-color: #173968;border-radius:10px;}
+.useCess>div:nth-child(3){float:left;width:15%;color: #fff;font-size:13px;}
+.useCess .processUse div{border-radius:10px;height: 100%;box-sizing:border-box;padding-right: 5px}
+#reservoirWater .processUse div{background-image:-webkit-linear-gradient(left,#1b4dc2,#05dbf8);}
+
+/*----------中中---------*/
+/*水库库容曲线/柱状图*/
+#reservoirCapacity{
+    height: 62%;
+    border:solid 1px #2e47ea85;
+    border-top:none;
+    border-bottom:none;
+    background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;
+    background-size:cover;
+    width:95%;
+    margin: 0 15px 0 15px;
+}
+#reservoirCapacity>div:nth-child(1){height: 10%}
+#reservoirCapacity>div:nth-child(1) span{color: #1365c1;font-size: 16px;margin-left: 20px;line-height:50px}
+#reservoirCapacity>div:nth-child(2){height: 40%}
+#reservoirCapacity>div:nth-child(4){height: 40%}
+#reservoirCapacity>ul{list-style: none;display: flex;height:5%; margin: 5% 0 0% 6%;}
+#reservoirCapacity>ul li{border: none;padding:0;margin: 0;font-weight: 700;fontSize:13;font-family: '宋体';width:auto;float:left;}
+#reservoirCapacity>ul li:nth-child(1){color: #63d2d2;}
+#reservoirCapacity>ul li:nth-child(3){color: #146fc7;}
+
+
+
+/*----------中下---------*/
+/*河道水源*/
+#riverWater{
+    height: 16%;
+    border:solid 1px #2e47ea85;
+    border-top:dashed 1px #2e47ea85;
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+    background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;
+    background-size:cover;
+    width:95%;
+    margin: 0 15px 0 15px;
+}
+#riverWater>div:nth-child(1){height: 30%;display: -webkit-inline-flex}
+#riverWater>div:nth-child(1) span{color: #1365c1;font-size: 16px;margin-left: 20px;line-height:50px}
+#riverWater>div:nth-child(1)>div{margin: 13px 0 12px 170px;}
+#riverWater ul{height: 70%}
+#riverWater ul>li>div:nth-child(1) span {color: #586be9;font-size: 10px;margin-left: 20px}
+#riverWater::-webkit-scrollbar{display: none;}
+#riverWater ul li{border: none;float:none;height:12px;line-height: 12px;width: 90%;padding:15px 0 15px 0}
+#riverWater .processUse div{background-image:-webkit-linear-gradient(left,#0c958f,#42e05d);}
+
+/*----------------右边css样式-----------------*/
+/*----------右上上---------*/
+/*水库来水预测*/
+#waterFlowPredict{
+    border:solid 1px #2e47ea85;
+    background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;
+    background-size:cover;
+    height: 26%;
+    width:95%;
+    margin: 0 15px 0 15px;
+    border-bottom:dashed 1px #2e47ea85;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+}
+#waterFlowPredict>div:nth-child(1){height: 10%}
+#waterFlowPredict>div:nth-child(1) span{color: #1365c1;font-size: 16px;margin-left: 20px;line-height:50px}
+#waterFlowPredict>div:nth-child(2){height: 90%;width: 100%}
+
+/*----------右上下---------*/
+/*需水提报/配水计划*/
+#waterRequirement{
+    border:solid 1px #2e47ea85;
+    background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;
+    background-size:cover;
+    height: 22%;
+    width:95%;
+    margin: 0 15px 42px 15px;
+    border-top:none;
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+}
+#waterRequirement>div:nth-child(1){height: 20%;width: 100%;display: -webkit-inline-flex;}
+#waterRequirement>div:nth-child(1) span{color: #1365c1;font-size: 15px;margin-left: 20px;}
+#waterRequirement>div:nth-child(1)>div:nth-child(1){margin:2% 0 0 6%;}
+/*#waterRequirement>div:nth-child(1)>div:nth-child(2){margin:2% 0 0 10%;}*/
+#waterRequirement>div:nth-child(1)>div:nth-child(2){margin:2% 0 0 35%;}
+#waterRequirement>div:nth-child(1)>div:nth-child(3){margin:2% 0 0 8%;}
+#waterRequirement>div:nth-child(2){height: 80%;width: 100%;display: -webkit-inline-flex;}
+#waterRequirementPie{height: 100%;width: 50%;}
+#waterDistributionPie{height: 100%;width: 50%;}
+
+
+/*----------右下---------*/
+/*站点监测*/
+#siteMonitor{
+    border:solid 1px #2e47ea85;
+    border-radius:10px;
+    background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;
+    background-size:cover;
+    height: 39%;
+    width:95%;
+    margin: 0 15px 0 15px;
+}
+#siteMonitor>div:nth-child(1)>table:nth-child(1){padding-top: 1%;}
+#siteMonitor>div table{width: 100%;}
+/*#siteMonitor div table td:nth-child(1){width:25%}*/
+/*#siteMonitor div table td:nth-child(2){width:50%}*/
+/*#siteMonitor div table td:nth-child(3){width:25%}*/
+#siteMonitor>div:nth-child(1) table:nth-child(1) thead td {font-size:13px;/*color:#1365c1;*/text-align:center; cursor: pointer!important; background:url("/surface_water/static/images/bigData/verline.png") no-repeat right;}
+#siteMonitor>div:nth-child(1) table:nth-child(1) thead td:last-child {background: none}
+/*#siteMonitor>div table:nth-child(1) thead td:nth-child(1) {font-size:13px;background-color:;color:#ffff00;text-align:center;padding:2px 3px 2px 3px}*/
+/*#siteMonitor>div table:nth-child(2) thead td {font-size:11px;background-color: #0a3c83;color:#ffff00;text-align:center;}*/
+#siteMonitorList>table thead td {font-size:11px;background-color: #0a3c83;color:#ffff00;text-align:center;}
+#siteMonitor>div table tbody td {font-size:12px;color:#7bc4e6;text-align:center;padding:2px 3px 2px 3px}
+#siteMonitor div:nth-child(2)::-webkit-scrollbar{display: none;}
+
+
+/*----------------各模块标签css样式-----------------*/
+.topSign{background: url('/surface_water/static/images/bigData/topSign.png') no-repeat;background-size:100% 100%;margin-left:35px;height: 20px;line-height:20px;text-align: center}
+.topSign span{height: 20px;color: #fff;font-size: 13px;font-weight: 600;}
+/*站点监测红色标签css样式*/
+.topRedSign{background: url('/surface_water/static/images/bigData/topSignRed.png') no-repeat;background-size:100% 100%;margin-left:20px;height: 22px;line-height:20px;text-align: center}
+.topRedSign span{height: 20px;color: #fff;font-size: 13px;font-weight: 600;}
+.topRedSign img{vertical-align: middle;height: 70%}
+/*------各模块顶部下拉选及搜索btn样式-----*/
+#elSelect{height: 20px;line-height:20px;background: none;color:#76edf3;border-color: #1a85e7;border-radius:3px!important}
+#elSelect::-webkit-input-placeholder{color:#76edf3;}
+#query{width:auto;padding:2px 2px 1px 3px;height: 16px;border: none;background: #00ffff;margin: 2px 0 0 0px;}
+#query .el-icon-search::before{font-size:5px;font-weight: 900}
+#query:hover{background-color: #5fffda}
+.el-input__icon{height: 20px;line-height: 20px!important;font-weight: 900!important}
+.el-select-dropdown{background-color:#0000!important;border-color: #0074d8!important;}
+.el-select-dropdown__item{color: #9ebfff!important}
+
+
+
+
+
+
+/*--------------------------------------------END------------------------------------------------------------------*/
+/*.content ul{list-style: none;padding: 0;margin: 0;height: 100%;}*/
+/*.content ul>div:nth-child(1){!*display: flex;*!height:100%;margin: 15px;width: 33%}*/
+/*.content ul>div:nth-child(2){float:left;!*display: flex;*!height:100%;margin: 15px;width: 33%}*/
+/*.content ul>div:nth-child(3){float:left;!*display: flex;*!height:100%;margin: 15px;width: 33%}*/
+/*.content ul div li{float:left;margin: 15px;}*/
+/*.content ul>div:nth-child(1)>li:nth-child(1){width: 90%;height:60%;}*/
+/*.content ul>div:nth-child(1)>li:nth-child(2){width: 90%;height:30%;margin-top: 30px;}*/
+/*.content ul div li:nth-child(3){width: 33%;}*/
+/*.topSign{background: url('/surface_water/static/images/bigData/topSign.png') no-repeat;background-size:100% 100%;margin-left:20px;width: 30%;height: 20px;line-height:20px;text-align: center}
+.topSign span{height: 20px;color: #fff;font-size: 13px;font-weight: 600;}*/
+/*#elSelect{height: 20px;line-height:20px;background: none;color:#76edf3;border-color: #1a85e7;border-radius:3px!important}*/
+/*#elSelect::-webkit-input-placeholder{color:#76edf3;}*/
+/*a{cursor: pointer!important;}*/
+/*.el-input__icon{height: 20px;line-height: 20px!important;font-weight: 900!important}
+.el-select-dropdown{background-color:#0000!important;border-color: #0074d8!important;}
+.el-select-dropdown__item{color: #9ebfff!important}*/
+/*#query{width:auto;padding:2px 2px 1px 3px;height: 16px;border: none;background: #00ffff;margin: 2px 0 0 7px;}*/
+/*#query .el-icon-search::before{font-size:5px;font-weight: 900}*/
+/*#query:hover{background-color: #5fffda}*/
+/*.popper__arrow::after{border-bottom-color:#fff0!important}
+.el-popper[x-placement^=bottom] .popper__arrow{border-bottom-color:#0074d8!important}
+#querCotnet{height: 95%;border:solid 1px #2e47ea8585;border-radius:10px;background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;;background-size:100% 100%}
+#querCotnet>div:nth-child(1){height: 15%;color:#fff;display:table;margin:0 auto;}
+#querCotnet>div:nth-child(1) span{vertical-align: middle;display: table-cell;font-weight: 900}
+#querCotnet>div:nth-child(2){height:60%;}
+#querCotnet>div:nth-child(2)>table tr:nth-child(1) td:nth-child(1){width:50%;height:80%;text-align: -webkit-center}
+#querCotnet>div:nth-child(2)>table tr:nth-child(1) td:nth-child(2){width:50%;height:80%;text-align: -webkit-center}
+#querCotnet>div:nth-child(2)>table tr:nth-child(2) td:nth-child(1){width:50%;height:15%;text-align: center;color: #fff;font-size:15px}
+#querCotnet>div:nth-child(2)>table tr:nth-child(2) td:nth-child(2){width:50%;height:15%;text-align: center;color: #fff;font-size:15px}
+#querCotnet>div:nth-child(2)>table tr:nth-child(2) td span{color: #2ecddc}
+#querCotnet>div:nth-child(3){height: 25%;}
+#queRump::-webkit-scrollbar{display: none;}
+#queRump table tr td:nth-child(1){width:20%;text-align: right;color: #fff;font-size: 13px;font-style:oblique;padding-right:8px;}
+#queRump table tr td:nth-child(2){width:85%;text-align: right;}
+#queRump table tr td:nth-child(3){width:10%;text-align: center;color: #00ffff;font-size: 13px}
+#queRump .el-icon-message-solid{color: #9acd32;font-size:14px;padding-right:3px;}
+#queRump table tr td:nth-child(2)>div:nth-child(1){color: #2ecddc;background: url('/surface_water/static/images/bigData/parcess.png') no-repeat;background-size:100% 100%;width: 70%;max-width:70%;height: 20px;line-height:20px;padding-right: 15px;font-size: 13px;}
+#queRump table tr td:nth-child(2)>div:nth-child(2){color: #2ecddc;font-size:14px;margin-left: 15px;}
+#queRump table tr td:nth-child(2) div{float:left;}
+#topCenter{width:100%;height: 100%;}
+#topCenter tr:nth-child(1) td{height: 40%;width: 48%;}
+#topCenter tr:nth-child(1) td:nth-child(1){padding-right: 10px;}
+#topCenter tr:nth-child(1) td:nth-child(2){padding-left: 10px;}
+#topCenter tr:nth-child(2) td{height: 60%;width: 48%;padding-top: 10px;}
+!* 配水计划的css样式 *!
+#planContent{overflow-y:auto;border:solid 1px #2e47ea85;border-radius:10px;background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;;background-size:auto;height: 87%;width:100% }
+#planContent::-webkit-scrollbar{display: none;}
+#planContent ul li{border: none;float:none;height:12px;line-height: 12px;}
+#planCess{display:flex;width: 95%;margin: 12px;}
+#planCess div:nth-child(1){color: #fff;font-size:12px;float:left;width:25%;}
+#planCess div:nth-child(1) span{white-space: nowrap;  !*强制span不换行*!
+      display: inline-block;
+      overflow: hidden;  !*超出宽度部分隐藏*!
+      text-overflow: ellipsis;  !*超出部分以点号代替*!
+     width:95%}
+#planCess div:nth-child(2){float:left;width:72%;background-color: #004dc12e;position: relative;}
+#planCess #processPlan div{background-image:-webkit-linear-gradient(left,#26fd45,#c5ffdd);height: 100%;box-sizing:border-box;padding-right: 5px}*/
+/* 用水量的css样式 */
+/*#useContent{border:solid 1px #2e47ea85;border-radius:10px;background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;background-size:auto;height: 87%;width:100% }*/
+/*#useName{text-align: center;color: #fff;margin: 8px;font-weight: 900}*/
+/*#useContent::-webkit-scrollbar{display: none;}*/
+/*#useContent ul li{border: none;float:none;height:12px;line-height: 12px;}*/
+/*#useCess{display:flex;width: 95%;margin: 12px;}*/
+/*#useCess div:nth-child(1){color: #fff;font-size:12px;float:left;width:20%;}*/
+
+/*#useCess div:nth-child(2){float:left;width:77%;background-color: #004dc12e;border-radius:10px;}*/
+/*#useCess #processuse div{border-radius:10px;height: 100%;box-sizing:border-box;padding-right: 5px}*/
+/*#useContent ul li:nth-child(1) #processuse div:nth-child(1){background-image:-webkit-linear-gradient(left,#0374f1,#fffbfb);}*/
+/*#useContent ul li:nth-child(2) #processuse div:nth-child(1){background-image:-webkit-linear-gradient(left,#ff00f7,#fffbfb);}*/
+/*#useContent ul li:nth-child(3) #processuse div:nth-child(1){background-image:-webkit-linear-gradient(left,#ff4602,#fffbfb);}*/
+/*#useContent ul li:nth-child(4) #processuse div:nth-child(1){background-image:-webkit-linear-gradient(left,#fffc07,#fffbfb);}*/
+/* 已配水量和已用水量比对图 */
+/*#aPlanContent{overflow:hidden;height: 92%;border:solid 1px #2e47ea85;border-radius:10px;background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;;background-size:cover;width:100% }*/
+ /*总用水量曲线图 */
+/*#stackAreaName{!*height:5%*!;border:solid 1px #2e47ea85;border-radius:10px;background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;background-size:cover;height: 95%;width:100% }*/
+/*#stackAreaName>div:nth-child(1){padding:10px 50px 0 0}*/
+/*#stackAreaName div:nth-child(1) span{color: #fff}*/
+/*#stackAreaName ul{list-style: none;margin-left:6%;display: flex;height:5%;}*/
+/*#stackAreaName ul li{border: none;padding:0;margin: 0;font-weight: 700;font-family: '宋体';width:auto;float:left;}*/
+/*#stackAreaName ul li:nth-child(1){color: #63d2d2;}*/
+/*#stackAreaName ul li:nth-child(3){color: #146fc7;}*/
+/*#stackAreaName #stackContent{height: 87%;}*/
+/*#stackContent div{height: 50%}*/
+/*计量设施运行情况*/
+/*#deviceSign{padding-top:10px;box-sizing:border-box;height:95%;border:solid 1px #2e47ea85;border-radius:10px;background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;;background-size:cover;width:100% }
+#deviceSign>div table{width: 100%;}
+#deviceSign div table td:nth-child(1){width:25%}
+#deviceSign div table td:nth-child(2){width:15%}
+#deviceSign div table td:nth-child(3){width:15%}
+#deviceSign div table td:nth-child(4){width:18%}
+#deviceSign div table td:nth-child(5){width:28%}
+#deviceSign>div table thead td {font-size:13px;background-color: #0a3c83;color:#ffff00;text-align:center;padding:2px 3px 2px 3px}
+#deviceSign>div table tbody td {font-size:12px;color:#7bc4e6;text-align:center;padding:2px 3px 2px 3px}
+!*预警模块*!
+#warnSign{padding-top:10px;box-sizing:border-box;height:95%;border:solid 1px #2e47ea85;border-radius:10px;background: url('/surface_water/static/images/bigData/gridding.png') no-repeat;;background-size:cover;width:100% }
+#warnSign>div table{width: 100%;}
+#warnSign div table td:nth-child(1){width:25%}
+#warnSign div table td:nth-child(2){width:15%}
+#warnSign div table td:nth-child(3){width:15%}
+#warnSign div table td:nth-child(4){width:20%}
+#warnSign div table td:nth-child(5){width:28%}
+#warnSign>div table thead td {font-size:13px;background-color: #0a3c83;color:#ffff00;text-align:center;padding:2px 3px 2px 3px}
+#warnSign>div table tbody td {font-size:12px;color:#7bc4e6;text-align:center;padding:2px 3px 2px 3px}*/
+/*.topRedSign{background: url('/surface_water/static/images/bigData/topSignRed.png') no-repeat;background-size:100% 100%;margin-left:20px;width: 30%;height: 20px;line-height:20px;text-align: center}*/
+/*.topRedSign span{height: 20px;color: #fff;font-size: 13px;font-weight: 600;}*/
+/*.topRedSign img{vertical-align: middle;height: 70%}*/
+
+/*#deviceSign div:nth-child(2)::-webkit-scrollbar{display: none;}*/
+/*#warnTable::-webkit-scrollbar{display: none;}*/
+/* #deviceSign div:nth-child(2) table tbody tr td:nth-child(1){white-space: nowrap;  强制span不换行
+      display: inline-block;
+      overflow: hidden;  超出宽度部分隐藏
+      text-overflow: ellipsis;  超出部分以点号代替
+     width:50%} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

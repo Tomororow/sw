@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.ForecastWaterMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.plan.entity.ForecastWater" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="table_no" property="tableNo" jdbcType="VARCHAR" />
+    <result column="canal_code" property="canalCode" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_people" property="createPeople" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List" >
+    id, table_no, canal_code,year, create_time, create_people, remark
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from forecast_water
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from forecast_water
+  </select>
+  
+  <select id="findForecastWaterByCanalCode" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forecast_water
+    where canal_code = #{canalCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findForecastWaterByCanalCodeAndYear" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forecast_water
+    where canal_code = #{canalCode,jdbcType=VARCHAR}
+    and year = #{year,jdbcType=INTEGER}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from forecast_water
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+ 
+  <insert id="insert" parameterType="com.zyjz.plan.entity.ForecastWater" >
+    insert into forecast_water (id, table_no,canal_code ,year, 
+      create_time, create_people, remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{tableNo,jdbcType=VARCHAR},#{canalCode,jdbcType=VARCHAR} ,#{year,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createPeople,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.plan.entity.ForecastWater" >
+  
+  <selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+  
+  
+    insert into forecast_water
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tableNo != null" >
+        table_no,
+      </if>
+      <if test="canalCode != null" >
+        canal_code,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPeople != null" >
+        create_people,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tableNo != null" >
+        #{tableNo,jdbcType=VARCHAR},
+      </if>
+      <if test="canalCode != null" >
+        #{canalCode,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="year != null" >
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPeople != null" >
+        #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.ForecastWater" >
+    update forecast_water
+    <set >
+      <if test="tableNo != null" >
+        table_no = #{tableNo,jdbcType=VARCHAR},
+      </if>
+      <if test="canalCode != null" >
+        canal_code = #{canalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPeople != null" >
+        create_people = #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.plan.entity.ForecastWater" >
+    update forecast_water
+    set table_no = #{tableNo,jdbcType=VARCHAR},
+    	canal_code = #{canalCode,jdbcType=VARCHAR},
+      year = #{year,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_people = #{createPeople,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.SysDatabaseInfoMapper">
+	<resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.SysDatabaseInfo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="system_code" property="systemCode" jdbcType="INTEGER" />
+		<result column="system_name" property="systemName" jdbcType="VARCHAR" />
+		<result column="db_type" property="dbType" jdbcType="VARCHAR" />
+		<result column="db_url" property="dbUrl" jdbcType="VARCHAR" />
+		<result column="db_addr" property="dbAddr" jdbcType="VARCHAR" />
+		<result column="db_port" property="dbPort" jdbcType="VARCHAR" />
+		<result column="db_user" property="dbUser" jdbcType="VARCHAR" />
+		<result column="db_pwd" property="dbPwd" jdbcType="VARCHAR" />
+		<result column="db_name" property="dbName" jdbcType="VARCHAR" />
+		<result column="db_table_name" property="dbTableName" jdbcType="VARCHAR" />
+		<result column="db_column_name" property="dbColumnName" jdbcType="VARCHAR" />
+		<result column="sdi_create_time" property="sdiCreateTime" jdbcType="TIMESTAMP" />
+		<result column="sdi_edit_time" property="sdiEditTime" jdbcType="TIMESTAMP" />
+		<result column="sdi_remark" property="sdiRemark" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 查询通用基础列 -->
+	<sql id="Base_Column_List">
+		id, system_code, system_name, db_type, db_url, db_addr, db_port, db_user,
+		db_pwd, db_name, db_table_name, db_column_name, sdi_create_time, sdi_edit_time,
+		sdi_remark
+	</sql>
+	
+	<!-- 根据主键查询信息 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_database_info
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 获取全部信息 -->
+	<select id="getBaseAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_database_info
+	</select>
+	
+	<!-- 根据主键删除 -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from sys_database_info
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 新增全部信息 -->
+	<insert id="insert" parameterType="com.zyjz.sysmanage.entity.SysDatabaseInfo">
+		insert into sys_database_info (id, system_code, system_name,
+		db_type, db_url, db_addr,
+		db_port, db_user, db_pwd,
+		db_name, db_table_name, db_column_name,
+		sdi_create_time, sdi_edit_time, sdi_remark)
+		values (#{id,jdbcType=VARCHAR}, #{systemCode,jdbcType=INTEGER},
+		#{systemName,jdbcType=VARCHAR},
+		#{dbType,jdbcType=VARCHAR}, #{dbUrl,jdbcType=VARCHAR}, #{dbAddr,jdbcType=VARCHAR},
+		#{dbPort,jdbcType=VARCHAR}, #{dbUser,jdbcType=VARCHAR},
+		#{dbPwd,jdbcType=VARCHAR},
+		#{dbName,jdbcType=VARCHAR}, #{dbTableName,jdbcType=VARCHAR}, #{dbColumnName,jdbcType=VARCHAR},
+		#{sdiCreateTime,jdbcType=TIMESTAMP},
+		#{sdiEditTime,jdbcType=TIMESTAMP}, #{sdiRemark,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 有选择性的新增信息 -->
+	<insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.SysDatabaseInfo">
+		insert into sys_database_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="systemCode != null">
+				system_code,
+			</if>
+			<if test="systemName != null">
+				system_name,
+			</if>
+			<if test="dbType != null">
+				db_type,
+			</if>
+			<if test="dbUrl != null">
+				db_url,
+			</if>
+			<if test="dbAddr != null">
+				db_addr,
+			</if>
+			<if test="dbPort != null">
+				db_port,
+			</if>
+			<if test="dbUser != null">
+				db_user,
+			</if>
+			<if test="dbPwd != null">
+				db_pwd,
+			</if>
+			<if test="dbName != null">
+				db_name,
+			</if>
+			<if test="dbTableName != null">
+				db_table_name,
+			</if>
+			<if test="dbColumnName != null">
+				db_column_name,
+			</if>
+			<if test="sdiCreateTime != null">
+				sdi_create_time,
+			</if>
+			<if test="sdiEditTime != null">
+				sdi_edit_time,
+			</if>
+			<if test="sdiRemark != null">
+				sdi_remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="systemCode != null">
+				#{systemCode,jdbcType=INTEGER},
+			</if>
+			<if test="systemName != null">
+				#{systemName,jdbcType=VARCHAR},
+			</if>
+			<if test="dbType != null">
+				#{dbType,jdbcType=VARCHAR},
+			</if>
+			<if test="dbUrl != null">
+				#{dbUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="dbAddr != null">
+				#{dbAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="dbPort != null">
+				#{dbPort,jdbcType=VARCHAR},
+			</if>
+			<if test="dbUser != null">
+				#{dbUser,jdbcType=VARCHAR},
+			</if>
+			<if test="dbPwd != null">
+				#{dbPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="dbName != null">
+				#{dbName,jdbcType=VARCHAR},
+			</if>
+			<if test="dbTableName != null">
+				#{dbTableName,jdbcType=VARCHAR},
+			</if>
+			<if test="dbColumnName != null">
+				#{dbColumnName,jdbcType=VARCHAR},
+			</if>
+			<if test="sdiCreateTime != null">
+				#{sdiCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sdiEditTime != null">
+				#{sdiEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sdiRemark != null">
+				#{sdiRemark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 有选择性的更新信息 -->
+	<update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.SysDatabaseInfo">
+		update sys_database_info
+		<set>
+			<if test="systemCode != null">
+				system_code = #{systemCode,jdbcType=INTEGER},
+			</if>
+			<if test="systemName != null">
+				system_name = #{systemName,jdbcType=VARCHAR},
+			</if>
+			<if test="dbType != null">
+				db_type = #{dbType,jdbcType=VARCHAR},
+			</if>
+			<if test="dbUrl != null">
+				db_url = #{dbUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="dbAddr != null">
+				db_addr = #{dbAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="dbPort != null">
+				db_port = #{dbPort,jdbcType=VARCHAR},
+			</if>
+			<if test="dbUser != null">
+				db_user = #{dbUser,jdbcType=VARCHAR},
+			</if>
+			<if test="dbPwd != null">
+				db_pwd = #{dbPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="dbName != null">
+				db_name = #{dbName,jdbcType=VARCHAR},
+			</if>
+			<if test="dbTableName != null">
+				db_table_name = #{dbTableName,jdbcType=VARCHAR},
+			</if>
+			<if test="dbColumnName != null">
+				db_column_name = #{dbColumnName,jdbcType=VARCHAR},
+			</if>
+			<if test="sdiCreateTime != null">
+				sdi_create_time = #{sdiCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sdiEditTime != null">
+				sdi_edit_time = #{sdiEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sdiRemark != null">
+				sdi_remark = #{sdiRemark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 根据主键更新信息 -->
+	<update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.SysDatabaseInfo">
+		update sys_database_info
+		set system_code = #{systemCode,jdbcType=INTEGER},
+		system_name = #{systemName,jdbcType=VARCHAR},
+		db_type = #{dbType,jdbcType=VARCHAR},
+		db_url = #{dbUrl,jdbcType=VARCHAR},
+		db_addr = #{dbAddr,jdbcType=VARCHAR},
+		db_port = #{dbPort,jdbcType=VARCHAR},
+		db_user = #{dbUser,jdbcType=VARCHAR},
+		db_pwd = #{dbPwd,jdbcType=VARCHAR},
+		db_name = #{dbName,jdbcType=VARCHAR},
+		db_table_name = #{dbTableName,jdbcType=VARCHAR},
+		db_column_name = #{dbColumnName,jdbcType=VARCHAR},
+		sdi_create_time = #{sdiCreateTime,jdbcType=TIMESTAMP},
+		sdi_edit_time = #{sdiEditTime,jdbcType=TIMESTAMP},
+		sdi_remark = #{sdiRemark,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+</mapper>

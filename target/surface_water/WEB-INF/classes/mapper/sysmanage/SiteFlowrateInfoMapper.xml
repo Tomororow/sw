@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.SiteFlowrateInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.SiteFlowrateInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="fsi_canal_code" property="fsiCanalCode" jdbcType="VARCHAR" />
+    <result column="fsi_flowrate_code" property="fsiFlowrateCode" jdbcType="VARCHAR" />
+    <result column="fsi_flowrate_name" property="fsiFlowrateName" jdbcType="VARCHAR" />
+    <result column="fsi_flowrate_addr" property="fsiFlowrateAddr" jdbcType="VARCHAR" />
+    <result column="fsi_build_time" property="fsiBuildTime" jdbcType="TIMESTAMP" />
+    <result column="fsi_speed_code" property="fsiSpeedCode" jdbcType="VARCHAR" />
+    <result column="fsi_water_code" property="fsiWaterCode" jdbcType="VARCHAR" />
+    <result column="fsi_create_time" property="fsiCreateTime" jdbcType="TIMESTAMP" />
+    <result column="fsi_edit_time" property="fsiEditTime" jdbcType="TIMESTAMP" />
+    <result column="fsi_remark" property="fsiRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    id, fsi_canal_code, fsi_flowrate_code, fsi_flowrate_name, fsi_flowrate_addr, fsi_build_time, 
+    fsi_speed_code, fsi_water_code, fsi_create_time, fsi_edit_time, fsi_remark
+  </sql>
+ 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_flowrate_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findSiteFlowrateInfoByCanalCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_flowrate_info
+    where fsi_canal_code = #{fsiCanalCode,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from site_flowrate_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.SiteFlowrateInfo" >
+    insert into site_flowrate_info (id, fsi_canal_code, fsi_flowrate_code, 
+      fsi_flowrate_name, fsi_flowrate_addr, fsi_build_time, 
+      fsi_speed_code, fsi_water_code, fsi_create_time, 
+      fsi_edit_time, fsi_remark)
+    values (#{id,jdbcType=VARCHAR}, #{fsiCanalCode,jdbcType=VARCHAR}, #{fsiFlowrateCode,jdbcType=VARCHAR}, 
+      #{fsiFlowrateName,jdbcType=VARCHAR}, #{fsiFlowrateAddr,jdbcType=VARCHAR}, #{fsiBuildTime,jdbcType=TIMESTAMP}, 
+      #{fsiSpeedCode,jdbcType=VARCHAR}, #{fsiWaterCode,jdbcType=VARCHAR}, #{fsiCreateTime,jdbcType=TIMESTAMP}, 
+      #{fsiEditTime,jdbcType=TIMESTAMP}, #{fsiRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.SiteFlowrateInfo" >
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+    insert into site_flowrate_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fsiCanalCode != null" >
+        fsi_canal_code,
+      </if>
+      <if test="fsiFlowrateCode != null" >
+        fsi_flowrate_code,
+      </if>
+      <if test="fsiFlowrateName != null" >
+        fsi_flowrate_name,
+      </if>
+      <if test="fsiFlowrateAddr != null" >
+        fsi_flowrate_addr,
+      </if>
+      <if test="fsiBuildTime != null" >
+        fsi_build_time,
+      </if>
+      <if test="fsiSpeedCode != null" >
+        fsi_speed_code,
+      </if>
+      <if test="fsiWaterCode != null" >
+        fsi_water_code,
+      </if>
+      <if test="fsiCreateTime != null" >
+        fsi_create_time,
+      </if>
+      <if test="fsiEditTime != null" >
+        fsi_edit_time,
+      </if>
+      <if test="fsiRemark != null" >
+        fsi_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiCanalCode != null" >
+        #{fsiCanalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiFlowrateCode != null" >
+        #{fsiFlowrateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiFlowrateName != null" >
+        #{fsiFlowrateName,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiFlowrateAddr != null" >
+        #{fsiFlowrateAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiBuildTime != null" >
+        #{fsiBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fsiSpeedCode != null" >
+        #{fsiSpeedCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiWaterCode != null" >
+        #{fsiWaterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiCreateTime != null" >
+        #{fsiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fsiEditTime != null" >
+        #{fsiEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fsiRemark != null" >
+        #{fsiRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+ 
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.SiteFlowrateInfo" >
+    update site_flowrate_info
+    <set >
+      <if test="fsiCanalCode != null" >
+        fsi_canal_code = #{fsiCanalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiFlowrateCode != null" >
+        fsi_flowrate_code = #{fsiFlowrateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiFlowrateName != null" >
+        fsi_flowrate_name = #{fsiFlowrateName,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiFlowrateAddr != null" >
+        fsi_flowrate_addr = #{fsiFlowrateAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiBuildTime != null" >
+        fsi_build_time = #{fsiBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fsiSpeedCode != null" >
+        fsi_speed_code = #{fsiSpeedCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiWaterCode != null" >
+        fsi_water_code = #{fsiWaterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fsiCreateTime != null" >
+        fsi_create_time = #{fsiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fsiEditTime != null" >
+        fsi_edit_time = #{fsiEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fsiRemark != null" >
+        fsi_remark = #{fsiRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.SiteFlowrateInfo" >
+    update site_flowrate_info
+    set fsi_canal_code = #{fsiCanalCode,jdbcType=VARCHAR},
+      fsi_flowrate_code = #{fsiFlowrateCode,jdbcType=VARCHAR},
+      fsi_flowrate_name = #{fsiFlowrateName,jdbcType=VARCHAR},
+      fsi_flowrate_addr = #{fsiFlowrateAddr,jdbcType=VARCHAR},
+      fsi_build_time = #{fsiBuildTime,jdbcType=TIMESTAMP},
+      fsi_speed_code = #{fsiSpeedCode,jdbcType=VARCHAR},
+      fsi_water_code = #{fsiWaterCode,jdbcType=VARCHAR},
+      fsi_create_time = #{fsiCreateTime,jdbcType=TIMESTAMP},
+      fsi_edit_time = #{fsiEditTime,jdbcType=TIMESTAMP},
+      fsi_remark = #{fsiRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

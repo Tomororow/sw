@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.ConsumerSoilMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.plan.entity.ConsumerSoil" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="consumer_id" property="consumerId" jdbcType="VARCHAR" />
+    <result column="soil_name" property="soilName" jdbcType="VARCHAR" />
+    <result column="canal_code" property="canalCode" jdbcType="VARCHAR" />
+    <result column="soil_type_code" property="soilTypeCode" jdbcType="VARCHAR" />
+    <result column="x" property="x" jdbcType="DECIMAL" />
+    <result column="y" property="y" jdbcType="DECIMAL" />
+    <result column="z" property="z" jdbcType="DECIMAL" />
+    <result column="soil_area" property="soilArea" jdbcType="DECIMAL" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="contract_start_year" property="contractStartYear" jdbcType="DATE" />
+    <result column="contract_end_year" property="contractEndYear" jdbcType="DATE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="remake" property="remake" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, consumer_id, soil_name, canal_code, soil_type_code, x, y, z, soil_area, address, 
+    contract_start_year, contract_end_year, create_time, update_time, remake
+  </sql>
+ 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from consumer_soil
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <select id="findConsumerSoilsByCanalCodes" resultMap="BaseResultMap" parameterType="java.util.List">
+    select 
+    <include refid="Base_Column_List" />
+    from consumer_soil
+    where canal_code in 
+    <foreach collection="list" index="index" item="canalCode" open="(" separator="," close=")">  
+        #{canalCode}  
+    </foreach>
+    order by create_time desc
+  </select>
+  
+  
+  <select id="findConsumerSoilsByCanalCodesJoin" resultMap="BaseResultMap" parameterType="java.util.List">
+    select distinct
+    a.id, a.consumer_id, a.soil_name, a.canal_code, a.soil_type_code, a.x, a.y, a.z, a.soil_area, a.address, 
+    a.contract_start_year, a.contract_end_year, a.create_time, a.update_time, a.remake
+    from consumer_soil a
+    inner join site_middle_canal b
+    on a.consumer_id = b.consumer_id
+    where b.canal_code = #{canalCode,jdbcType=VARCHAR}
+    order by create_time desc
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from consumer_soil
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+ 
+  <insert id="insert" parameterType="com.zyjz.plan.entity.ConsumerSoil" >
+    insert into consumer_soil (id, consumer_id, soil_name, 
+      canal_code, soil_type_code, x, 
+      y, z, soil_area, address, 
+      contract_start_year, contract_end_year, create_time, 
+      update_time, remake)
+    values (#{id,jdbcType=VARCHAR}, #{consumerId,jdbcType=VARCHAR}, #{soilName,jdbcType=VARCHAR}, 
+      #{canalCode,jdbcType=VARCHAR}, #{soilTypeCode,jdbcType=VARCHAR}, #{x,jdbcType=DECIMAL}, 
+      #{y,jdbcType=DECIMAL}, #{z,jdbcType=DECIMAL}, #{soilArea,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, 
+      #{contractStartYear,jdbcType=DATE}, #{contractEndYear,jdbcType=DATE}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{remake,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.plan.entity.ConsumerSoil" >
+  
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+  
+    insert into consumer_soil
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="consumerId != null" >
+        consumer_id,
+      </if>
+      <if test="soilName != null" >
+        soil_name,
+      </if>
+      <if test="canalCode != null" >
+        canal_code,
+      </if>
+      <if test="soilTypeCode != null" >
+        soil_type_code,
+      </if>
+      <if test="x != null" >
+        x,
+      </if>
+      <if test="y != null" >
+        y,
+      </if>
+      <if test="z != null" >
+        z,
+      </if>
+      <if test="soilArea != null" >
+        soil_area,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="contractStartYear != null" >
+        contract_start_year,
+      </if>
+      <if test="contractEndYear != null" >
+        contract_end_year,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remake != null" >
+        remake,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="consumerId != null" >
+        #{consumerId,jdbcType=VARCHAR},
+      </if>
+      <if test="soilName != null" >
+        #{soilName,jdbcType=VARCHAR},
+      </if>
+      <if test="canalCode != null" >
+        #{canalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="soilTypeCode != null" >
+        #{soilTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="x != null" >
+        #{x,jdbcType=DECIMAL},
+      </if>
+      <if test="y != null" >
+        #{y,jdbcType=DECIMAL},
+      </if>
+      <if test="z != null" >
+        #{z,jdbcType=DECIMAL},
+      </if>
+      <if test="soilArea != null" >
+        #{soilArea,jdbcType=DECIMAL},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contractStartYear != null" >
+        #{contractStartYear,jdbcType=DATE},
+      </if>
+      <if test="contractEndYear != null" >
+        #{contractEndYear,jdbcType=DATE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remake != null" >
+        #{remake,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.ConsumerSoil" >
+    update consumer_soil
+    <set >
+      <if test="consumerId != null" >
+        consumer_id = #{consumerId,jdbcType=VARCHAR},
+      </if>
+      <if test="soilName != null" >
+        soil_name = #{soilName,jdbcType=VARCHAR},
+      </if>
+      <if test="canalCode != null" >
+        canal_code = #{canalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="soilTypeCode != null" >
+        soil_type_code = #{soilTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="x != null" >
+        x = #{x,jdbcType=DECIMAL},
+      </if>
+      <if test="y != null" >
+        y = #{y,jdbcType=DECIMAL},
+      </if>
+      <if test="z != null" >
+        z = #{z,jdbcType=DECIMAL},
+      </if>
+      <if test="soilArea != null" >
+        soil_area = #{soilArea,jdbcType=DECIMAL},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contractStartYear != null" >
+        contract_start_year = #{contractStartYear,jdbcType=DATE},
+      </if>
+      <if test="contractEndYear != null" >
+        contract_end_year = #{contractEndYear,jdbcType=DATE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remake != null" >
+        remake = #{remake,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.plan.entity.ConsumerSoil" >
+    update consumer_soil
+    set consumer_id = #{consumerId,jdbcType=VARCHAR},
+      soil_name = #{soilName,jdbcType=VARCHAR},
+      canal_code = #{canalCode,jdbcType=VARCHAR},
+      soil_type_code = #{soilTypeCode,jdbcType=VARCHAR},
+      x = #{x,jdbcType=DECIMAL},
+      y = #{y,jdbcType=DECIMAL},
+      z = #{z,jdbcType=DECIMAL},
+      soil_area = #{soilArea,jdbcType=DECIMAL},
+      address = #{address,jdbcType=VARCHAR},
+      contract_start_year = #{contractStartYear,jdbcType=DATE},
+      contract_end_year = #{contractEndYear,jdbcType=DATE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remake = #{remake,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,44 @@
+@font-face{
+    font-family: yjsz;
+    src:url('../../fonts/yjsz.ttf');
+    /* url('../fonts/yjsz.eot'); *//* IE9+,可以是具体的实际链接 */
+}
+#header{height: 50px;background-color: #4a5064;position: relative;display: flex}
+.logo:hover{cursor: pointer}
+.botyu{height: 48px;line-height: 55px;}
+#bot{width: 35%;border-left: solid 2px #fbfbfb0d;position: absolute;right: 10px;}
+#bot span{font-size: 14px;color: #fff}
+#bot span:nth-child(1){margin-right: 25px;}
+#bot a{cursor: pointer}
+#mainBack:hover{color: #54b8ff;cursor: pointer}
+.show_list{display: block;}
+.hide_lits{display: none;}
+a:hover{cursor: pointer}
+#aUtyo:hover{cursor: pointer}
+.el-submenu__title{background-color: #001529;color: #c2c2c2; }
+.el-menu{background-color:#001529;border-right: 0;}
+.el-menu-item{color: #c2c2c2}
+.el-submenu__title:hover{opacity:1;background-color: #4E5465;color:#fff;border-left:solid 5px #2fb9d4;}
+.el-menu-item:focus, .el-menu-item:hover{background-color:#2fb9d4;color: #fff;cursor: pointer}
+.el-submenu__icon-arrow{font-size: 16px;font-weight: 600}
+.el-menu-item i{color: #fff}
+#mainBack:hover{color: #54b8ff;cursor: pointer}
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 210px;
+}
+#el-menu{overflow: auto}
+#el-menu::-webkit-scrollbar {
+    display: none;
+}
+body{background: #001529}
+body::-webkit-scrollbar {
+    display: none;
+}
+#menuConuytUl{
+    margin-top: 55px;
+    display: inline-flex;
+}
+#menuConuytUl::-webkit-scrollbar {
+    display: none;
+}
+

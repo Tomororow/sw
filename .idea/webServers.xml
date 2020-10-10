@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="8a9d5d59-7ab1-4749-8e09-73bec3eed630" name="额济纳旗地表水" url="http://47.108.165.140">
+        <fileTransfer host="47.108.165.140" port="22" rootFolder="/usr/local/server/lhn/server/tomcat-ejnq_surface_water/webapps/surface_water" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

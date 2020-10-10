@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.watersupply.dao.SynEquipmentMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.watersupply.entity.SynEquipment" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="device_type_id" property="deviceTypeId" jdbcType="VARCHAR" />
+    <result column="waterworks_id" property="waterworksId" jdbcType="VARCHAR" />
+    <result column="pool_id" property="poolId" jdbcType="VARCHAR" />
+    <result column="pumping_house_id" property="pumpingHouseId" jdbcType="VARCHAR" />
+    <result column="pipe_network_id" property="pipeNetworkId" jdbcType="VARCHAR" />
+    <result column="equipmen_code" property="equipmenCode" jdbcType="VARCHAR" />
+    <result column="equipmen_name" property="equipmenName" jdbcType="VARCHAR" />
+    <result column="equipment_manufacturers" property="equipmentManufacturers" jdbcType="VARCHAR" />
+    <result column="equipment_supportshone" property="equipmentSupportshone" jdbcType="VARCHAR" />
+    <result column="equipment_release_time" property="equipmentReleaseTime" jdbcType="TIMESTAMP" />
+    <result column="equipment_time_buying" property="equipmentTimeBuying" jdbcType="TIMESTAMP" />
+    <result column="equipment_creation_time" property="equipmentCreationTime" jdbcType="TIMESTAMP" />
+    <result column="equipment_update_time" property="equipmentUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="equipment_comm1" property="equipmentComm1" jdbcType="VARCHAR" />
+    <result column="equipment_comm2" property="equipmentComm2" jdbcType="VARCHAR" />
+    <result column="equipment_comm3" property="equipmentComm3" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, device_type_id, waterworks_id, pool_id, pumping_house_id, pipe_network_id, equipmen_code, 
+    equipmen_name, equipment_manufacturers, equipment_supportshone, equipment_release_time, 
+    equipment_time_buying, equipment_creation_time, equipment_update_time, equipment_comm1, 
+    equipment_comm2, equipment_comm3
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from syn_equipment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from syn_equipment
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.watersupply.entity.SynEquipment" >
+    insert into syn_equipment (id, device_type_id, waterworks_id, 
+      pool_id, pumping_house_id, pipe_network_id, 
+      equipmen_code, equipmen_name, equipment_manufacturers, 
+      equipment_supportshone, equipment_release_time, 
+      equipment_time_buying, equipment_creation_time, 
+      equipment_update_time, equipment_comm1, 
+      equipment_comm2, equipment_comm3)
+    values (#{id,jdbcType=VARCHAR}, #{deviceTypeId,jdbcType=VARCHAR}, #{waterworksId,jdbcType=VARCHAR}, 
+      #{poolId,jdbcType=VARCHAR}, #{pumpingHouseId,jdbcType=VARCHAR}, #{pipeNetworkId,jdbcType=VARCHAR}, 
+      #{equipmenCode,jdbcType=VARCHAR}, #{equipmenName,jdbcType=VARCHAR}, #{equipmentManufacturers,jdbcType=VARCHAR}, 
+      #{equipmentSupportshone,jdbcType=VARCHAR}, #{equipmentReleaseTime,jdbcType=TIMESTAMP}, 
+      #{equipmentTimeBuying,jdbcType=TIMESTAMP}, #{equipmentCreationTime,jdbcType=TIMESTAMP}, 
+      #{equipmentUpdateTime,jdbcType=TIMESTAMP}, #{equipmentComm1,jdbcType=VARCHAR}, 
+      #{equipmentComm2,jdbcType=VARCHAR}, #{equipmentComm3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.watersupply.entity.SynEquipment" >
+    insert into syn_equipment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="deviceTypeId != null" >
+        device_type_id,
+      </if>
+      <if test="waterworksId != null" >
+        waterworks_id,
+      </if>
+      <if test="poolId != null" >
+        pool_id,
+      </if>
+      <if test="pumpingHouseId != null" >
+        pumping_house_id,
+      </if>
+      <if test="pipeNetworkId != null" >
+        pipe_network_id,
+      </if>
+      <if test="equipmenCode != null" >
+        equipmen_code,
+      </if>
+      <if test="equipmenName != null" >
+        equipmen_name,
+      </if>
+      <if test="equipmentManufacturers != null" >
+        equipment_manufacturers,
+      </if>
+      <if test="equipmentSupportshone != null" >
+        equipment_supportshone,
+      </if>
+      <if test="equipmentReleaseTime != null" >
+        equipment_release_time,
+      </if>
+      <if test="equipmentTimeBuying != null" >
+        equipment_time_buying,
+      </if>
+      <if test="equipmentCreationTime != null" >
+        equipment_creation_time,
+      </if>
+      <if test="equipmentUpdateTime != null" >
+        equipment_update_time,
+      </if>
+      <if test="equipmentComm1 != null" >
+        equipment_comm1,
+      </if>
+      <if test="equipmentComm2 != null" >
+        equipment_comm2,
+      </if>
+      <if test="equipmentComm3 != null" >
+        equipment_comm3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceTypeId != null" >
+        #{deviceTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="waterworksId != null" >
+        #{waterworksId,jdbcType=VARCHAR},
+      </if>
+      <if test="poolId != null" >
+        #{poolId,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingHouseId != null" >
+        #{pumpingHouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkId != null" >
+        #{pipeNetworkId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmenCode != null" >
+        #{equipmenCode,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmenName != null" >
+        #{equipmenName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentManufacturers != null" >
+        #{equipmentManufacturers,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentSupportshone != null" >
+        #{equipmentSupportshone,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentReleaseTime != null" >
+        #{equipmentReleaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="equipmentTimeBuying != null" >
+        #{equipmentTimeBuying,jdbcType=TIMESTAMP},
+      </if>
+      <if test="equipmentCreationTime != null" >
+        #{equipmentCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="equipmentUpdateTime != null" >
+        #{equipmentUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="equipmentComm1 != null" >
+        #{equipmentComm1,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentComm2 != null" >
+        #{equipmentComm2,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentComm3 != null" >
+        #{equipmentComm3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.watersupply.entity.SynEquipment" >
+    update syn_equipment
+    <set >
+      <if test="deviceTypeId != null" >
+        device_type_id = #{deviceTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="waterworksId != null" >
+        waterworks_id = #{waterworksId,jdbcType=VARCHAR},
+      </if>
+      <if test="poolId != null" >
+        pool_id = #{poolId,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingHouseId != null" >
+        pumping_house_id = #{pumpingHouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkId != null" >
+        pipe_network_id = #{pipeNetworkId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmenCode != null" >
+        equipmen_code = #{equipmenCode,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmenName != null" >
+        equipmen_name = #{equipmenName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentManufacturers != null" >
+        equipment_manufacturers = #{equipmentManufacturers,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentSupportshone != null" >
+        equipment_supportshone = #{equipmentSupportshone,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentReleaseTime != null" >
+        equipment_release_time = #{equipmentReleaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="equipmentTimeBuying != null" >
+        equipment_time_buying = #{equipmentTimeBuying,jdbcType=TIMESTAMP},
+      </if>
+      <if test="equipmentCreationTime != null" >
+        equipment_creation_time = #{equipmentCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="equipmentUpdateTime != null" >
+        equipment_update_time = #{equipmentUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="equipmentComm1 != null" >
+        equipment_comm1 = #{equipmentComm1,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentComm2 != null" >
+        equipment_comm2 = #{equipmentComm2,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentComm3 != null" >
+        equipment_comm3 = #{equipmentComm3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.watersupply.entity.SynEquipment" >
+    update syn_equipment
+    set device_type_id = #{deviceTypeId,jdbcType=VARCHAR},
+      waterworks_id = #{waterworksId,jdbcType=VARCHAR},
+      pool_id = #{poolId,jdbcType=VARCHAR},
+      pumping_house_id = #{pumpingHouseId,jdbcType=VARCHAR},
+      pipe_network_id = #{pipeNetworkId,jdbcType=VARCHAR},
+      equipmen_code = #{equipmenCode,jdbcType=VARCHAR},
+      equipmen_name = #{equipmenName,jdbcType=VARCHAR},
+      equipment_manufacturers = #{equipmentManufacturers,jdbcType=VARCHAR},
+      equipment_supportshone = #{equipmentSupportshone,jdbcType=VARCHAR},
+      equipment_release_time = #{equipmentReleaseTime,jdbcType=TIMESTAMP},
+      equipment_time_buying = #{equipmentTimeBuying,jdbcType=TIMESTAMP},
+      equipment_creation_time = #{equipmentCreationTime,jdbcType=TIMESTAMP},
+      equipment_update_time = #{equipmentUpdateTime,jdbcType=TIMESTAMP},
+      equipment_comm1 = #{equipmentComm1,jdbcType=VARCHAR},
+      equipment_comm2 = #{equipmentComm2,jdbcType=VARCHAR},
+      equipment_comm3 = #{equipmentComm3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

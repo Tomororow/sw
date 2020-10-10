@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.site.dao.AreaRainfallStationMapper">
+	<resultMap id="BaseResultMap" type="com.zyjz.site.entity.AreaRainfallStation">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="sysarea_id" property="sysareaId" jdbcType="VARCHAR" />
+		<result column="siterain_id" property="siterainId" jdbcType="VARCHAR" />
+		<result column="devicerain_code" property="devicerainCode" jdbcType="VARCHAR" />
+		<result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+		<result column="ad_name" property="adName" jdbcType="VARCHAR" />
+		<result column="ars_level" property="arsLevel" jdbcType="INTEGER" />
+		<result column="parent_area_id" property="parentAreaId" jdbcType="VARCHAR" />
+		<result column="ars_create_time" property="arsCreateTime" jdbcType="TIMESTAMP" />
+		<result column="ars_remark" property="arsRemark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, sysarea_id, siterain_id, devicerain_code, area_code,
+		ad_name,
+		ars_level, parent_area_id, ars_create_time, ars_remark
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from area_rainfall_station
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 获取区域站点信息 -->
+	<select id="getAreaRainfallStationInfo" resultMap="BaseResultMap">
+		select ars.id, ars.devicerain_code, ars.ad_name, ars.ars_level, ars.parent_area_id
+		from area_rainfall_station ars
+		order by ars.ars_level asc
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		area_rainfall_station
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.zyjz.site.entity.AreaRainfallStation">
+		insert into
+		area_rainfall_station (id, sysarea_id, siterain_id,
+		devicerain_code,
+		area_code, ad_name,
+		ars_level, parent_area_id, ars_create_time,
+		ars_remark)
+		values (#{id,jdbcType=VARCHAR},
+		#{sysareaId,jdbcType=VARCHAR},
+		#{siterainId,jdbcType=VARCHAR},
+		#{devicerainCode,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR},
+		#{adName,jdbcType=VARCHAR},
+		#{arsLevel,jdbcType=INTEGER},
+		#{parentAreaId,jdbcType=VARCHAR},
+		#{arsCreateTime,jdbcType=TIMESTAMP},
+		#{arsRemark,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.zyjz.site.entity.AreaRainfallStation">
+		insert into area_rainfall_station
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="sysareaId != null">
+				sysarea_id,
+			</if>
+			<if test="siterainId != null">
+				siterain_id,
+			</if>
+			<if test="devicerainCode != null">
+				devicerain_code,
+			</if>
+			<if test="areaCode != null">
+				area_code,
+			</if>
+			<if test="adName != null">
+				ad_name,
+			</if>
+			<if test="arsLevel != null">
+				ars_level,
+			</if>
+			<if test="parentAreaId != null">
+				parent_area_id,
+			</if>
+			<if test="arsCreateTime != null">
+				ars_create_time,
+			</if>
+			<if test="arsRemark != null">
+				ars_remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="sysareaId != null">
+				#{sysareaId,jdbcType=VARCHAR},
+			</if>
+			<if test="siterainId != null">
+				#{siterainId,jdbcType=VARCHAR},
+			</if>
+			<if test="devicerainCode != null">
+				#{devicerainCode,jdbcType=VARCHAR},
+			</if>
+			<if test="areaCode != null">
+				#{areaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="adName != null">
+				#{adName,jdbcType=VARCHAR},
+			</if>
+			<if test="arsLevel != null">
+				#{arsLevel,jdbcType=INTEGER},
+			</if>
+			<if test="parentAreaId != null">
+				#{parentAreaId,jdbcType=VARCHAR},
+			</if>
+			<if test="arsCreateTime != null">
+				#{arsCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="arsRemark != null">
+				#{arsRemark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.zyjz.site.entity.AreaRainfallStation">
+		update area_rainfall_station
+		<set>
+			<if test="sysareaId != null">
+				sysarea_id = #{sysareaId,jdbcType=VARCHAR},
+			</if>
+			<if test="siterainId != null">
+				siterain_id = #{siterainId,jdbcType=VARCHAR},
+			</if>
+			<if test="devicerainCode != null">
+				devicerain_code = #{devicerainCode,jdbcType=VARCHAR},
+			</if>
+			<if test="areaCode != null">
+				area_code = #{areaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="adName != null">
+				ad_name = #{adName,jdbcType=VARCHAR},
+			</if>
+			<if test="arsLevel != null">
+				ars_level = #{arsLevel,jdbcType=INTEGER},
+			</if>
+			<if test="parentAreaId != null">
+				parent_area_id = #{parentAreaId,jdbcType=VARCHAR},
+			</if>
+			<if test="arsCreateTime != null">
+				ars_create_time = #{arsCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="arsRemark != null">
+				ars_remark = #{arsRemark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="com.zyjz.site.entity.AreaRainfallStation">
+		update area_rainfall_station
+		set sysarea_id = #{sysareaId,jdbcType=VARCHAR},
+		siterain_id = #{siterainId,jdbcType=VARCHAR},
+		devicerain_code = #{devicerainCode,jdbcType=VARCHAR},
+		area_code = #{areaCode,jdbcType=VARCHAR},
+		ad_name = #{adName,jdbcType=VARCHAR},
+		ars_level = #{arsLevel,jdbcType=INTEGER},
+		parent_area_id = #{parentAreaId,jdbcType=VARCHAR},
+		ars_create_time = #{arsCreateTime,jdbcType=TIMESTAMP},
+		ars_remark = #{arsRemark,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

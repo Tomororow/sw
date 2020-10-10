@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.SysWaterAreaMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.SysWaterArea" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="water_area_code" property="waterAreaCode" jdbcType="VARCHAR" />
+    <result column="water_area_name" property="waterAreaName" jdbcType="VARCHAR" />
+    <result column="water_area_level" property="waterAreaLevel" jdbcType="INTEGER" />
+    <result column="parent_waterarea_id" property="parentWaterareaId" jdbcType="VARCHAR" />
+    <result column="swa_create_time" property="swaCreateTime" jdbcType="TIMESTAMP" />
+    <result column="swa_edit_time" property="swaEditTime" jdbcType="TIMESTAMP" />
+    <result column="swa_remark" property="swaRemark" jdbcType="VARCHAR" />
+   
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, water_area_code, water_area_name, water_area_level, parent_waterarea_id, swa_create_time, 
+    swa_edit_time, swa_remark
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_water_area
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findBySyswaterareaCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_water_area
+    where water_area_code = #{waterAreaCode,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据id集合查询 -->
+  <select id="findWaterAreasByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_water_area
+    where id in 
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">  
+        #{id}  
+    </foreach>
+    order by water_area_level asc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_water_area
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.SysWaterArea" >
+    insert into sys_water_area (id, water_area_code, water_area_name, 
+      water_area_level, parent_waterarea_id, swa_create_time, 
+      swa_edit_time, swa_remark)
+    values (#{id,jdbcType=VARCHAR}, #{waterAreaCode,jdbcType=VARCHAR}, #{waterAreaName,jdbcType=VARCHAR}, 
+      #{waterAreaLevel,jdbcType=INTEGER}, #{parentWaterareaId,jdbcType=VARCHAR}, #{swaCreateTime,jdbcType=TIMESTAMP}, 
+      #{swaEditTime,jdbcType=TIMESTAMP}, #{swaRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.SysWaterArea" >
+  
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+  	
+    insert into sys_water_area
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="waterAreaCode != null" >
+        water_area_code,
+      </if>
+      <if test="waterAreaName != null" >
+        water_area_name,
+      </if>
+      <if test="waterAreaLevel != null" >
+        water_area_level,
+      </if>
+      <if test="parentWaterareaId != null" >
+        parent_waterarea_id,
+      </if>
+      <if test="swaCreateTime != null" >
+        swa_create_time,
+      </if>
+      <if test="swaEditTime != null" >
+        swa_edit_time,
+      </if>
+      <if test="swaRemark != null" >
+        swa_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="waterAreaCode != null" >
+        #{waterAreaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterAreaName != null" >
+        #{waterAreaName,jdbcType=VARCHAR},
+      </if>
+      <if test="waterAreaLevel != null" >
+        #{waterAreaLevel,jdbcType=INTEGER},
+      </if>
+      <if test="parentWaterareaId != null" >
+        #{parentWaterareaId,jdbcType=VARCHAR},
+      </if>
+      <if test="swaCreateTime != null" >
+        #{swaCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swaEditTime != null" >
+        #{swaEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swaRemark != null" >
+        #{swaRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.SysWaterArea" >
+    update sys_water_area
+    <set >
+      <if test="waterAreaCode != null" >
+        water_area_code = #{waterAreaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterAreaName != null" >
+        water_area_name = #{waterAreaName,jdbcType=VARCHAR},
+      </if>
+      <if test="waterAreaLevel != null" >
+        water_area_level = #{waterAreaLevel,jdbcType=INTEGER},
+      </if>
+      <if test="parentWaterareaId != null" >
+        parent_waterarea_id = #{parentWaterareaId,jdbcType=VARCHAR},
+      </if>
+      <if test="swaCreateTime != null" >
+        swa_create_time = #{swaCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swaEditTime != null" >
+        swa_edit_time = #{swaEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swaRemark != null" >
+        swa_remark = #{swaRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.SysWaterArea" >
+    update sys_water_area
+    set water_area_code = #{waterAreaCode,jdbcType=VARCHAR},
+      water_area_name = #{waterAreaName,jdbcType=VARCHAR},
+      water_area_level = #{waterAreaLevel,jdbcType=INTEGER},
+      parent_waterarea_id = #{parentWaterareaId,jdbcType=VARCHAR},
+      swa_create_time = #{swaCreateTime,jdbcType=TIMESTAMP},
+      swa_edit_time = #{swaEditTime,jdbcType=TIMESTAMP},
+      swa_remark = #{swaRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 按水管区域等级排序查询 -->
+  <select id="findAllWaterAreas" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_water_area
+    
+  </select>
+  
+  <!-- 水管区及子一级查询 -->
+  <select id="findSonSysWaterAreasByPidAndWaterAreaLevel" resultMap="BaseResultMap" parameterType="com.zyjz.sysmanage.entity.SysWaterArea" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_water_area
+    where parent_waterarea_id = #{parentWaterareaId,jdbcType=VARCHAR}
+    and water_area_level = #{waterAreaLevel,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 查询父级区域 -->
+  <select id="findWaterAreaByLevel" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_water_area
+    where water_area_level = #{waterAreaLevel,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  <select id="selectSysWaterAreasById" resultMap="BaseResultMap" parameterType="java.lang.String">
+  
+    select *
+    from sys_water_area
+    where 1=1
+    <if test="id != null and id !=''">
+    and id = #{id,jdbcType=VARCHAR}
+    
+    or parent_waterarea_id = #{parentWaterareaId,jdbcType=VARCHAR}
+    </if>
+    order by water_area_level
+  </select>
+  
+  <!-- 查询父级区域 -->
+  <select id="findWaterAreaByPId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from sys_water_area
+    where parent_waterarea_id = #{parentWaterareaId,jdbcType=VARCHAR}
+  </select>
+  
+  
+</mapper>

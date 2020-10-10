@@ -1,0 +1,12 @@
+#righteject_sluice{ position:absolute; top:0px; left:40px; z-index:900000000;
+_position:absolute;/*兼容IE6*/
+/*_top: expression(offsetParent.scrollTop+document.documentElement.clientHeight-this.offsetHeight);始终位于底部*/
+_top: expression(documentElement.scrollTop+200);}/*兼容IE6*/
+.rightejecttit_sluice{border-bottom-left-radius:10px;border-bottom-right-radius:10px;filter:alpha(Opacity=80);-moz-opacity:0.7;opacity: 0.7; width:0;height:0; text-align:center;display:block;cursor:pointer;
+background-color:#000; color:#FFF; }
+.rightejectcon_sluice{ width:200px; height:0px;overflow:hidden; float:right;background-color:#000;color:#FFF;
+padding-left:0px;filter:alpha(Opacity=80);background-color:rgba(41,48,56,0.7);font-weight:bold;font-size:14px;border-bottom-left-radius:20px;border-bottom-right-radius:20px;
+}
+.rightejecttit_sluice span{ position:relative; top:50%;display:block;z-index:910000000;}
+.rightejectthis_sluice{ background-color:#022130}
+

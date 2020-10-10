@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.site.dao.JzMiddDeviceMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.site.entity.JzMiddDevice" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="DEVIVE_ID" property="deviveId" jdbcType="VARCHAR" />
+    <result column="DEVIVE_TYPE" property="deviveType" jdbcType="VARCHAR" />
+    <result column="DEVIVE_CODE" property="deviveCode" jdbcType="VARCHAR" />
+    <result column="TERMINAL_MSG" property="terminalMsg" jdbcType="VARCHAR" />
+    <result column="CMNCT_TYPE" property="cmnctType" jdbcType="VARCHAR" />
+    <result column="TERMINAL_NAME" property="terminalName" jdbcType="VARCHAR" />
+    <result column="SIM_CODE" property="simCode" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="INTEGER" />
+    <result column="TIME" property="time" jdbcType="TIMESTAMP" />
+    <result column="LANIP" property="lanip" jdbcType="VARCHAR" />
+    <result column="IP" property="ip" jdbcType="VARCHAR" />
+    <result column="AMEND_TIME" property="amendTime" jdbcType="TIMESTAMP" />
+    <result column="MEPTY_HING" property="meptyHing" jdbcType="VARCHAR" />
+    <result column="PAUSE" property="pause" jdbcType="INTEGER" />
+    <result column="water_level" property="waterLevel" jdbcType="DECIMAL" />
+    <result column="instant_speed" property="instantSpeed" jdbcType="DECIMAL" />
+    <result column="instant_flow" property="instantFlow" jdbcType="DECIMAL" />
+    <result column="test_height" property="testHeight" jdbcType="DECIMAL" />
+    <result column="totle_flow" property="totleFlow" jdbcType="DECIMAL" />
+    <result column="swi_addr" property="swiAddr" jdbcType="VARCHAR" />
+    <result column="swi_latitude" property="swiLatitude" jdbcType="DECIMAL" />
+    <result column="swi_longitude" property="swiLongitude" jdbcType="DECIMAL" />
+    <result column="tren_chier1" property="trenChier1" jdbcType="VARCHAR" />
+    <result column="tren_chier2" property="trenChier2" jdbcType="VARCHAR" />
+    <result column="tren_chier3" property="trenChier3" jdbcType="VARCHAR" />
+    <result column="tren_chier4" property="trenChier4" jdbcType="VARCHAR" />
+    <result column="tren_chier5" property="trenChier5" jdbcType="VARCHAR" />
+    <result column="tren_chier6" property="trenChier6" jdbcType="VARCHAR" />
+    <result column="tren_chier7" property="trenChier7" jdbcType="VARCHAR" />
+    <result column="swi_devicemodel_code" property="swiDevicemodelCode" jdbcType="INTEGER" />
+    <result column="SWDI_CREATE_TIME" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+    ID, DEVIVE_ID, DEVIVE_TYPE, DEVIVE_CODE, TERMINAL_MSG, CMNCT_TYPE, TERMINAL_NAME, 
+    SIM_CODE, TYPE, TIME, LANIP, IP, AMEND_TIME, MEPTY_HING, PAUSE, water_level, instant_speed, 
+    instant_flow, test_height, totle_flow, swi_addr, swi_latitude, swi_longitude, tren_chier1, 
+    tren_chier2, tren_chier3, tren_chier4, tren_chier5, tren_chier6, tren_chier7, swi_devicemodel_code,SWDI_CREATE_TIME
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from jz_midd_device
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from jz_midd_device
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+<!-- 查询条数 -->
+<select id="selectCodeLength" resultType="java.lang.Integer" parameterType="java.util.List">
+		SELECT
+			count(*)
+		FROM
+		jz_midd_device where
+		DEVIVE_ID in
+	<foreach collection="list" index="index" item="devicewaterCode" open="(" separator="," close=")">  
+			#{devicewaterCode} 
+		</foreach>
+	</select>
+<!-- 查询实时数据 -->
+<!--   根据水位站编码查询显示当天的实时数据-->
+	<select id="selectDevicewaterCode" resultMap="BaseResultMap" parameterType="java.util.List">
+		SELECT
+		DEVIVE_ID,
+		TERMINAL_NAME,
+		TYPE,
+		water_level,
+		instant_speed,
+		instant_flow,
+		totle_flow,
+		tren_chier1,
+		tren_chier2,
+		tren_chier3,
+		tren_chier4,
+		tren_chier5,
+		tren_chier6,
+        SWDI_CREATE_TIME,
+        swi.swi_devicemodel_code as swiDevicemodelCode,
+        swi.ezopen_live as ezopenLive
+        FROM
+        jz_midd_device jz
+        LEFT JOIN site_water_info swi on jz.DEVIVE_ID = swi.device_water_code
+        where DEVIVE_ID in
+        <foreach collection="list" index="index" item="devicewaterCode" open="(" separator="," close=")">
+            #{devicewaterCode}
+        </foreach>
+		ORDER By DEVIVE_ID
+	</select>
+
+  <insert id="insert" parameterType="com.zyjz.site.entity.JzMiddDevice" >
+    insert into jz_midd_device (ID, DEVIVE_ID, DEVIVE_TYPE, 
+      DEVIVE_CODE, TERMINAL_MSG, CMNCT_TYPE, 
+      TERMINAL_NAME, SIM_CODE, TYPE, 
+      TIME, LANIP, IP, 
+      AMEND_TIME, MEPTY_HING, PAUSE, 
+      water_level, instant_speed, instant_flow, 
+      test_height, totle_flow, swi_addr, 
+      swi_latitude, swi_longitude, tren_chier1, 
+      tren_chier2, tren_chier3, tren_chier4, 
+      tren_chier5, tren_chier6, tren_chier7
+      )
+    values (#{id,jdbcType=INTEGER}, #{deviveId,jdbcType=VARCHAR}, #{deviveType,jdbcType=VARCHAR}, 
+      #{deviveCode,jdbcType=VARCHAR}, #{terminalMsg,jdbcType=VARCHAR}, #{cmnctType,jdbcType=VARCHAR}, 
+      #{terminalName,jdbcType=VARCHAR}, #{simCode,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{time,jdbcType=TIMESTAMP}, #{lanip,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{amendTime,jdbcType=TIMESTAMP}, #{meptyHing,jdbcType=VARCHAR}, #{pause,jdbcType=INTEGER}, 
+      #{waterLevel,jdbcType=DECIMAL}, #{instantSpeed,jdbcType=DECIMAL}, #{instantFlow,jdbcType=DECIMAL}, 
+      #{testHeight,jdbcType=DECIMAL}, #{totleFlow,jdbcType=DECIMAL}, #{swiAddr,jdbcType=VARCHAR}, 
+      #{swiLatitude,jdbcType=DECIMAL}, #{swiLongitude,jdbcType=DECIMAL}, #{trenChier1,jdbcType=VARCHAR}, 
+      #{trenChier2,jdbcType=VARCHAR}, #{trenChier3,jdbcType=VARCHAR}, #{trenChier4,jdbcType=VARCHAR}, 
+      #{trenChier5,jdbcType=VARCHAR}, #{trenChier6,jdbcType=VARCHAR}, #{trenChier7,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.site.entity.JzMiddDevice" >
+    insert into jz_midd_device
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="deviveId != null" >
+        DEVIVE_ID,
+      </if>
+      <if test="deviveType != null" >
+        DEVIVE_TYPE,
+      </if>
+      <if test="deviveCode != null" >
+        DEVIVE_CODE,
+      </if>
+      <if test="terminalMsg != null" >
+        TERMINAL_MSG,
+      </if>
+      <if test="cmnctType != null" >
+        CMNCT_TYPE,
+      </if>
+      <if test="terminalName != null" >
+        TERMINAL_NAME,
+      </if>
+      <if test="simCode != null" >
+        SIM_CODE,
+      </if>
+      <if test="type != null" >
+        TYPE,
+      </if>
+      <if test="time != null" >
+        TIME,
+      </if>
+      <if test="lanip != null" >
+        LANIP,
+      </if>
+      <if test="ip != null" >
+        IP,
+      </if>
+      <if test="amendTime != null" >
+        AMEND_TIME,
+      </if>
+      <if test="meptyHing != null" >
+        MEPTY_HING,
+      </if>
+      <if test="pause != null" >
+        PAUSE,
+      </if>
+      <if test="waterLevel != null" >
+        water_level,
+      </if>
+      <if test="instantSpeed != null" >
+        instant_speed,
+      </if>
+      <if test="instantFlow != null" >
+        instant_flow,
+      </if>
+      <if test="testHeight != null" >
+        test_height,
+      </if>
+      <if test="totleFlow != null" >
+        totle_flow,
+      </if>
+      <if test="swiAddr != null" >
+        swi_addr,
+      </if>
+      <if test="swiLatitude != null" >
+        swi_latitude,
+      </if>
+      <if test="swiLongitude != null" >
+        swi_longitude,
+      </if>
+      <if test="trenChier1 != null" >
+        tren_chier1,
+      </if>
+      <if test="trenChier2 != null" >
+        tren_chier2,
+      </if>
+      <if test="trenChier3 != null" >
+        tren_chier3,
+      </if>
+      <if test="trenChier4 != null" >
+        tren_chier4,
+      </if>
+      <if test="trenChier5 != null" >
+        tren_chier5,
+      </if>
+      <if test="trenChier6 != null" >
+        tren_chier6,
+      </if>
+      <if test="trenChier7 != null" >
+        tren_chier7,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="deviveId != null" >
+        #{deviveId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviveType != null" >
+        #{deviveType,jdbcType=VARCHAR},
+      </if>
+      <if test="deviveCode != null" >
+        #{deviveCode,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalMsg != null" >
+        #{terminalMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="cmnctType != null" >
+        #{cmnctType,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalName != null" >
+        #{terminalName,jdbcType=VARCHAR},
+      </if>
+      <if test="simCode != null" >
+        #{simCode,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lanip != null" >
+        #{lanip,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="amendTime != null" >
+        #{amendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="meptyHing != null" >
+        #{meptyHing,jdbcType=VARCHAR},
+      </if>
+      <if test="pause != null" >
+        #{pause,jdbcType=INTEGER},
+      </if>
+      <if test="waterLevel != null" >
+        #{waterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="instantSpeed != null" >
+        #{instantSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="instantFlow != null" >
+        #{instantFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="testHeight != null" >
+        #{testHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="totleFlow != null" >
+        #{totleFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="swiAddr != null" >
+        #{swiAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="swiLatitude != null" >
+        #{swiLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="swiLongitude != null" >
+        #{swiLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="trenChier1 != null" >
+        #{trenChier1,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier2 != null" >
+        #{trenChier2,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier3 != null" >
+        #{trenChier3,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier4 != null" >
+        #{trenChier4,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier5 != null" >
+        #{trenChier5,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier6 != null" >
+        #{trenChier6,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier7 != null" >
+        #{trenChier7,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.site.entity.JzMiddDevice" >
+    update jz_midd_device
+    <set >
+      <if test="deviveId != null" >
+        DEVIVE_ID = #{deviveId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviveType != null" >
+        DEVIVE_TYPE = #{deviveType,jdbcType=VARCHAR},
+      </if>
+      <if test="deviveCode != null" >
+        DEVIVE_CODE = #{deviveCode,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalMsg != null" >
+        TERMINAL_MSG = #{terminalMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="cmnctType != null" >
+        CMNCT_TYPE = #{cmnctType,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalName != null" >
+        TERMINAL_NAME = #{terminalName,jdbcType=VARCHAR},
+      </if>
+      <if test="simCode != null" >
+        SIM_CODE = #{simCode,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        TIME = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lanip != null" >
+        LANIP = #{lanip,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        IP = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="amendTime != null" >
+        AMEND_TIME = #{amendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="meptyHing != null" >
+        MEPTY_HING = #{meptyHing,jdbcType=VARCHAR},
+      </if>
+      <if test="pause != null" >
+        PAUSE = #{pause,jdbcType=INTEGER},
+      </if>
+      <if test="waterLevel != null" >
+        water_level = #{waterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="instantSpeed != null" >
+        instant_speed = #{instantSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="instantFlow != null" >
+        instant_flow = #{instantFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="testHeight != null" >
+        test_height = #{testHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="totleFlow != null" >
+        totle_flow = #{totleFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="swiAddr != null" >
+        swi_addr = #{swiAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="swiLatitude != null" >
+        swi_latitude = #{swiLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="swiLongitude != null" >
+        swi_longitude = #{swiLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="trenChier1 != null" >
+        tren_chier1 = #{trenChier1,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier2 != null" >
+        tren_chier2 = #{trenChier2,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier3 != null" >
+        tren_chier3 = #{trenChier3,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier4 != null" >
+        tren_chier4 = #{trenChier4,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier5 != null" >
+        tren_chier5 = #{trenChier5,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier6 != null" >
+        tren_chier6 = #{trenChier6,jdbcType=VARCHAR},
+      </if>
+      <if test="trenChier7 != null" >
+        tren_chier7 = #{trenChier7,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.site.entity.JzMiddDevice" >
+    update jz_midd_device
+    set DEVIVE_ID = #{deviveId,jdbcType=VARCHAR},
+      DEVIVE_TYPE = #{deviveType,jdbcType=VARCHAR},
+      DEVIVE_CODE = #{deviveCode,jdbcType=VARCHAR},
+      TERMINAL_MSG = #{terminalMsg,jdbcType=VARCHAR},
+      CMNCT_TYPE = #{cmnctType,jdbcType=VARCHAR},
+      TERMINAL_NAME = #{terminalName,jdbcType=VARCHAR},
+      SIM_CODE = #{simCode,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=INTEGER},
+      TIME = #{time,jdbcType=TIMESTAMP},
+      LANIP = #{lanip,jdbcType=VARCHAR},
+      IP = #{ip,jdbcType=VARCHAR},
+      AMEND_TIME = #{amendTime,jdbcType=TIMESTAMP},
+      MEPTY_HING = #{meptyHing,jdbcType=VARCHAR},
+      PAUSE = #{pause,jdbcType=INTEGER},
+      water_level = #{waterLevel,jdbcType=DECIMAL},
+      instant_speed = #{instantSpeed,jdbcType=DECIMAL},
+      instant_flow = #{instantFlow,jdbcType=DECIMAL},
+      test_height = #{testHeight,jdbcType=DECIMAL},
+      totle_flow = #{totleFlow,jdbcType=DECIMAL},
+      swi_addr = #{swiAddr,jdbcType=VARCHAR},
+      swi_latitude = #{swiLatitude,jdbcType=DECIMAL},
+      swi_longitude = #{swiLongitude,jdbcType=DECIMAL},
+      tren_chier1 = #{trenChier1,jdbcType=VARCHAR},
+      tren_chier2 = #{trenChier2,jdbcType=VARCHAR},
+      tren_chier3 = #{trenChier3,jdbcType=VARCHAR},
+      tren_chier4 = #{trenChier4,jdbcType=VARCHAR},
+      tren_chier5 = #{trenChier5,jdbcType=VARCHAR},
+      tren_chier6 = #{trenChier6,jdbcType=VARCHAR},
+      tren_chier7 = #{trenChier7,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

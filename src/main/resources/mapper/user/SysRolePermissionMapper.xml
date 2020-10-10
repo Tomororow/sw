@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.user.dao.SysRolePermissionMapper">
+	<resultMap id="BaseResultMap" type="com.zyjz.user.entity.SysRolePermission">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="role_id" property="roleId" jdbcType="VARCHAR" />
+		<result column="menu_id" property="menuId" jdbcType="VARCHAR" />
+		<result column="sp_create_time" property="spCreateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, role_id, menu_id, sp_create_time
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role_permission
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	
+	<!-- 更据角色id查询角色权限 -->
+	<select id="findSysRolePermissionByRoleId" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role_permission
+		where role_id = #{roleId,jdbcType=VARCHAR}
+	</select>
+	
+	<!--更据id集合查询  -->
+	<select id="findSysRolePermissionsByRolePermissionIds" resultMap="BaseResultMap" parameterType="java.util.List">
+    	select 
+    	<include refid="Base_Column_List" />
+    	from sys_role_permission
+    	where id in 
+    	<foreach collection="list" index="index" item="id" open="(" separator="," close=")">  
+        	#{id}  
+    	</foreach>
+    	
+    </select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from sys_role_permission
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteRolePermissionByRoleId" parameterType="java.lang.String">
+		delete from sys_role_permission
+		where role_id = #{roleId,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.zyjz.user.entity.SysRolePermission">
+		insert into sys_role_permission (id, role_id, menu_id,
+		sp_create_time)
+		values (#{id,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR},
+		#{menuId,jdbcType=VARCHAR},
+		#{spCreateTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.zyjz.user.entity.SysRolePermission">
+		<selectKey keyColumn="id" keyProperty="id" order="BEFORE"
+			resultType="java.lang.String">
+			SELECT UUID()
+		</selectKey>
+		insert into sys_role_permission
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="roleId != null">
+				role_id,
+			</if>
+			<if test="menuId != null">
+				menu_id,
+			</if>
+			<if test="spCreateTime != null">
+				sp_create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="roleId != null">
+				#{roleId,jdbcType=VARCHAR},
+			</if>
+			<if test="menuId != null">
+				#{menuId,jdbcType=VARCHAR},
+			</if>
+			<if test="spCreateTime != null">
+				#{spCreateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.zyjz.user.entity.SysRolePermission">
+		update sys_role_permission
+		<set>
+			<if test="roleId != null">
+				role_id = #{roleId,jdbcType=VARCHAR},
+			</if>
+			<if test="menuId != null">
+				menu_id = #{menuId,jdbcType=VARCHAR},
+			</if>
+			<if test="spCreateTime != null">
+				sp_create_time = #{spCreateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="com.zyjz.user.entity.SysRolePermission">
+		update sys_role_permission
+		set role_id = #{roleId,jdbcType=VARCHAR},
+		menu_id = #{menuId,jdbcType=VARCHAR},
+		sp_create_time = #{spCreateTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.SysAreaMapper">
+	<resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.SysArea">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+		<result column="area_name" property="areaName" jdbcType="VARCHAR" />
+		<result column="area_level" property="areaLevel" jdbcType="INTEGER" />
+		<result column="parent_area_id" property="parentAreaId" jdbcType="VARCHAR" />
+		<result column="parent_area_name" property="parentAreaName" jdbcType="VARCHAR" />
+		<result column="sa_create_time" property="saCreateTime" jdbcType="TIMESTAMP" />
+		<result column="sa_edit_time" property="saEditTime" jdbcType="TIMESTAMP" />
+		<result column="sa_remark" property="saRemark" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 行政区域表通用查询基础列 -->
+	<sql id="Base_Column_List">
+		id, area_code, area_name, area_level, parent_area_id, sa_create_time,
+		sa_edit_time,
+		sa_remark
+	</sql>
+	
+	<!-- 行政区域树获取信息 -->
+	<select id="getAllSysAreaInfo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_area order by area_level, sa_create_time asc
+	</select>
+	
+	<!-- 查询全部区域 -->
+	<select id="findByList" resultMap="BaseResultMap" parameterType="java.util.List">
+		select <include refid="Base_Column_List" />
+		 from sys_area
+	</select>
+	
+	<select id="findBySysareaCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_area
+		where area_code = #{areaCode,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据级别获取最大区域Id -->
+	<select id="getParentAreaByLevel" resultType="java.lang.String" parameterType="java.lang.Integer">
+		select id from sys_area
+		where area_level = #{areaLevel,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 行政区域分页列表信息查询 -->
+<!--	<select id="getAreasList" resultMap="BaseResultMap" parameterType="map" >
+		select sa.*, sya.area_name as parentAreaName from sys_area sa, sys_area sya 
+			where 1=1 and sa.parent_area_id = sya.id
+		<if test="id != null">
+			and sa.parent_area_id = #{id,jdbcType=VARCHAR}
+		</if>
+		<if test="id == null">
+		</if>
+		order by sa.area_level, sa.area_code
+	</select>-->
+	<select id="getAreasList" resultMap="BaseResultMap" parameterType="map" >
+		select
+		<include refid="Base_Column_List" />
+		from sys_area
+		where parent_area_id in
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+		order by area_level, area_code
+	</select>
+	
+	<!--   根据父级id查询 -->
+		<select id="selectParentId" resultMap="BaseResultMap"  parameterType="java.lang.String">
+			select
+			 <include refid="Base_Column_List" />
+		    from sys_area
+		    where parent_area_id =#{areaCode}
+		</select>
+	
+	<!-- 根据主键查询 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_area
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+    <!--查询当前用户或点击当前树所拿到的水管区域-->
+    <select id="selectByIdOrCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from sys_area where 1=1
+        <if test="id!=null and id!=''">
+            and id = #{id,jdbcType=VARCHAR}
+        </if>
+        <if test="areaCode!=null and areaCode!=''">
+            and area_code = #{areaCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+	
+	<!-- 根据code查询 -->
+	<select id="findAreaBySysareaCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_area
+		where area_code = #{areaCode,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据id集合查询 -->
+  <select id="findAreasByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_area
+    where id in 
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">  
+        #{id}  
+    </foreach>
+    order by area_level asc
+  </select>
+
+	<!--根据行政区编码和权限级别查找最后一个子行政区-->
+	<select id="selectChildSysAreaByCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_area
+		where area_code like concat(#{code,jdbcType=VARCHAR},'%')
+		and area_level = #{level,jdbcType=VARCHAR}
+		ORDER BY area_code DESC limit 1
+	</select>
+	
+	<!-- 根据主键删除 -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from sys_area
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 新增全部信息 -->
+	<insert id="insert" parameterType="com.zyjz.sysmanage.entity.SysArea">
+		insert into sys_area (id, area_code, area_name,
+		area_level, parent_area_id, sa_create_time,
+		sa_edit_time, sa_remark)
+		values (#{id,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR},
+		#{areaName,jdbcType=VARCHAR},
+		#{areaLevel,jdbcType=INTEGER}, #{parentAreaId,jdbcType=VARCHAR}, #{saCreateTime,jdbcType=TIMESTAMP},
+		#{saEditTime,jdbcType=TIMESTAMP}, #{saRemark,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 有选择性的新增信息 -->
+	<insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.SysArea">
+		insert into sys_area
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="areaCode != null">
+				area_code,
+			</if>
+			<if test="areaName != null">
+				area_name,
+			</if>
+			<if test="areaLevel != null">
+				area_level,
+			</if>
+			<if test="parentAreaId != null">
+				parent_area_id,
+			</if>
+			<if test="saCreateTime != null">
+				sa_create_time,
+			</if>
+			<if test="saEditTime != null">
+				sa_edit_time,
+			</if>
+			<if test="saRemark != null">
+				sa_remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="areaCode != null">
+				#{areaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="areaName != null">
+				#{areaName,jdbcType=VARCHAR},
+			</if>
+			<if test="areaLevel != null">
+				#{areaLevel,jdbcType=INTEGER},
+			</if>
+			<if test="parentAreaId != null">
+				#{parentAreaId,jdbcType=VARCHAR},
+			</if>
+			<if test="saCreateTime != null">
+				#{saCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="saEditTime != null">
+				#{saEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="saRemark != null">
+				#{saRemark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 根据主键有选择性更新信息 -->
+	<update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.SysArea">
+		update sys_area
+		<set>
+			<if test="areaCode != null">
+				area_code = #{areaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="areaName != null">
+				area_name = #{areaName,jdbcType=VARCHAR},
+			</if>
+			<if test="areaLevel != null">
+				area_level = #{areaLevel,jdbcType=INTEGER},
+			</if>
+			<if test="parentAreaId != null">
+				parent_area_id = #{parentAreaId,jdbcType=VARCHAR},
+			</if>
+			<if test="saCreateTime != null">
+				sa_create_time = #{saCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="saEditTime != null">
+				sa_edit_time = #{saEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="saRemark != null">
+				sa_remark = #{saRemark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 根据主键更新信息 -->
+	<update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.SysArea">
+		update sys_area
+		set area_code = #{areaCode,jdbcType=VARCHAR},
+		area_name = #{areaName,jdbcType=VARCHAR},
+		area_level = #{areaLevel,jdbcType=INTEGER},
+		parent_area_id = #{parentAreaId,jdbcType=VARCHAR},
+		sa_create_time = #{saCreateTime,jdbcType=TIMESTAMP},
+		sa_edit_time = #{saEditTime,jdbcType=TIMESTAMP},
+		sa_remark = #{saRemark,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 按水管区域等级排序查询 -->
+	<select id="findAllAreas" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_area
+
+	</select>
+
+	<!-- 水管区及子一级查询 -->
+	<select id="findSonSysAreasByPidAndAreaLevel" resultMap="BaseResultMap"
+		parameterType="com.zyjz.sysmanage.entity.SysArea">
+		select
+		<include refid="Base_Column_List" />
+		from sys_area
+		where parent_area_id = #{parentAreaId,jdbcType=VARCHAR}
+		and area_level = #{areaLevel,jdbcType=INTEGER}
+	</select>
+
+	<!-- 查询父级区域 -->
+	<select id="findAreaByLevel" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from sys_area
+		where area_level = #{areaLevel,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectSysAreasById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select *
+		from sys_area
+		where 1=1
+		<if test="id != null and id !=''">
+			and id = #{id,jdbcType=VARCHAR} or parent_area_id = #{parentAreaId,jdbcType=VARCHAR}
+		</if>
+		order by area_level
+	</select>
+
+	<!-- 查询父级区域 -->
+	<select id="findAreaByPId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select * from sys_area
+		where parent_area_id = #{parentAreaId,jdbcType=VARCHAR}
+	</select>
+	
+</mapper>

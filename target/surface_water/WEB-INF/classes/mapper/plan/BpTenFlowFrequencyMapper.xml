@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.BpTenFlowFrequencyMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.plan.entity.BpTenFlowFrequency" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="forecast_id" property="forecastId" jdbcType="VARCHAR" />
+    <result column="canalCode" property="canalcode" jdbcType="VARCHAR" />
+    <result column="precipitation" property="precipitation" jdbcType="DECIMAL" />
+    <result column="evaporation" property="evaporation" jdbcType="DECIMAL" />
+    <result column="temperatur" property="temperatur" jdbcType="DECIMAL" />
+    <result column="windspeed" property="windspeed" jdbcType="DECIMAL" />
+    <result column="humidity" property="humidity" jdbcType="DECIMAL" />
+    <result column="sunshine" property="sunshine" jdbcType="DECIMAL" />
+    <result column="atmosphere" property="atmosphere" jdbcType="DECIMAL" />
+    <result column="inflow" property="inflow" jdbcType="DECIMAL" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="month" property="month" jdbcType="INTEGER" />
+    <result column="predictiontime" property="predictiontime" jdbcType="TIMESTAMP" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="comm1" property="comm1" jdbcType="VARCHAR" />
+    <result column="comm2" property="comm2" jdbcType="VARCHAR" />
+    <result column="comm3" property="comm3" jdbcType="VARCHAR" />
+    <result column="comm4" property="comm4" jdbcType="VARCHAR" />
+    <result column="comm5" property="comm5" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, forecast_id, canalCode, precipitation, evaporation, temperatur, windspeed, humidity, 
+    sunshine, atmosphere, inflow, year, month, predictiontime, createtime, updatetime, 
+    operator, comm1, comm2, comm3, comm4, comm5
+  </sql>
+ 
+ <!-- 根据渠道编码查询所有的bp_水库来水信息 -->
+ <select id="findBpTenFlowFrequencyByCanalCodes" resultMap="BaseResultMap" parameterType="java.util.List">
+    select
+    <include refid="Base_Column_List" />
+    from bp_ten_flow_frequency
+    where swi_canal_code in 
+    <foreach collection="list" index="index" item="swiCanalCode" open="(" separator="," close=")">  
+        #{swiCanalCode}  
+    </foreach>
+    order by predictionTime desc
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bp_ten_flow_frequency
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bp_ten_flow_frequency
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.plan.entity.BpTenFlowFrequency" >
+    insert into bp_ten_flow_frequency (id, forecast_id, canalCode, 
+      precipitation, evaporation, temperatur, 
+      windspeed, humidity, sunshine, 
+      atmosphere, inflow, year, 
+      month, predictiontime, createtime, 
+      updatetime, operator, comm1, 
+      comm2, comm3, comm4, 
+      comm5)
+    values (#{id,jdbcType=VARCHAR}, #{forecastId,jdbcType=VARCHAR}, #{canalcode,jdbcType=VARCHAR}, 
+      #{precipitation,jdbcType=DECIMAL}, #{evaporation,jdbcType=DECIMAL}, #{temperatur,jdbcType=DECIMAL}, 
+      #{windspeed,jdbcType=DECIMAL}, #{humidity,jdbcType=DECIMAL}, #{sunshine,jdbcType=DECIMAL}, 
+      #{atmosphere,jdbcType=DECIMAL}, #{inflow,jdbcType=DECIMAL}, #{year,jdbcType=INTEGER}, 
+      #{month,jdbcType=INTEGER}, #{predictiontime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, #{comm1,jdbcType=VARCHAR}, 
+      #{comm2,jdbcType=VARCHAR}, #{comm3,jdbcType=VARCHAR}, #{comm4,jdbcType=VARCHAR}, 
+      #{comm5,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.plan.entity.BpTenFlowFrequency" >
+    insert into bp_ten_flow_frequency
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="forecastId != null" >
+        forecast_id,
+      </if>
+      <if test="canalcode != null" >
+        canalCode,
+      </if>
+      <if test="precipitation != null" >
+        precipitation,
+      </if>
+      <if test="evaporation != null" >
+        evaporation,
+      </if>
+      <if test="temperatur != null" >
+        temperatur,
+      </if>
+      <if test="windspeed != null" >
+        windspeed,
+      </if>
+      <if test="humidity != null" >
+        humidity,
+      </if>
+      <if test="sunshine != null" >
+        sunshine,
+      </if>
+      <if test="atmosphere != null" >
+        atmosphere,
+      </if>
+      <if test="inflow != null" >
+        inflow,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="predictiontime != null" >
+        predictiontime,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="comm1 != null" >
+        comm1,
+      </if>
+      <if test="comm2 != null" >
+        comm2,
+      </if>
+      <if test="comm3 != null" >
+        comm3,
+      </if>
+      <if test="comm4 != null" >
+        comm4,
+      </if>
+      <if test="comm5 != null" >
+        comm5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="forecastId != null" >
+        #{forecastId,jdbcType=VARCHAR},
+      </if>
+      <if test="canalcode != null" >
+        #{canalcode,jdbcType=VARCHAR},
+      </if>
+      <if test="precipitation != null" >
+        #{precipitation,jdbcType=DECIMAL},
+      </if>
+      <if test="evaporation != null" >
+        #{evaporation,jdbcType=DECIMAL},
+      </if>
+      <if test="temperatur != null" >
+        #{temperatur,jdbcType=DECIMAL},
+      </if>
+      <if test="windspeed != null" >
+        #{windspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="humidity != null" >
+        #{humidity,jdbcType=DECIMAL},
+      </if>
+      <if test="sunshine != null" >
+        #{sunshine,jdbcType=DECIMAL},
+      </if>
+      <if test="atmosphere != null" >
+        #{atmosphere,jdbcType=DECIMAL},
+      </if>
+      <if test="inflow != null" >
+        #{inflow,jdbcType=DECIMAL},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null" >
+        #{month,jdbcType=INTEGER},
+      </if>
+      <if test="predictiontime != null" >
+        #{predictiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="comm1 != null" >
+        #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        #{comm5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.BpTenFlowFrequency" >
+    update bp_ten_flow_frequency
+    <set >
+      <if test="forecastId != null" >
+        forecast_id = #{forecastId,jdbcType=VARCHAR},
+      </if>
+      <if test="canalcode != null" >
+        canalCode = #{canalcode,jdbcType=VARCHAR},
+      </if>
+      <if test="precipitation != null" >
+        precipitation = #{precipitation,jdbcType=DECIMAL},
+      </if>
+      <if test="evaporation != null" >
+        evaporation = #{evaporation,jdbcType=DECIMAL},
+      </if>
+      <if test="temperatur != null" >
+        temperatur = #{temperatur,jdbcType=DECIMAL},
+      </if>
+      <if test="windspeed != null" >
+        windspeed = #{windspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="humidity != null" >
+        humidity = #{humidity,jdbcType=DECIMAL},
+      </if>
+      <if test="sunshine != null" >
+        sunshine = #{sunshine,jdbcType=DECIMAL},
+      </if>
+      <if test="atmosphere != null" >
+        atmosphere = #{atmosphere,jdbcType=DECIMAL},
+      </if>
+      <if test="inflow != null" >
+        inflow = #{inflow,jdbcType=DECIMAL},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null" >
+        month = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="predictiontime != null" >
+        predictiontime = #{predictiontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="comm1 != null" >
+        comm1 = #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        comm2 = #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        comm3 = #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        comm4 = #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        comm5 = #{comm5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.plan.entity.BpTenFlowFrequency" >
+    update bp_ten_flow_frequency
+    set forecast_id = #{forecastId,jdbcType=VARCHAR},
+      canalCode = #{canalcode,jdbcType=VARCHAR},
+      precipitation = #{precipitation,jdbcType=DECIMAL},
+      evaporation = #{evaporation,jdbcType=DECIMAL},
+      temperatur = #{temperatur,jdbcType=DECIMAL},
+      windspeed = #{windspeed,jdbcType=DECIMAL},
+      humidity = #{humidity,jdbcType=DECIMAL},
+      sunshine = #{sunshine,jdbcType=DECIMAL},
+      atmosphere = #{atmosphere,jdbcType=DECIMAL},
+      inflow = #{inflow,jdbcType=DECIMAL},
+      year = #{year,jdbcType=INTEGER},
+      month = #{month,jdbcType=INTEGER},
+      predictiontime = #{predictiontime,jdbcType=TIMESTAMP},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      operator = #{operator,jdbcType=VARCHAR},
+      comm1 = #{comm1,jdbcType=VARCHAR},
+      comm2 = #{comm2,jdbcType=VARCHAR},
+      comm3 = #{comm3,jdbcType=VARCHAR},
+      comm4 = #{comm4,jdbcType=VARCHAR},
+      comm5 = #{comm5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

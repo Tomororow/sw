@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sitemanage.dao.MoistureSurveySiteMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sitemanage.entity.MoistureSurveySite" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="moisture_name" property="moistureName" jdbcType="VARCHAR" />
+    <result column="coding" property="coding" jdbcType="VARCHAR" />
+    <result column="equip_name" property="equipName" jdbcType="VARCHAR" />
+    <result column="equip_coding" property="equipCoding" jdbcType="VARCHAR" />
+    <result column="sim_clip" property="simClip" jdbcType="VARCHAR" />
+    <result column="sim_clip_operator" property="simClipOperator" jdbcType="VARCHAR" />
+    <result column="build_time" property="buildTime" jdbcType="TIMESTAMP" />
+    <result column="longitude" property="longitude" jdbcType="DECIMAL" />
+    <result column="latitude" property="latitude" jdbcType="DECIMAL" />
+    <result column="elevation" property="elevation" jdbcType="DECIMAL" />
+    <result column="administrative_coding" property="administrativeCoding" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="dynamic_id" property="dynamicId" jdbcType="VARCHAR" />
+    <result column="moisture_address" property="moistureAddress" jdbcType="VARCHAR" />
+    <result column="moisture_image" property="moistureImage" jdbcType="VARCHAR" />
+    <result column="standby_one" property="standbyOne" jdbcType="VARCHAR" />
+    <result column="standby_two" property="standbyTwo" jdbcType="VARCHAR" />
+    <result column="standby_three" property="standbyThree" jdbcType="VARCHAR" />
+    <result column="standby_four" property="standbyFour" jdbcType="VARCHAR" />
+    <result column="standby_five" property="standbyFive" jdbcType="VARCHAR" />
+    <result column="standby_six" property="standbySix" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, moisture_name, coding, equip_name, equip_coding, sim_clip, sim_clip_operator, 
+    build_time, longitude, latitude, elevation, administrative_coding, create_time, update_time, 
+    dynamic_id, moisture_address, moisture_image, standby_one, standby_two, standby_three, 
+    standby_four, standby_five, standby_six
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from moisture_survey_site
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+<!--   根据行政区查询 -->
+	<select id="selectArea" resultMap="BaseResultMap" parameterType="java.util.List">
+		select
+		<include refid="Base_Column_List" />
+		from moisture_survey_site 
+		where administrative_coding in
+ <foreach collection="list" index="index" item="administrativeCoding" open="(" separator="," close=")">  
+	        #{administrativeCoding} 
+	 </foreach>
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from moisture_survey_site
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zyjz.sitemanage.entity.MoistureSurveySite" >
+    insert into moisture_survey_site (id, moisture_name, coding, 
+      equip_name, equip_coding, sim_clip, 
+      sim_clip_operator, build_time, longitude, 
+      latitude, elevation, administrative_coding, 
+      create_time, update_time, dynamic_id, 
+      moisture_address, moisture_image, standby_one, 
+      standby_two, standby_three, standby_four, 
+      standby_five, standby_six)
+    values (#{id,jdbcType=VARCHAR}, #{moistureName,jdbcType=VARCHAR}, #{coding,jdbcType=VARCHAR}, 
+      #{equipName,jdbcType=VARCHAR}, #{equipCoding,jdbcType=VARCHAR}, #{simClip,jdbcType=VARCHAR}, 
+      #{simClipOperator,jdbcType=VARCHAR}, #{buildTime,jdbcType=TIMESTAMP}, #{longitude,jdbcType=DECIMAL}, 
+      #{latitude,jdbcType=DECIMAL}, #{elevation,jdbcType=DECIMAL}, #{administrativeCoding,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{dynamicId,jdbcType=VARCHAR}, 
+      #{moistureAddress,jdbcType=VARCHAR}, #{moistureImage,jdbcType=VARCHAR}, #{standbyOne,jdbcType=VARCHAR}, 
+      #{standbyTwo,jdbcType=VARCHAR}, #{standbyThree,jdbcType=VARCHAR}, #{standbyFour,jdbcType=VARCHAR}, 
+      #{standbyFive,jdbcType=VARCHAR}, #{standbySix,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sitemanage.entity.MoistureSurveySite" >
+  <selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		
+  		SELECT UUID()
+  	</selectKey>
+    insert into moisture_survey_site
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="moistureName != null" >
+        moisture_name,
+      </if>
+      <if test="coding != null" >
+        coding,
+      </if>
+      <if test="equipName != null" >
+        equip_name,
+      </if>
+      <if test="equipCoding != null" >
+        equip_coding,
+      </if>
+      <if test="simClip != null" >
+        sim_clip,
+      </if>
+      <if test="simClipOperator != null" >
+        sim_clip_operator,
+      </if>
+      <if test="buildTime != null" >
+        build_time,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="elevation != null" >
+        elevation,
+      </if>
+      <if test="administrativeCoding != null" >
+        administrative_coding,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="dynamicId != null" >
+        dynamic_id,
+      </if>
+      <if test="moistureAddress != null" >
+        moisture_address,
+      </if>
+      <if test="moistureImage != null" >
+        moisture_image,
+      </if>
+      <if test="standbyOne != null" >
+        standby_one,
+      </if>
+      <if test="standbyTwo != null" >
+        standby_two,
+      </if>
+      <if test="standbyThree != null" >
+        standby_three,
+      </if>
+      <if test="standbyFour != null" >
+        standby_four,
+      </if>
+      <if test="standbyFive != null" >
+        standby_five,
+      </if>
+      <if test="standbySix != null" >
+        standby_six,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="moistureName != null" >
+        #{moistureName,jdbcType=VARCHAR},
+      </if>
+      <if test="coding != null" >
+        #{coding,jdbcType=VARCHAR},
+      </if>
+      <if test="equipName != null" >
+        #{equipName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipCoding != null" >
+        #{equipCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="simClip != null" >
+        #{simClip,jdbcType=VARCHAR},
+      </if>
+      <if test="simClipOperator != null" >
+        #{simClipOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="buildTime != null" >
+        #{buildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="elevation != null" >
+        #{elevation,jdbcType=DECIMAL},
+      </if>
+      <if test="administrativeCoding != null" >
+        #{administrativeCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dynamicId != null" >
+        #{dynamicId,jdbcType=VARCHAR},
+      </if>
+      <if test="moistureAddress != null" >
+        #{moistureAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="moistureImage != null" >
+        #{moistureImage,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyOne != null" >
+        #{standbyOne,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyTwo != null" >
+        #{standbyTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyThree != null" >
+        #{standbyThree,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyFour != null" >
+        #{standbyFour,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyFive != null" >
+        #{standbyFive,jdbcType=VARCHAR},
+      </if>
+      <if test="standbySix != null" >
+        #{standbySix,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update moisture_survey_site
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moistureName != null" >
+        moisture_name = #{record.moistureName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coding != null" >
+        coding = #{record.coding,jdbcType=VARCHAR},
+      </if>
+      <if test="record.equipName != null" >
+        equip_name = #{record.equipName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.equipCoding != null" >
+        equip_coding = #{record.equipCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="record.simClip != null" >
+        sim_clip = #{record.simClip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.simClipOperator != null" >
+        sim_clip_operator = #{record.simClipOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildTime != null" >
+        build_time = #{record.buildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.longitude != null" >
+        longitude = #{record.longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="record.latitude != null" >
+        latitude = #{record.latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="record.elevation != null" >
+        elevation = #{record.elevation,jdbcType=DECIMAL},
+      </if>
+      <if test="record.administrativeCoding != null" >
+        administrative_coding = #{record.administrativeCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dynamicId != null" >
+        dynamic_id = #{record.dynamicId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moistureAddress != null" >
+        moisture_address = #{record.moistureAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moistureImage != null" >
+        moisture_image = #{record.moistureImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standbyOne != null" >
+        standby_one = #{record.standbyOne,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standbyTwo != null" >
+        standby_two = #{record.standbyTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standbyThree != null" >
+        standby_three = #{record.standbyThree,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standbyFour != null" >
+        standby_four = #{record.standbyFour,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standbyFive != null" >
+        standby_five = #{record.standbyFive,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standbySix != null" >
+        standby_six = #{record.standbySix,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update moisture_survey_site
+    set id = #{record.id,jdbcType=VARCHAR},
+      moisture_name = #{record.moistureName,jdbcType=VARCHAR},
+      coding = #{record.coding,jdbcType=VARCHAR},
+      equip_name = #{record.equipName,jdbcType=VARCHAR},
+      equip_coding = #{record.equipCoding,jdbcType=VARCHAR},
+      sim_clip = #{record.simClip,jdbcType=VARCHAR},
+      sim_clip_operator = #{record.simClipOperator,jdbcType=VARCHAR},
+      build_time = #{record.buildTime,jdbcType=TIMESTAMP},
+      longitude = #{record.longitude,jdbcType=DECIMAL},
+      latitude = #{record.latitude,jdbcType=DECIMAL},
+      elevation = #{record.elevation,jdbcType=DECIMAL},
+      administrative_coding = #{record.administrativeCoding,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      dynamic_id = #{record.dynamicId,jdbcType=VARCHAR},
+      moisture_address = #{record.moistureAddress,jdbcType=VARCHAR},
+      moisture_image = #{record.moistureImage,jdbcType=VARCHAR},
+      standby_one = #{record.standbyOne,jdbcType=VARCHAR},
+      standby_two = #{record.standbyTwo,jdbcType=VARCHAR},
+      standby_three = #{record.standbyThree,jdbcType=VARCHAR},
+      standby_four = #{record.standbyFour,jdbcType=VARCHAR},
+      standby_five = #{record.standbyFive,jdbcType=VARCHAR},
+      standby_six = #{record.standbySix,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sitemanage.entity.MoistureSurveySite" >
+    update moisture_survey_site
+    <set >
+      <if test="moistureName != null" >
+        moisture_name = #{moistureName,jdbcType=VARCHAR},
+      </if>
+      <if test="coding != null" >
+        coding = #{coding,jdbcType=VARCHAR},
+      </if>
+      <if test="equipName != null" >
+        equip_name = #{equipName,jdbcType=VARCHAR},
+      </if>
+      <if test="equipCoding != null" >
+        equip_coding = #{equipCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="simClip != null" >
+        sim_clip = #{simClip,jdbcType=VARCHAR},
+      </if>
+      <if test="simClipOperator != null" >
+        sim_clip_operator = #{simClipOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="buildTime != null" >
+        build_time = #{buildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="elevation != null" >
+        elevation = #{elevation,jdbcType=DECIMAL},
+      </if>
+      <if test="administrativeCoding != null" >
+        administrative_coding = #{administrativeCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dynamicId != null" >
+        dynamic_id = #{dynamicId,jdbcType=VARCHAR},
+      </if>
+      <if test="moistureAddress != null" >
+        moisture_address = #{moistureAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="moistureImage != null" >
+        moisture_image = #{moistureImage,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyOne != null" >
+        standby_one = #{standbyOne,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyTwo != null" >
+        standby_two = #{standbyTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyThree != null" >
+        standby_three = #{standbyThree,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyFour != null" >
+        standby_four = #{standbyFour,jdbcType=VARCHAR},
+      </if>
+      <if test="standbyFive != null" >
+        standby_five = #{standbyFive,jdbcType=VARCHAR},
+      </if>
+      <if test="standbySix != null" >
+        standby_six = #{standbySix,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sitemanage.entity.MoistureSurveySite" >
+    update moisture_survey_site
+    set moisture_name = #{moistureName,jdbcType=VARCHAR},
+      coding = #{coding,jdbcType=VARCHAR},
+      equip_name = #{equipName,jdbcType=VARCHAR},
+      equip_coding = #{equipCoding,jdbcType=VARCHAR},
+      sim_clip = #{simClip,jdbcType=VARCHAR},
+      sim_clip_operator = #{simClipOperator,jdbcType=VARCHAR},
+      build_time = #{buildTime,jdbcType=TIMESTAMP},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      elevation = #{elevation,jdbcType=DECIMAL},
+      administrative_coding = #{administrativeCoding,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      dynamic_id = #{dynamicId,jdbcType=VARCHAR},
+      moisture_address = #{moistureAddress,jdbcType=VARCHAR},
+      moisture_image = #{moistureImage,jdbcType=VARCHAR},
+      standby_one = #{standbyOne,jdbcType=VARCHAR},
+      standby_two = #{standbyTwo,jdbcType=VARCHAR},
+      standby_three = #{standbyThree,jdbcType=VARCHAR},
+      standby_four = #{standbyFour,jdbcType=VARCHAR},
+      standby_five = #{standbyFive,jdbcType=VARCHAR},
+      standby_six = #{standbySix,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

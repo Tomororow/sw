@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.SoilsTypeInfoMapper">
+	<resultMap id="BaseResultMap" type="com.zyjz.plan.entity.SoilTypeInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="soil_code" property="soilCode" jdbcType="INTEGER" />
+    <result column="soil_name" property="soilName" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="sti_create_time" property="stiCreateTime" jdbcType="TIMESTAMP" />
+    <result column="sti_edit_time" property="stiEditTime" jdbcType="TIMESTAMP" />
+    <result column="sti_remark" property="stiRemark" jdbcType="VARCHAR" />
+    <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+    <result column="coefficient_soil" property="coefficientSoil" jdbcType="DECIMAL" />
+    <result column="store_water_soil" property="storeWaterSoil" jdbcType="DECIMAL" />
+    <result column="comm1" property="comm1" jdbcType="VARCHAR" />
+    <result column="comm2" property="comm2" jdbcType="VARCHAR" />
+    <result column="comm3" property="comm3" jdbcType="VARCHAR" />
+    <result column="comm4" property="comm4" jdbcType="VARCHAR" />
+    <result column="comm5" property="comm5" jdbcType="VARCHAR" />
+  </resultMap>
+	
+	
+	<!-- 土地种类表通用查询基础列 -->
+	<sql id="Base_Column_List">
+		id, soil_code, soil_name, description, sti_create_time, sti_edit_time, sti_remark, 
+    area_code, coefficient_soil, store_water_soil, comm1, comm2, comm3, comm4, comm5
+	</sql>
+	
+	<!-- 根根据soil_code获取土地 类型 liyue-->
+	<select id="findsoilType" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from soil_type_info
+		where soil_code = #{soilCode,jdbcType=VARCHAR} 
+	</select>
+	
+	
+	<!-- 根根据AreaCode获取土地 类型 liyue-->
+	<select id="findAreaCropsSoilTypeInfoList" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from soil_type_info
+		where area_code = #{area_code,jdbcType=VARCHAR} order by soil_code
+	</select>
+	
+	
+	
+	<!-- 土地种类分页列表信息查询 -->
+	<select id="findSoilTypeByAreaCodes" resultMap="BaseResultMap" parameterType="java.util.List" >
+		select 
+		 <include refid="Base_Column_List" />
+		from soil_type_info sti  where area_code in 
+		 <foreach collection="list" index="index" item="areaCode" open="(" separator="," close=")">  
+       			 #{areaCode} 
+    	</foreach>
+		order by sti.soil_code
+	</select>
+	
+	<!-- 土地种类信息查询 -->
+	<select id="getSoilsList" resultMap="BaseResultMap" parameterType="map" >
+		select * from soil_type_info sti
+		order by sti.soil_code
+	</select>
+	
+	<select id="getSoilName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select * from soil_type_info where soil_code =#{soilCode,jdbcType=VARCHAR}  order by soil_code
+	</select>
+	
+	<!-- 根据主键查询 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from soil_type_info
+		where id = #{id,jdbcType=VARCHAR}  order by soil_code
+	</select>
+	
+	<!-- 根据Id删除 -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from soil_type_info
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 插入数据 -->
+	<insert id="insert" parameterType="com.zyjz.plan.entity.SoilTypeInfo">
+		insert into soil_type_info (id, soil_code, soil_name, 
+      description, sti_create_time, sti_edit_time, 
+      sti_remark, area_code, coefficient_soil, 
+      store_water_soil, comm1, comm2, 
+      comm3, comm4, comm5
+      )
+    values (#{id,jdbcType=VARCHAR}, #{soilCode,jdbcType=INTEGER}, #{soilName,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{stiCreateTime,jdbcType=TIMESTAMP}, #{stiEditTime,jdbcType=TIMESTAMP}, 
+      #{stiRemark,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, #{coefficientSoil,jdbcType=DECIMAL}, 
+      #{storeWaterSoil,jdbcType=DECIMAL}, #{comm1,jdbcType=VARCHAR}, #{comm2,jdbcType=VARCHAR}, 
+      #{comm3,jdbcType=VARCHAR}, #{comm4,jdbcType=VARCHAR}, #{comm5,jdbcType=VARCHAR}
+      )
+	</insert>
+	
+	<!-- 有选择性的插入数据 -->
+	<insert id="insertSelective" parameterType="com.zyjz.plan.entity.SoilTypeInfo">
+		insert into soil_type_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="soilCode != null" >
+        soil_code,
+      </if>
+      <if test="soilName != null" >
+        soil_name,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="stiCreateTime != null" >
+        sti_create_time,
+      </if>
+      <if test="stiEditTime != null" >
+        sti_edit_time,
+      </if>
+      <if test="stiRemark != null" >
+        sti_remark,
+      </if>
+      <if test="areaCode != null" >
+        area_code,
+      </if>
+      <if test="coefficientSoil != null" >
+        coefficient_soil,
+      </if>
+      <if test="storeWaterSoil != null" >
+        store_water_soil,
+      </if>
+      <if test="comm1 != null" >
+        comm1,
+      </if>
+      <if test="comm2 != null" >
+        comm2,
+      </if>
+      <if test="comm3 != null" >
+        comm3,
+      </if>
+      <if test="comm4 != null" >
+        comm4,
+      </if>
+      <if test="comm5 != null" >
+        comm5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="soilCode != null" >
+        #{soilCode,jdbcType=INTEGER},
+      </if>
+      <if test="soilName != null" >
+        #{soilName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="stiCreateTime != null" >
+        #{stiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stiEditTime != null" >
+        #{stiEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stiRemark != null" >
+        #{stiRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null" >
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="coefficientSoil != null" >
+        #{coefficientSoil,jdbcType=DECIMAL},
+      </if>
+      <if test="storeWaterSoil != null" >
+        #{storeWaterSoil,jdbcType=DECIMAL},
+      </if>
+      <if test="comm1 != null" >
+        #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        #{comm5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+	</insert>
+	
+	<!-- 根据主键有选择性的修改 -->
+	<update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.SoilTypeInfo">
+		update soil_type_info
+    <set >
+      <if test="soilCode != null" >
+        soil_code = #{soilCode,jdbcType=INTEGER},
+      </if>
+      <if test="soilName != null" >
+        soil_name = #{soilName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="stiCreateTime != null" >
+        sti_create_time = #{stiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stiEditTime != null" >
+        sti_edit_time = #{stiEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stiRemark != null" >
+        sti_remark = #{stiRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null" >
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="coefficientSoil != null" >
+        coefficient_soil = #{coefficientSoil,jdbcType=DECIMAL},
+      </if>
+      <if test="storeWaterSoil != null" >
+        store_water_soil = #{storeWaterSoil,jdbcType=DECIMAL},
+      </if>
+      <if test="comm1 != null" >
+        comm1 = #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        comm2 = #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        comm3 = #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        comm4 = #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        comm5 = #{comm5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 根据主键修改 -->
+	<update id="updateByPrimaryKey" parameterType="com.zyjz.plan.entity.SoilTypeInfo">
+		 update soil_type_info
+    set soil_code = #{soilCode,jdbcType=INTEGER},
+      soil_name = #{soilName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      sti_create_time = #{stiCreateTime,jdbcType=TIMESTAMP},
+      sti_edit_time = #{stiEditTime,jdbcType=TIMESTAMP},
+      sti_remark = #{stiRemark,jdbcType=VARCHAR},
+      area_code = #{areaCode,jdbcType=VARCHAR},
+      coefficient_soil = #{coefficientSoil,jdbcType=DECIMAL},
+      store_water_soil = #{storeWaterSoil,jdbcType=DECIMAL},
+      comm1 = #{comm1,jdbcType=VARCHAR},
+      comm2 = #{comm2,jdbcType=VARCHAR},
+      comm3 = #{comm3,jdbcType=VARCHAR},
+      comm4 = #{comm4,jdbcType=VARCHAR},
+      comm5 = #{comm5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+</mapper>

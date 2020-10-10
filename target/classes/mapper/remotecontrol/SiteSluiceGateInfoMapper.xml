@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.remotecontrol.dao.SiteSluiceGateInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.remotecontrol.entity.SiteSluiceGateInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ssgi_sluice_gate_code" property="ssgiSluiceGateCode" jdbcType="VARCHAR" />
+    <result column="ssgi_sluice_gate_name" property="ssgiSluiceGateName" jdbcType="VARCHAR" />
+    <result column="ssgi_sluice_info_id" property="ssgiSluiceInfoId" jdbcType="VARCHAR" />
+    <result column="ssgi_sluice_info_name" property="ssgiSluiceInfoName" jdbcType="VARCHAR" />
+    <result column="ssgi_sluice_width" jdbcType="DECIMAL" property="ssgiSluiceWidth" />
+    <result column="ssgi_sluice_height" jdbcType="DECIMAL" property="ssgiSluiceHeight" />
+    <result column="ssgi_sluice_weight" jdbcType="DECIMAL" property="ssgiSluiceWeight" />
+    <result column="ssgi_sluice_type_code" jdbcType="VARCHAR" property="ssgiSluiceTypeCode" />
+    <result column="ssgi_sluice_motor_power" jdbcType="DECIMAL" property="ssgiSluiceMotorPower" />
+    <result column="ssgi_sluice_movie_id" property="ssgiSluiceMovieId" jdbcType="VARCHAR" />
+    <result column="ssgi_sluice_socket_url" property="ssgiSluiceSocketUrl" jdbcType="VARCHAR" />
+    <result column="ssgi_secret_key" property="ssgiSecretKey" jdbcType="VARCHAR" />
+    <result column="ssgi_create_time" property="ssgiCreateTime" jdbcType="TIMESTAMP" />
+    <result column="ssgiSluiceTypeName" property="ssgiSluiceTypeName" jdbcType="VARCHAR" />
+    <!--一对一-->
+    <association property="siteSluiceJzMiddDevice" javaType="com.zyjz.remotecontrol.entity.SiteSluiceJzMiddDevice">
+      <!--<id column="id" property="id" jdbcType="INTEGER" />-->
+      <result column="ssjmd_sluice_info_id" property="ssjmdSluiceInfoId" jdbcType="VARCHAR" />
+      <result column="ssjmd_sluice_gate_code" property="ssjmdSluiceGateCode" jdbcType="VARCHAR" />
+      <result column="ssjmd_sluice_height" property="ssjmdSluiceHeight" jdbcType="DECIMAL" />
+      <result column="ssjmd_open_ceiling" property="ssjmdOpenCeiling" jdbcType="DECIMAL" />
+      <result column="ssjmd_open_lower" property="ssjmdOpenLower" jdbcType="DECIMAL" />
+      <result column="ssjmd_open_zero" property="ssjmdOpenZero" jdbcType="DECIMAL" />
+      <result column="ssjmd_A_road_load" property="ssjmdARoadLoad" jdbcType="DECIMAL" />
+      <result column="ssjmd_A_road_load90" property="ssjmdARoadLoad90" jdbcType="DECIMAL" />
+      <result column="ssjmd_A_road_load110" property="ssjmdARoadLoad110" jdbcType="DECIMAL" />
+      <result column="ssjmd_A_road_load_zero" property="ssjmdARoadLoadZero" jdbcType="DECIMAL" />
+      <result column="ssjmd_B_road_load" property="ssjmdBRoadLoad" jdbcType="DECIMAL" />
+      <result column="ssjmd_B_road_load90" property="ssjmdBRoadLoad90" jdbcType="DECIMAL" />
+      <result column="ssjmd_B_road_load110" property="ssjmdBRoadLoad110" jdbcType="DECIMAL" />
+      <result column="ssjmd_B_road_load_zero" property="ssjmdBRoadLoadZero" jdbcType="DECIMAL" />
+      <result column="ssjmd_A_road_load90_warning" property="ssjmdARoadLoad90Warning" jdbcType="DECIMAL" />
+      <result column="ssjmd_B_road_load90_warning" property="ssjmdBRoadLoad90Warning" jdbcType="DECIMAL" />
+      <result column="ssjmd_A_road_load110_warning" property="ssjmdARoadLoad110Warning" jdbcType="DECIMAL" />
+      <result column="ssjmd_B_road_load110_warning" property="ssjmdBRoadLoad110Warning" jdbcType="DECIMAL" />
+      <result column="ssjmd_control_mode" property="ssjmdControlMode" jdbcType="VARCHAR" />
+      <result column="ssjmd_sluic_gate_type" property="ssjmdSluicGateType" jdbcType="VARCHAR" />
+      <result column="ssjmd_sluice_height_limit" property="ssjmdSluiceHeightLimit" jdbcType="DECIMAL" />
+      <result column="ssjmd_before_water_level" property="ssjmdBeforeWaterLevel" jdbcType="DECIMAL" />
+      <result column="ssjmd_after_water_level" property="ssjmdAfterWaterLevel" jdbcType="DECIMAL" />
+      <result column="ssjmd_sluice_instant_speed" property="ssjmdSluiceInstantSpeed" jdbcType="DECIMAL" />
+      <result column="ssjmd_sluice_instant_flow" property="ssjmdSluiceInstantFlow" jdbcType="DECIMAL" />
+      <result column="ssjmd_modify_time" property="ssjmdModifyTime" jdbcType="TIMESTAMP" />
+      <result column="ssjmd_create_time" property="ssjmdCreateTime" jdbcType="TIMESTAMP" />
+    </association>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, ssgi_sluice_gate_code, ssgi_sluice_gate_name, ssgi_sluice_info_id, ssgi_sluice_info_name,
+    ssgi_sluice_width, ssgi_sluice_height, ssgi_sluice_weight, ssgi_sluice_type_code,
+    ssgi_sluice_motor_power, ssgi_sluice_movie_id, ssgi_sluice_socket_url, ssgi_secret_key, ssgi_create_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_sluice_gate_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="findSluiceGateAndSluiceJzMiddDevice" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT ssgi.*,ssjmd.*,st.sluice_type_name as ssgiSluiceTypeName FROM site_sluice_gate_info ssgi LEFT JOIN site_sluice_type st on ssgi.ssgi_sluice_type_code = st.sluice_type_code
+    LEFT JOIN site_sluice_jz_midd_device ssjmd on ssgi.ssgi_sluice_gate_code = ssjmd.ssjmd_sluice_gate_code
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+     FROM site_sluice_gate_info
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from site_sluice_gate_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceGateInfo" >
+    insert into site_sluice_gate_info (id, ssgi_sluice_gate_code, ssgi_sluice_gate_name,
+      ssgi_sluice_info_id, ssgi_sluice_info_name, ssgi_sluice_width,
+      ssgi_sluice_height, ssgi_sluice_weight, ssgi_sluice_type_code,
+      ssgi_sluice_motor_power, ssgi_sluice_movie_id, ssgi_sluice_socket_url,
+      ssgi_secret_key, ssgi_create_time)
+    values (#{id,jdbcType=VARCHAR}, #{ssgiSluiceGateCode,jdbcType=VARCHAR}, #{ssgiSluiceGateName,jdbcType=VARCHAR},
+      #{ssgiSluiceInfoId,jdbcType=VARCHAR}, #{ssgiSluiceInfoName,jdbcType=VARCHAR}, #{ssgiSluiceWidth,jdbcType=DECIMAL},
+      #{ssgiSluiceHeight,jdbcType=DECIMAL}, #{ssgiSluiceWeight,jdbcType=DECIMAL}, #{ssgiSluiceTypeCode,jdbcType=VARCHAR},
+      #{ssgiSluiceMotorPower,jdbcType=DECIMAL}, #{ssgiSluiceMovieId,jdbcType=VARCHAR},#{ssgiSluiceSocketUrl,jdbcType=VARCHAR},
+      #{ssgiSecretKey,jdbcType=VARCHAR}, #{ssgiCreateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceGateInfo">
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    insert into site_sluice_gate_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="ssgiSluiceGateCode != null">
+        ssgi_sluice_gate_code,
+      </if>
+      <if test="ssgiSluiceGateName != null">
+        ssgi_sluice_gate_name,
+      </if>
+      <if test="ssgiSluiceInfoId != null">
+        ssgi_sluice_info_id,
+      </if>
+      <if test="ssgiSluiceInfoName != null">
+        ssgi_sluice_info_name,
+      </if>
+      <if test="ssgiSluiceWidth != null">
+        ssgi_sluice_width,
+      </if>
+      <if test="ssgiSluiceHeight != null">
+        ssgi_sluice_height,
+      </if>
+      <if test="ssgiSluiceWeight != null">
+        ssgi_sluice_weight,
+      </if>
+      <if test="ssgiSluiceTypeCode != null">
+        ssgi_sluice_type_code,
+      </if>
+      <if test="ssgiSluiceMotorPower != null">
+        ssgi_sluice_motor_power,
+      </if>
+      <if test="ssgiSluiceMovieId != null">
+        ssgi_sluice_movie_id,
+      </if>
+      <if test="ssgiSluiceSocketUrl != null">
+        ssgi_sluice_socket_url,
+      </if>
+      <if test="ssgiSecretKey != null">
+        ssgi_secret_key,
+      </if>
+      <if test="ssgiCreateTime != null">
+        ssgi_create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceGateCode != null">
+        #{ssgiSluiceGateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceGateName != null">
+        #{ssgiSluiceGateName,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceInfoId != null">
+        #{ssgiSluiceInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceInfoName != null">
+        #{ssgiSluiceInfoName,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceWidth != null">
+        #{ssgiSluiceWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="ssgiSluiceHeight != null">
+        #{ssgiSluiceHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="ssgiSluiceWeight != null">
+        #{ssgiSluiceWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="ssgiSluiceTypeCode != null">
+        #{ssgiSluiceTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceMotorPower != null">
+        #{ssgiSluiceMotorPower,jdbcType=DECIMAL},
+      </if>
+      <if test="ssgiSluiceMovieId != null">
+        #{ssgiSluiceMovieId,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceSocketUrl != null">
+        #{ssgiSluiceSocketUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSecretKey != null">
+        #{ssgiSecretKey,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiCreateTime != null">
+        #{ssgiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceGateInfo">
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    update site_sluice_gate_info
+    <set>
+      <if test="ssgiSluiceGateCode != null">
+        ssgi_sluice_gate_code = #{ssgiSluiceGateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceGateName != null">
+        ssgi_sluice_gate_name = #{ssgiSluiceGateName,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceInfoId != null">
+        ssgi_sluice_info_id = #{ssgiSluiceInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceInfoName != null">
+        ssgi_sluice_info_name = #{ssgiSluiceInfoName,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceWidth != null">
+        ssgi_sluice_width = #{ssgiSluiceWidth,jdbcType=DECIMAL},
+      </if>
+      <if test="ssgiSluiceHeight != null">
+        ssgi_sluice_height = #{ssgiSluiceHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="ssgiSluiceWeight != null">
+        ssgi_sluice_weight = #{ssgiSluiceWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="ssgiSluiceTypeCode != null">
+        ssgi_sluice_type_code = #{ssgiSluiceTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceMotorPower != null">
+        ssgi_sluice_motor_power = #{ssgiSluiceMotorPower,jdbcType=DECIMAL},
+      </if>
+      <if test="ssgiSluiceMovieId != null">
+        ssgi_sluice_movie_id = #{ssgiSluiceMovieId,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSluiceSocketUrl != null">
+        ssgi_sluice_socket_url = #{ssgiSluiceSocketUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiSecretKey != null">
+        ssgi_secret_key = #{ssgiSecretKey,jdbcType=VARCHAR},
+      </if>
+      <if test="ssgiCreateTime != null">
+        ssgi_create_time = #{ssgiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceGateInfo">
+    update site_sluice_gate_info
+    set ssgi_sluice_gate_code = #{ssgiSluiceGateCode,jdbcType=VARCHAR},
+    ssgi_sluice_gate_name = #{ssgiSluiceGateName,jdbcType=VARCHAR},
+    ssgi_sluice_info_id = #{ssgiSluiceInfoId,jdbcType=VARCHAR},
+    ssgi_sluice_info_name = #{ssgiSluiceInfoName,jdbcType=VARCHAR},
+    ssgi_sluice_width = #{ssgiSluiceWidth,jdbcType=DECIMAL},
+    ssgi_sluice_height = #{ssgiSluiceHeight,jdbcType=DECIMAL},
+    ssgi_sluice_weight = #{ssgiSluiceWeight,jdbcType=DECIMAL},
+    ssgi_sluice_type_code = #{ssgiSluiceTypeCode,jdbcType=VARCHAR},
+    ssgi_sluice_motor_power = #{ssgiSluiceMotorPower,jdbcType=DECIMAL},
+    ssgi_sluice_movie_id = #{ssgiSluiceMovieId,jdbcType=VARCHAR},
+    ssgi_sluice_socket_url = #{ssgiSluiceSocketUrl,jdbcType=VARCHAR},
+    ssgi_secret_key = #{ssgiSecretKey,jdbcType=VARCHAR},
+    ssgi_create_time = #{ssgiCreateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

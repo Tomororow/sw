@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.remotecontrol.dao.SiteSluiceJzMiddDeviceMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.remotecontrol.entity.SiteSluiceJzMiddDevice" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="ssjmd_sluice_info_id" property="ssjmdSluiceInfoId" jdbcType="VARCHAR" />
+    <result column="ssjmd_sluice_gate_code" property="ssjmdSluiceGateCode" jdbcType="VARCHAR" />
+    <result column="ssjmd_sluice_height" property="ssjmdSluiceHeight" jdbcType="DECIMAL" />
+    <result column="ssjmd_open_ceiling" property="ssjmdOpenCeiling" jdbcType="DECIMAL" />
+    <result column="ssjmd_open_lower" property="ssjmdOpenLower" jdbcType="DECIMAL" />
+    <result column="ssjmd_open_zero" property="ssjmdOpenZero" jdbcType="DECIMAL" />
+    <result column="ssjmd_A_road_load" property="ssjmdARoadLoad" jdbcType="DECIMAL" />
+    <result column="ssjmd_A_road_load90" property="ssjmdARoadLoad90" jdbcType="DECIMAL" />
+    <result column="ssjmd_A_road_load110" property="ssjmdARoadLoad110" jdbcType="DECIMAL" />
+    <result column="ssjmd_A_road_load_zero" property="ssjmdARoadLoadZero" jdbcType="DECIMAL" />
+    <result column="ssjmd_B_road_load" property="ssjmdBRoadLoad" jdbcType="DECIMAL" />
+    <result column="ssjmd_B_road_load90" property="ssjmdBRoadLoad90" jdbcType="DECIMAL" />
+    <result column="ssjmd_B_road_load110" property="ssjmdBRoadLoad110" jdbcType="DECIMAL" />
+    <result column="ssjmd_B_road_load_zero" property="ssjmdBRoadLoadZero" jdbcType="DECIMAL" />
+    <result column="ssjmd_A_road_load90_warning" property="ssjmdARoadLoad90Warning" jdbcType="DECIMAL" />
+    <result column="ssjmd_B_road_load90_warning" property="ssjmdBRoadLoad90Warning" jdbcType="DECIMAL" />
+    <result column="ssjmd_A_road_load110_warning" property="ssjmdARoadLoad110Warning" jdbcType="DECIMAL" />
+    <result column="ssjmd_B_road_load110_warning" property="ssjmdBRoadLoad110Warning" jdbcType="DECIMAL" />
+    <result column="ssjmd_control_mode" property="ssjmdControlMode" jdbcType="VARCHAR" />
+    <result column="ssjmd_sluic_gate_type" property="ssjmdSluicGateType" jdbcType="VARCHAR" />
+    <result column="ssjmd_sluice_height_limit" property="ssjmdSluiceHeightLimit" jdbcType="DECIMAL" />
+    <result column="ssjmd_before_water_level" property="ssjmdBeforeWaterLevel" jdbcType="DECIMAL" />
+    <result column="ssjmd_after_water_level" property="ssjmdAfterWaterLevel" jdbcType="DECIMAL" />
+    <result column="ssjmd_sluice_instant_speed" property="ssjmdSluiceInstantSpeed" jdbcType="DECIMAL" />
+    <result column="ssjmd_sluice_instant_flow" property="ssjmdSluiceInstantFlow" jdbcType="DECIMAL" />
+    <result column="ssjmd_modify_time" property="ssjmdModifyTime" jdbcType="TIMESTAMP" />
+    <result column="ssjmd_create_time" property="ssjmdCreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, ssjmd_sluice_info_id, ssjmd_sluice_gate_code, ssjmd_sluice_height, ssjmd_open_ceiling,
+    ssjmd_open_lower, ssjmd_open_zero, ssjmd_A_road_load, ssjmd_A_road_load90, ssjmd_A_road_load110, 
+    ssjmd_A_road_load_zero, ssjmd_B_road_load, ssjmd_B_road_load90, ssjmd_B_road_load110, 
+    ssjmd_B_road_load_zero, ssjmd_A_road_load90_warning, ssjmd_B_road_load90_warning, 
+    ssjmd_A_road_load110_warning, ssjmd_B_road_load110_warning, ssjmd_control_mode, ssjmd_sluic_gate_type, 
+    ssjmd_sluice_height_limit, ssjmd_before_water_level, ssjmd_after_water_level, ssjmd_sluice_instant_speed,
+     ssjmd_sluice_instant_flow, ssjmd_modify_time, ssjmd_create_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_sluice_jz_midd_device
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from site_sluice_jz_midd_device
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceJzMiddDevice" >
+    insert into site_sluice_jz_midd_device (id, ssjmd_sluice_info_id, ssjmd_sluice_gate_code,
+      ssjmd_sluice_height, ssjmd_open_ceiling, ssjmd_open_lower, 
+      ssjmd_open_zero, ssjmd_A_road_load, ssjmd_A_road_load90, 
+      ssjmd_A_road_load110, ssjmd_A_road_load_zero, 
+      ssjmd_B_road_load, ssjmd_B_road_load90, ssjmd_B_road_load110, 
+      ssjmd_B_road_load_zero, ssjmd_A_road_load90_warning, 
+      ssjmd_B_road_load90_warning, ssjmd_A_road_load110_warning, 
+      ssjmd_B_road_load110_warning, ssjmd_control_mode, 
+      ssjmd_sluic_gate_type, ssjmd_sluice_height_limit, ssjmd_before_water_level,
+      ssjmd_after_water_level, ssjmd_sluice_instant_speed, ssjmd_sluice_instant_flow,
+      ssjmd_modify_time, ssjmd_create_time)
+    values (#{id,jdbcType=INTEGER}, #{ssjmdSluiceInfoId,jdbcType=VARCHAR}, #{ssjmdSluiceGateCode,jdbcType=VARCHAR},
+      #{ssjmdSluiceHeight,jdbcType=DECIMAL}, #{ssjmdOpenCeiling,jdbcType=DECIMAL}, #{ssjmdOpenLower,jdbcType=DECIMAL}, 
+      #{ssjmdOpenZero,jdbcType=DECIMAL}, #{ssjmdARoadLoad,jdbcType=DECIMAL}, #{ssjmdARoadLoad90,jdbcType=DECIMAL}, 
+      #{ssjmdARoadLoad110,jdbcType=DECIMAL}, #{ssjmdARoadLoadZero,jdbcType=DECIMAL}, 
+      #{ssjmdBRoadLoad,jdbcType=DECIMAL}, #{ssjmdBRoadLoad90,jdbcType=DECIMAL}, #{ssjmdBRoadLoad110,jdbcType=DECIMAL}, 
+      #{ssjmdBRoadLoadZero,jdbcType=DECIMAL}, #{ssjmdARoadLoad90Warning,jdbcType=DECIMAL}, 
+      #{ssjmdBRoadLoad90Warning,jdbcType=DECIMAL}, #{ssjmdARoadLoad110Warning,jdbcType=DECIMAL}, 
+      #{ssjmdBRoadLoad110Warning,jdbcType=DECIMAL}, #{ssjmdControlMode,jdbcType=VARCHAR}, 
+      #{ssjmdSluicGateType,jdbcType=VARCHAR}, #{ssjmdSluiceHeightLimit,jdbcType=DECIMAL},
+       #{ssjmdBeforeWaterLevel,jdbcType=VARCHAR}, #{ssjmdAfterWaterLevel,jdbcType=DECIMAL},
+        #{ssjmdSluiceInstantSpeed,jdbcType=VARCHAR}, #{ssjmdSluiceInstantFlow,jdbcType=DECIMAL},
+      #{ssjmdModifyTime,jdbcType=TIMESTAMP}, #{ssjmdCreateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceJzMiddDevice" >
+    insert into site_sluice_jz_midd_device
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ssjmdSluiceInfoId != null" >
+        ssjmd_sluice_info_id,
+      </if>
+      <if test="ssjmdSluiceGateCode != null" >
+        ssjmd_sluice_gate_code,
+      </if>
+      <if test="ssjmdSluiceHeight != null" >
+        ssjmd_sluice_height,
+      </if>
+      <if test="ssjmdOpenCeiling != null" >
+        ssjmd_open_ceiling,
+      </if>
+      <if test="ssjmdOpenLower != null" >
+        ssjmd_open_lower,
+      </if>
+      <if test="ssjmdOpenZero != null" >
+        ssjmd_open_zero,
+      </if>
+      <if test="ssjmdARoadLoad != null" >
+        ssjmd_A_road_load,
+      </if>
+      <if test="ssjmdARoadLoad90 != null" >
+        ssjmd_A_road_load90,
+      </if>
+      <if test="ssjmdARoadLoad110 != null" >
+        ssjmd_A_road_load110,
+      </if>
+      <if test="ssjmdARoadLoadZero != null" >
+        ssjmd_A_road_load_zero,
+      </if>
+      <if test="ssjmdBRoadLoad != null" >
+        ssjmd_B_road_load,
+      </if>
+      <if test="ssjmdBRoadLoad90 != null" >
+        ssjmd_B_road_load90,
+      </if>
+      <if test="ssjmdBRoadLoad110 != null" >
+        ssjmd_B_road_load110,
+      </if>
+      <if test="ssjmdBRoadLoadZero != null" >
+        ssjmd_B_road_load_zero,
+      </if>
+      <if test="ssjmdARoadLoad90Warning != null" >
+        ssjmd_A_road_load90_warning,
+      </if>
+      <if test="ssjmdBRoadLoad90Warning != null" >
+        ssjmd_B_road_load90_warning,
+      </if>
+      <if test="ssjmdARoadLoad110Warning != null" >
+        ssjmd_A_road_load110_warning,
+      </if>
+      <if test="ssjmdBRoadLoad110Warning != null" >
+        ssjmd_B_road_load110_warning,
+      </if>
+      <if test="ssjmdControlMode != null" >
+        ssjmd_control_mode,
+      </if>
+      <if test="ssjmdSluicGateType != null" >
+        ssjmd_sluic_gate_type,
+      </if>
+      <if test="ssjmdSluiceHeightLimit != null" >
+        ssjmd_sluice_height_limit,
+      </if>
+      <if test="ssjmdBeforeWaterLevel != null" >
+        ssjmd_before_water_level,
+      </if>
+      <if test="ssjmdAfterWaterLevel != null" >
+        ssjmd_after_water_level,
+      </if>
+      <if test="ssjmdSluiceInstantSpeed != null" >
+        ssjmd_sluice_instant_speed,
+      </if>
+      <if test="ssjmdSluiceInstantFlow != null" >
+        ssjmd_sluice_instant_flow,
+      </if>
+      <if test="ssjmdModifyTime != null" >
+        ssjmd_modify_time,
+      </if>
+      <if test="ssjmdCreateTime != null" >
+        ssjmd_create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ssjmdSluiceInfoId != null" >
+        #{ssjmdSluiceInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="ssjmdSluiceGateCode != null" >
+        #{ssjmdSluiceGateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssjmdSluiceHeight != null" >
+        #{ssjmdSluiceHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdOpenCeiling != null" >
+        #{ssjmdOpenCeiling,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdOpenLower != null" >
+        #{ssjmdOpenLower,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdOpenZero != null" >
+        #{ssjmdOpenZero,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoad != null" >
+        #{ssjmdARoadLoad,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoad90 != null" >
+        #{ssjmdARoadLoad90,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoad110 != null" >
+        #{ssjmdARoadLoad110,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoadZero != null" >
+        #{ssjmdARoadLoadZero,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoad != null" >
+        #{ssjmdBRoadLoad,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoad90 != null" >
+        #{ssjmdBRoadLoad90,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoad110 != null" >
+        #{ssjmdBRoadLoad110,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoadZero != null" >
+        #{ssjmdBRoadLoadZero,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoad90Warning != null" >
+        #{ssjmdARoadLoad90Warning,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoad90Warning != null" >
+        #{ssjmdBRoadLoad90Warning,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoad110Warning != null" >
+        #{ssjmdARoadLoad110Warning,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoad110Warning != null" >
+        #{ssjmdBRoadLoad110Warning,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdControlMode != null" >
+        #{ssjmdControlMode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssjmdSluicGateType != null" >
+        #{ssjmdSluicGateType,jdbcType=VARCHAR},
+      </if>
+      <if test="ssjmdSluiceHeightLimit != null" >
+        #{ssjmdSluiceHeightLimit,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBeforeWaterLevel != null" >
+        #{ssjmdBeforeWaterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdAfterWaterLevel != null" >
+        #{ssjmdAfterWaterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdSluiceInstantSpeed != null" >
+        #{ssjmdSluiceInstantSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdSluiceInstantFlow != null" >
+        #{ssjmdSluiceInstantFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdModifyTime != null" >
+        #{ssjmdModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssjmdCreateTime != null" >
+        #{ssjmdCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceJzMiddDevice" >
+    update site_sluice_jz_midd_device
+    <set >
+      <if test="ssjmdSluiceInfoId != null" >
+        ssjmd_sluice_info_id = #{ssjmdSluiceInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="ssjmdSluiceGateCode != null" >
+        ssjmd_sluice_gate_code = #{ssjmdSluiceGateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssjmdSluiceHeight != null" >
+        ssjmd_sluice_height = #{ssjmdSluiceHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdOpenCeiling != null" >
+        ssjmd_open_ceiling = #{ssjmdOpenCeiling,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdOpenLower != null" >
+        ssjmd_open_lower = #{ssjmdOpenLower,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdOpenZero != null" >
+        ssjmd_open_zero = #{ssjmdOpenZero,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoad != null" >
+        ssjmd_A_road_load = #{ssjmdARoadLoad,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoad90 != null" >
+        ssjmd_A_road_load90 = #{ssjmdARoadLoad90,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoad110 != null" >
+        ssjmd_A_road_load110 = #{ssjmdARoadLoad110,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoadZero != null" >
+        ssjmd_A_road_load_zero = #{ssjmdARoadLoadZero,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoad != null" >
+        ssjmd_B_road_load = #{ssjmdBRoadLoad,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoad90 != null" >
+        ssjmd_B_road_load90 = #{ssjmdBRoadLoad90,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoad110 != null" >
+        ssjmd_B_road_load110 = #{ssjmdBRoadLoad110,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoadZero != null" >
+        ssjmd_B_road_load_zero = #{ssjmdBRoadLoadZero,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoad90Warning != null" >
+        ssjmd_A_road_load90_warning = #{ssjmdARoadLoad90Warning,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoad90Warning != null" >
+        ssjmd_B_road_load90_warning = #{ssjmdBRoadLoad90Warning,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdARoadLoad110Warning != null" >
+        ssjmd_A_road_load110_warning = #{ssjmdARoadLoad110Warning,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBRoadLoad110Warning != null" >
+        ssjmd_B_road_load110_warning = #{ssjmdBRoadLoad110Warning,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdControlMode != null" >
+        ssjmd_control_mode = #{ssjmdControlMode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssjmdSluicGateType != null" >
+        ssjmd_sluic_gate_type = #{ssjmdSluicGateType,jdbcType=VARCHAR},
+      </if>
+      <if test="ssjmdSluiceHeightLimit != null" >
+        ssjmd_sluice_height_limit = #{ssjmdSluiceHeightLimit,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdBeforeWaterLevel != null" >
+        ssjmd_before_water_level = #{ssjmdBeforeWaterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdAfterWaterLevel != null" >
+        ssjmd_after_water_level = #{ssjmdAfterWaterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdSluiceInstantSpeed != null" >
+        ssjmd_sluice_instant_speed = #{ssjmdSluiceInstantSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdSluiceInstantFlow != null" >
+        ssjmd_sluice_instant_flow = #{ssjmdSluiceInstantFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="ssjmdModifyTime != null" >
+        ssjmd_modify_time = #{ssjmdModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssjmdCreateTime != null" >
+        ssjmd_create_time = #{ssjmdCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceJzMiddDevice" >
+    update site_sluice_jz_midd_device
+    set ssjmd_sluice_info_id = #{ssjmdSluiceInfoId,jdbcType=VARCHAR},
+      ssjmd_sluice_gate_code = #{ssjmdSluiceGateCode,jdbcType=VARCHAR},
+      ssjmd_sluice_height = #{ssjmdSluiceHeight,jdbcType=DECIMAL},
+      ssjmd_open_ceiling = #{ssjmdOpenCeiling,jdbcType=DECIMAL},
+      ssjmd_open_lower = #{ssjmdOpenLower,jdbcType=DECIMAL},
+      ssjmd_open_zero = #{ssjmdOpenZero,jdbcType=DECIMAL},
+      ssjmd_A_road_load = #{ssjmdARoadLoad,jdbcType=DECIMAL},
+      ssjmd_A_road_load90 = #{ssjmdARoadLoad90,jdbcType=DECIMAL},
+      ssjmd_A_road_load110 = #{ssjmdARoadLoad110,jdbcType=DECIMAL},
+      ssjmd_A_road_load_zero = #{ssjmdARoadLoadZero,jdbcType=DECIMAL},
+      ssjmd_B_road_load = #{ssjmdBRoadLoad,jdbcType=DECIMAL},
+      ssjmd_B_road_load90 = #{ssjmdBRoadLoad90,jdbcType=DECIMAL},
+      ssjmd_B_road_load110 = #{ssjmdBRoadLoad110,jdbcType=DECIMAL},
+      ssjmd_B_road_load_zero = #{ssjmdBRoadLoadZero,jdbcType=DECIMAL},
+      ssjmd_A_road_load90_warning = #{ssjmdARoadLoad90Warning,jdbcType=DECIMAL},
+      ssjmd_B_road_load90_warning = #{ssjmdBRoadLoad90Warning,jdbcType=DECIMAL},
+      ssjmd_A_road_load110_warning = #{ssjmdARoadLoad110Warning,jdbcType=DECIMAL},
+      ssjmd_B_road_load110_warning = #{ssjmdBRoadLoad110Warning,jdbcType=DECIMAL},
+      ssjmd_control_mode = #{ssjmdControlMode,jdbcType=VARCHAR},
+      ssjmd_sluic_gate_type = #{ssjmdSluicGateType,jdbcType=VARCHAR},
+      ssjmd_sluice_height_limit = #{ssjmdSluiceHeightLimit,jdbcType=DECIMAL},
+      ssjmd_before_water_level = #{ssjmdBeforeWaterLevel,jdbcType=DECIMAL},
+      ssjmd_after_water_level = #{ssjmdAfterWaterLevel,jdbcType=DECIMAL},
+      ssjmd_sluice_instant_speed = #{ssjmdSluiceInstantSpeed,jdbcType=DECIMAL},
+      ssjmd_sluice_instant_flow = #{ssjmdSluiceInstantFlow,jdbcType=DECIMAL},
+      ssjmd_modify_time = #{ssjmdModifyTime,jdbcType=TIMESTAMP},
+      ssjmd_create_time = #{ssjmdCreateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

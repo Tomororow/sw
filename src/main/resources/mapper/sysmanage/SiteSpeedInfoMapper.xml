@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.SiteSpeedInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.SiteSpeedInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ssi_canal_code" property="ssiCanalCode" jdbcType="VARCHAR" />
+    <result column="ssi_code" property="ssiCode" jdbcType="VARCHAR" />
+    <result column="ssi_name" property="ssiName" jdbcType="VARCHAR" />
+    <result column="ssi_device_no" property="ssiDeviceNo" jdbcType="VARCHAR" />
+    <result column="ssi_addr" property="ssiAddr" jdbcType="VARCHAR" />
+    <result column="ssi_build_time" property="ssiBuildTime" jdbcType="TIMESTAMP" />
+    <result column="ssi_sim_number" property="ssiSimNumber" jdbcType="VARCHAR" />
+    <result column="ssi_simoperator" property="ssiSimoperator" jdbcType="VARCHAR" />
+    <result column="ssi_ip_port" property="ssiIpPort" jdbcType="VARCHAR" />
+    <result column="ssi_longitude" property="ssiLongitude" jdbcType="DECIMAL" />
+    <result column="ssi_latitude" property="ssiLatitude" jdbcType="DECIMAL" />
+    <result column="ssi_hight" property="ssiHight" jdbcType="DECIMAL" />
+    <result column="ssi_photo_before" property="ssiPhotoBefore" jdbcType="VARCHAR" />
+    <result column="ssi_photo_after" property="ssiPhotoAfter" jdbcType="VARCHAR" />
+    <result column="ssi_device_code" property="ssiDeviceCode" jdbcType="INTEGER" />
+    <result column="system_code" property="systemCode" jdbcType="INTEGER" />
+    <result column="ssi_create_time" property="ssiCreateTime" jdbcType="TIMESTAMP" />
+    <result column="ssi_edit_time" property="ssiEditTime" jdbcType="TIMESTAMP" />
+    <result column="ssi_remark" property="ssiRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    id, ssi_canal_code, ssi_code, ssi_name, ssi_device_no, ssi_addr, ssi_build_time, 
+    ssi_sim_number, ssi_simoperator, ssi_ip_port, ssi_longitude, ssi_latitude, ssi_hight, 
+    ssi_photo_before, ssi_photo_after, ssi_device_code, system_code, ssi_create_time, 
+    ssi_edit_time, ssi_remark
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_speed_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findSiteSpeedInfoByCanalCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select 
+    <include refid="Base_Column_List" />
+    from site_speed_info
+    where ssi_canal_code = #{ssiCanalCode,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from site_speed_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.SiteSpeedInfo" >
+    insert into site_speed_info (id, ssi_canal_code, ssi_code, 
+      ssi_name, ssi_device_no, ssi_addr, 
+      ssi_build_time, ssi_sim_number, ssi_simoperator, 
+      ssi_ip_port, ssi_longitude, ssi_latitude, 
+      ssi_hight, ssi_photo_before, ssi_photo_after, 
+      ssi_device_code, system_code, ssi_create_time, 
+      ssi_edit_time, ssi_remark)
+    values (#{id,jdbcType=VARCHAR}, #{ssiCanalCode,jdbcType=VARCHAR}, #{ssiCode,jdbcType=VARCHAR}, 
+      #{ssiName,jdbcType=VARCHAR}, #{ssiDeviceNo,jdbcType=VARCHAR}, #{ssiAddr,jdbcType=VARCHAR}, 
+      #{ssiBuildTime,jdbcType=TIMESTAMP}, #{ssiSimNumber,jdbcType=VARCHAR}, #{ssiSimoperator,jdbcType=VARCHAR}, 
+      #{ssiIpPort,jdbcType=VARCHAR}, #{ssiLongitude,jdbcType=DECIMAL}, #{ssiLatitude,jdbcType=DECIMAL}, 
+      #{ssiHight,jdbcType=DECIMAL}, #{ssiPhotoBefore,jdbcType=VARCHAR}, #{ssiPhotoAfter,jdbcType=VARCHAR}, 
+      #{ssiDeviceCode,jdbcType=INTEGER}, #{systemCode,jdbcType=INTEGER}, #{ssiCreateTime,jdbcType=TIMESTAMP}, 
+      #{ssiEditTime,jdbcType=TIMESTAMP}, #{ssiRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.SiteSpeedInfo" >
+  
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+    insert into site_speed_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ssiCanalCode != null" >
+        ssi_canal_code,
+      </if>
+      <if test="ssiCode != null" >
+        ssi_code,
+      </if>
+      <if test="ssiName != null" >
+        ssi_name,
+      </if>
+      <if test="ssiDeviceNo != null" >
+        ssi_device_no,
+      </if>
+      <if test="ssiAddr != null" >
+        ssi_addr,
+      </if>
+      <if test="ssiBuildTime != null" >
+        ssi_build_time,
+      </if>
+      <if test="ssiSimNumber != null" >
+        ssi_sim_number,
+      </if>
+      <if test="ssiSimoperator != null" >
+        ssi_simoperator,
+      </if>
+      <if test="ssiIpPort != null" >
+        ssi_ip_port,
+      </if>
+      <if test="ssiLongitude != null" >
+        ssi_longitude,
+      </if>
+      <if test="ssiLatitude != null" >
+        ssi_latitude,
+      </if>
+      <if test="ssiHight != null" >
+        ssi_hight,
+      </if>
+      <if test="ssiPhotoBefore != null" >
+        ssi_photo_before,
+      </if>
+      <if test="ssiPhotoAfter != null" >
+        ssi_photo_after,
+      </if>
+      <if test="ssiDeviceCode != null" >
+        ssi_device_code,
+      </if>
+      <if test="systemCode != null" >
+        system_code,
+      </if>
+      <if test="ssiCreateTime != null" >
+        ssi_create_time,
+      </if>
+      <if test="ssiEditTime != null" >
+        ssi_edit_time,
+      </if>
+      <if test="ssiRemark != null" >
+        ssi_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiCanalCode != null" >
+        #{ssiCanalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiCode != null" >
+        #{ssiCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiName != null" >
+        #{ssiName,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiDeviceNo != null" >
+        #{ssiDeviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiAddr != null" >
+        #{ssiAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiBuildTime != null" >
+        #{ssiBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiSimNumber != null" >
+        #{ssiSimNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiSimoperator != null" >
+        #{ssiSimoperator,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiIpPort != null" >
+        #{ssiIpPort,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiLongitude != null" >
+        #{ssiLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="ssiLatitude != null" >
+        #{ssiLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="ssiHight != null" >
+        #{ssiHight,jdbcType=DECIMAL},
+      </if>
+      <if test="ssiPhotoBefore != null" >
+        #{ssiPhotoBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiPhotoAfter != null" >
+        #{ssiPhotoAfter,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiDeviceCode != null" >
+        #{ssiDeviceCode,jdbcType=INTEGER},
+      </if>
+      <if test="systemCode != null" >
+        #{systemCode,jdbcType=INTEGER},
+      </if>
+      <if test="ssiCreateTime != null" >
+        #{ssiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiEditTime != null" >
+        #{ssiEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiRemark != null" >
+        #{ssiRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.SiteSpeedInfo" >
+    update site_speed_info
+    <set >
+      <if test="ssiCanalCode != null" >
+        ssi_canal_code = #{ssiCanalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiCode != null" >
+        ssi_code = #{ssiCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiName != null" >
+        ssi_name = #{ssiName,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiDeviceNo != null" >
+        ssi_device_no = #{ssiDeviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiAddr != null" >
+        ssi_addr = #{ssiAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiBuildTime != null" >
+        ssi_build_time = #{ssiBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiSimNumber != null" >
+        ssi_sim_number = #{ssiSimNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiSimoperator != null" >
+        ssi_simoperator = #{ssiSimoperator,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiIpPort != null" >
+        ssi_ip_port = #{ssiIpPort,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiLongitude != null" >
+        ssi_longitude = #{ssiLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="ssiLatitude != null" >
+        ssi_latitude = #{ssiLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="ssiHight != null" >
+        ssi_hight = #{ssiHight,jdbcType=DECIMAL},
+      </if>
+      <if test="ssiPhotoBefore != null" >
+        ssi_photo_before = #{ssiPhotoBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiPhotoAfter != null" >
+        ssi_photo_after = #{ssiPhotoAfter,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiDeviceCode != null" >
+        ssi_device_code = #{ssiDeviceCode,jdbcType=INTEGER},
+      </if>
+      <if test="systemCode != null" >
+        system_code = #{systemCode,jdbcType=INTEGER},
+      </if>
+      <if test="ssiCreateTime != null" >
+        ssi_create_time = #{ssiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiEditTime != null" >
+        ssi_edit_time = #{ssiEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiRemark != null" >
+        ssi_remark = #{ssiRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.SiteSpeedInfo" >
+    update site_speed_info
+    set ssi_canal_code = #{ssiCanalCode,jdbcType=VARCHAR},
+      ssi_code = #{ssiCode,jdbcType=VARCHAR},
+      ssi_name = #{ssiName,jdbcType=VARCHAR},
+      ssi_device_no = #{ssiDeviceNo,jdbcType=VARCHAR},
+      ssi_addr = #{ssiAddr,jdbcType=VARCHAR},
+      ssi_build_time = #{ssiBuildTime,jdbcType=TIMESTAMP},
+      ssi_sim_number = #{ssiSimNumber,jdbcType=VARCHAR},
+      ssi_simoperator = #{ssiSimoperator,jdbcType=VARCHAR},
+      ssi_ip_port = #{ssiIpPort,jdbcType=VARCHAR},
+      ssi_longitude = #{ssiLongitude,jdbcType=DECIMAL},
+      ssi_latitude = #{ssiLatitude,jdbcType=DECIMAL},
+      ssi_hight = #{ssiHight,jdbcType=DECIMAL},
+      ssi_photo_before = #{ssiPhotoBefore,jdbcType=VARCHAR},
+      ssi_photo_after = #{ssiPhotoAfter,jdbcType=VARCHAR},
+      ssi_device_code = #{ssiDeviceCode,jdbcType=INTEGER},
+      system_code = #{systemCode,jdbcType=INTEGER},
+      ssi_create_time = #{ssiCreateTime,jdbcType=TIMESTAMP},
+      ssi_edit_time = #{ssiEditTime,jdbcType=TIMESTAMP},
+      ssi_remark = #{ssiRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

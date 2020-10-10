@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.TenFlowFrequencyMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.plan.entity.TenFlowFrequency" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="rivers_code" property="riversCode" jdbcType="VARCHAR" />
+    <result column="rivers_name" property="riversName" jdbcType="VARCHAR" />
+    <result column="current_year" property="currentYear" jdbcType="INTEGER" />
+    <result column="start_month" property="startMonth" jdbcType="INTEGER" />
+    <result column="start_day" property="startDay" jdbcType="INTEGER" />
+    <result column="end_month" property="endMonth" jdbcType="INTEGER" />
+    <result column="end_day" property="endDay" jdbcType="INTEGER" />
+    <result column="ten_name" property="tenName" jdbcType="VARCHAR" />
+    <result column="ten_flow" property="tenFlow" jdbcType="DECIMAL" />
+    <result column="no" property="no" jdbcType="INTEGER" />
+    <result column="descending_arrangement" property="descendingArrangement" jdbcType="DECIMAL" />
+    <result column="frequency" property="frequency" jdbcType="DECIMAL" />
+    <result column="contrast_year" property="contrastYear" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_people" property="createPeople" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    id, rivers_code, rivers_name, current_year, start_month, start_day, end_month, end_day, 
+    ten_name, ten_flow, no, descending_arrangement, frequency, contrast_year, create_time, 
+    create_people, remarks
+  </sql>
+ 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ten_flow_frequency
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findTenFlowFrequencyByDate" resultMap="BaseResultMap" parameterType="com.zyjz.plan.entity.TenFlowFrequency" >
+    select 
+    <include refid="Base_Column_List" />
+    from ten_flow_frequency
+    where start_month = #{startMonth,jdbcType=INTEGER}
+    and start_day = #{startDay,jdbcType=INTEGER}
+    and end_month = #{endMonth,jdbcType=INTEGER}
+    and end_day = #{endDay,jdbcType=INTEGER}
+    order by current_year
+  </select>
+  
+  <select id="findTenFlowFrequencyByDateAndRiversCode" resultMap="BaseResultMap" parameterType="com.zyjz.plan.entity.TenFlowFrequency">
+    select 
+    *
+    from ten_flow_frequency
+    where 1=1 
+    and start_month = #{startMonth,jdbcType=INTEGER}
+    and start_day = #{startDay,jdbcType=INTEGER}
+    and end_month = #{endMonth,jdbcType=INTEGER}
+    and end_day = #{endDay,jdbcType=INTEGER}
+    and rivers_code = #{riversCode,jdbcType=VARCHAR}
+    order by current_year
+  </select>
+  
+  <select id="findMsgByCurrentYear" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select 
+    *
+    from ten_flow_frequency
+    where 
+    and current_year = #{currentYear,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findContrastYearByFlowAndRiversCode" resultMap="BaseResultMap" >
+    select 
+    *
+    from ten_flow_frequency
+    where 
+    ten_flow = #{tenFlow,jdbcType=DECIMAL}
+    and start_month = #{startMonth,jdbcType=INTEGER}
+    and start_day = #{startDay,jdbcType=INTEGER}
+    and end_month = #{endMonth,jdbcType=INTEGER}
+    and end_day = #{endDay,jdbcType=INTEGER}
+    and rivers_code = #{riversCode,jdbcType=VARCHAR}
+    order by current_year
+  </select>
+  
+  <select id="findTenFlowFrequencysByRiversCodeAndMonthAndDay" resultMap="BaseResultMap" >
+    select 
+    *
+    from ten_flow_frequency
+    where 
+    rivers_code = #{riversCode,jdbcType=VARCHAR}
+    and start_month = #{startMonth,jdbcType=INTEGER}
+    and start_day = #{startDay,jdbcType=INTEGER}
+    order by current_year
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ten_flow_frequency
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.plan.entity.TenFlowFrequency" >
+    insert into ten_flow_frequency (id, rivers_code, rivers_name, 
+      current_year, start_month, start_day, 
+      end_month, end_day, ten_name, 
+      ten_flow, no, descending_arrangement, 
+      frequency, contrast_year, create_time, 
+      create_people, remarks)
+    values (#{id,jdbcType=VARCHAR}, #{riversCode,jdbcType=VARCHAR}, #{riversName,jdbcType=VARCHAR}, 
+      #{currentYear,jdbcType=INTEGER}, #{startMonth,jdbcType=INTEGER}, #{startDay,jdbcType=INTEGER}, 
+      #{endMonth,jdbcType=INTEGER}, #{endDay,jdbcType=INTEGER}, #{tenName,jdbcType=VARCHAR}, 
+      #{tenFlow,jdbcType=DECIMAL}, #{no,jdbcType=INTEGER}, #{descendingArrangement,jdbcType=DECIMAL}, 
+      #{frequency,jdbcType=DECIMAL}, #{contrastYear,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createPeople,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.plan.entity.TenFlowFrequency" >
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+  
+    insert into ten_flow_frequency
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="riversCode != null" >
+        rivers_code,
+      </if>
+      <if test="riversName != null" >
+        rivers_name,
+      </if>
+      <if test="currentYear != null" >
+        current_year,
+      </if>
+      <if test="startMonth != null" >
+        start_month,
+      </if>
+      <if test="startDay != null" >
+        start_day,
+      </if>
+      <if test="endMonth != null" >
+        end_month,
+      </if>
+      <if test="endDay != null" >
+        end_day,
+      </if>
+      <if test="tenName != null" >
+        ten_name,
+      </if>
+      <if test="tenFlow != null" >
+        ten_flow,
+      </if>
+      <if test="no != null" >
+        no,
+      </if>
+      <if test="descendingArrangement != null" >
+        descending_arrangement,
+      </if>
+      <if test="frequency != null" >
+        frequency,
+      </if>
+      <if test="contrastYear != null" >
+        contrast_year,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPeople != null" >
+        create_people,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="riversCode != null" >
+        #{riversCode,jdbcType=VARCHAR},
+      </if>
+      <if test="riversName != null" >
+        #{riversName,jdbcType=VARCHAR},
+      </if>
+      <if test="currentYear != null" >
+        #{currentYear,jdbcType=INTEGER},
+      </if>
+      <if test="startMonth != null" >
+        #{startMonth,jdbcType=INTEGER},
+      </if>
+      <if test="startDay != null" >
+        #{startDay,jdbcType=INTEGER},
+      </if>
+      <if test="endMonth != null" >
+        #{endMonth,jdbcType=INTEGER},
+      </if>
+      <if test="endDay != null" >
+        #{endDay,jdbcType=INTEGER},
+      </if>
+      <if test="tenName != null" >
+        #{tenName,jdbcType=VARCHAR},
+      </if>
+      <if test="tenFlow != null" >
+        #{tenFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="no != null" >
+        #{no,jdbcType=INTEGER},
+      </if>
+      <if test="descendingArrangement != null" >
+        #{descendingArrangement,jdbcType=DECIMAL},
+      </if>
+      <if test="frequency != null" >
+        #{frequency,jdbcType=DECIMAL},
+      </if>
+      <if test="contrastYear != null" >
+        #{contrastYear,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPeople != null" >
+        #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.TenFlowFrequency" >
+    update ten_flow_frequency
+    <set >
+      <if test="riversCode != null" >
+        rivers_code = #{riversCode,jdbcType=VARCHAR},
+      </if>
+      <if test="riversName != null" >
+        rivers_name = #{riversName,jdbcType=VARCHAR},
+      </if>
+      <if test="currentYear != null" >
+        current_year = #{currentYear,jdbcType=INTEGER},
+      </if>
+      <if test="startMonth != null" >
+        start_month = #{startMonth,jdbcType=INTEGER},
+      </if>
+      <if test="startDay != null" >
+        start_day = #{startDay,jdbcType=INTEGER},
+      </if>
+      <if test="endMonth != null" >
+        end_month = #{endMonth,jdbcType=INTEGER},
+      </if>
+      <if test="endDay != null" >
+        end_day = #{endDay,jdbcType=INTEGER},
+      </if>
+      <if test="tenName != null" >
+        ten_name = #{tenName,jdbcType=VARCHAR},
+      </if>
+      <if test="tenFlow != null" >
+        ten_flow = #{tenFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="no != null" >
+        no = #{no,jdbcType=INTEGER},
+      </if>
+      <if test="descendingArrangement != null" >
+        descending_arrangement = #{descendingArrangement,jdbcType=DECIMAL},
+      </if>
+      <if test="frequency != null" >
+        frequency = #{frequency,jdbcType=DECIMAL},
+      </if>
+      <if test="contrastYear != null" >
+        contrast_year = #{contrastYear,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPeople != null" >
+        create_people = #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.plan.entity.TenFlowFrequency" >
+    update ten_flow_frequency
+    set rivers_code = #{riversCode,jdbcType=VARCHAR},
+      rivers_name = #{riversName,jdbcType=VARCHAR},
+      current_year = #{currentYear,jdbcType=INTEGER},
+      start_month = #{startMonth,jdbcType=INTEGER},
+      start_day = #{startDay,jdbcType=INTEGER},
+      end_month = #{endMonth,jdbcType=INTEGER},
+      end_day = #{endDay,jdbcType=INTEGER},
+      ten_name = #{tenName,jdbcType=VARCHAR},
+      ten_flow = #{tenFlow,jdbcType=DECIMAL},
+      no = #{no,jdbcType=INTEGER},
+      descending_arrangement = #{descendingArrangement,jdbcType=DECIMAL},
+      frequency = #{frequency,jdbcType=DECIMAL},
+      contrast_year = #{contrastYear,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_people = #{createPeople,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.CalCanalLengthCalssifyMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.CalCanalLengthCalssify" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="canal_id" property="canalId" jdbcType="VARCHAR" />
+    <result column="high_standard_one" property="highStandardOne" jdbcType="DECIMAL" />
+    <result column="high_standard_two" property="highStandardTwo" jdbcType="DECIMAL" />
+    <result column="high_standard_three" property="highStandardThree" jdbcType="DECIMAL" />
+    <result column="dry_masonry" property="dryMasonry" jdbcType="DECIMAL" />
+    <result column="earth_canal" property="earthCanal" jdbcType="DECIMAL" />
+    <result column="other" property="other" jdbcType="DECIMAL" />
+    <result column="cclc_remark" property="cclcRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, canal_id, high_standard_one, high_standard_two, high_standard_three, dry_masonry, 
+    earth_canal, other, cclc_remark
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_length_calssify
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+   <select id="findByCanlId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_length_calssify
+    where canal_id = #{canalId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cal_canal_length_calssify
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+ 
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.CalCanalLengthCalssify" >
+    insert into cal_canal_length_calssify (id, canal_id, high_standard_one, 
+      high_standard_two, high_standard_three, dry_masonry, 
+      earth_canal, other, cclc_remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{canalId,jdbcType=VARCHAR}, #{highStandardOne,jdbcType=DECIMAL}, 
+      #{highStandardTwo,jdbcType=DECIMAL}, #{highStandardThree,jdbcType=DECIMAL}, #{dryMasonry,jdbcType=DECIMAL}, 
+      #{earthCanal,jdbcType=DECIMAL}, #{other,jdbcType=DECIMAL}, #{cclcRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.CalCanalLengthCalssify" >
+  <selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+  
+    insert into cal_canal_length_calssify
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="canalId != null" >
+        canal_id,
+      </if>
+      <if test="highStandardOne != null" >
+        high_standard_one,
+      </if>
+      <if test="highStandardTwo != null" >
+        high_standard_two,
+      </if>
+      <if test="highStandardThree != null" >
+        high_standard_three,
+      </if>
+      <if test="dryMasonry != null" >
+        dry_masonry,
+      </if>
+      <if test="earthCanal != null" >
+        earth_canal,
+      </if>
+      <if test="other != null" >
+        other,
+      </if>
+      <if test="cclcRemark != null" >
+        cclc_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="canalId != null" >
+        #{canalId,jdbcType=VARCHAR},
+      </if>
+      <if test="highStandardOne != null" >
+        #{highStandardOne,jdbcType=DECIMAL},
+      </if>
+      <if test="highStandardTwo != null" >
+        #{highStandardTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="highStandardThree != null" >
+        #{highStandardThree,jdbcType=DECIMAL},
+      </if>
+      <if test="dryMasonry != null" >
+        #{dryMasonry,jdbcType=DECIMAL},
+      </if>
+      <if test="earthCanal != null" >
+        #{earthCanal,jdbcType=DECIMAL},
+      </if>
+      <if test="other != null" >
+        #{other,jdbcType=DECIMAL},
+      </if>
+      <if test="cclcRemark != null" >
+        #{cclcRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.CalCanalLengthCalssify" >
+    update cal_canal_length_calssify
+    <set >
+      <if test="canalId != null" >
+        canal_id = #{canalId,jdbcType=VARCHAR},
+      </if>
+      <if test="highStandardOne != null" >
+        high_standard_one = #{highStandardOne,jdbcType=DECIMAL},
+      </if>
+      <if test="highStandardTwo != null" >
+        high_standard_two = #{highStandardTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="highStandardThree != null" >
+        high_standard_three = #{highStandardThree,jdbcType=DECIMAL},
+      </if>
+      <if test="dryMasonry != null" >
+        dry_masonry = #{dryMasonry,jdbcType=DECIMAL},
+      </if>
+      <if test="earthCanal != null" >
+        earth_canal = #{earthCanal,jdbcType=DECIMAL},
+      </if>
+      <if test="other != null" >
+        other = #{other,jdbcType=DECIMAL},
+      </if>
+      <if test="cclcRemark != null" >
+        cclc_remark = #{cclcRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.CalCanalLengthCalssify" >
+    update cal_canal_length_calssify
+    set canal_id = #{canalId,jdbcType=VARCHAR},
+      high_standard_one = #{highStandardOne,jdbcType=DECIMAL},
+      high_standard_two = #{highStandardTwo,jdbcType=DECIMAL},
+      high_standard_three = #{highStandardThree,jdbcType=DECIMAL},
+      dry_masonry = #{dryMasonry,jdbcType=DECIMAL},
+      earth_canal = #{earthCanal,jdbcType=DECIMAL},
+      other = #{other,jdbcType=DECIMAL},
+      cclc_remark = #{cclcRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

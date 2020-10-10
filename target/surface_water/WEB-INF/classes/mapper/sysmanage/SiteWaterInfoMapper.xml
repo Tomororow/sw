@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.SiteWaterInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.SiteWaterInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="swi_canal_code" property="swiCanalCode" jdbcType="VARCHAR" />
+    <result column="sitetype_code" property="sitetypeCode" jdbcType="VARCHAR" />
+    <result column="device_water_code" property="deviceWaterCode" jdbcType="VARCHAR" />
+    <result column="device_water_name" property="deviceWaterName" jdbcType="VARCHAR" />
+    <result column="swi_device_no" property="swiDeviceNo" jdbcType="VARCHAR" />
+    <result column="swi_addr" property="swiAddr" jdbcType="VARCHAR" />
+    <result column="swi_build_time" property="swiBuildTime" jdbcType="TIMESTAMP" />
+    <result column="swi_simcard" property="swiSimcard" jdbcType="VARCHAR" />
+    <result column="swi_simoperator" property="swiSimoperator" jdbcType="VARCHAR" />
+    <result column="swi_ip_port" property="swiIpPort" jdbcType="VARCHAR" />
+    <result column="swi_longitude" property="swiLongitude" jdbcType="DECIMAL" />
+    <result column="swi_latitude" property="swiLatitude" jdbcType="DECIMAL" />
+    <result column="swi_height" property="swiHeight" jdbcType="DECIMAL" />
+    <result column="site_depth" property="siteDepth" jdbcType="DECIMAL" />
+    <result column="site_radius" property="siteRadius" jdbcType="DECIMAL" />
+    <result column="site_canal_bottom_lenth" property="siteCanalBottomLenth" jdbcType="DECIMAL" />
+    <result column="site_canal_bottom_u_height" property="siteCanalBottomUHeight" jdbcType="DECIMAL" />
+    <result column="site_canal_wellpaper_angle" property="siteCanalWellpaperAngle" jdbcType="DECIMAL" />
+    <result column="site_canal_bottom_u_r" property="siteCanalBottomUR" jdbcType="DECIMAL" />
+    <result column="site_canal_bottom_height" property="siteCanalBottomHeight" jdbcType="DECIMAL" />
+    <result column="fracture_appearance_code" property="fractureAppearanceCode" jdbcType="VARCHAR" />
+    <result column="hydraulic_slope" property="hydraulicSlope" jdbcType="DECIMAL" />
+    <result column="rounghness" property="rounghness" jdbcType="DECIMAL" />
+    <result column="ratio" property="ratio" jdbcType="DECIMAL" />
+    <result column="flow_function_code" property="flowFunctionCode" jdbcType="VARCHAR" />
+    
+    <result column="swi_devicemodel_code" property="swiDevicemodelCode" jdbcType="INTEGER" />
+    <result column="device_height" property="deviceHeight" jdbcType="DECIMAL" />
+    <result column="swi_photo_before" property="swiPhotoBefore" jdbcType="VARCHAR" />
+    <result column="swi_photo_after" property="swiPhotoAfter" jdbcType="VARCHAR" />
+    <result column="system_code" property="systemCode" jdbcType="INTEGER" />
+    <result column="swi_create_time" property="swiCreateTime" jdbcType="TIMESTAMP" />
+    <result column="swi_edit_time" property="swiEditTime" jdbcType="TIMESTAMP" />
+    <result column="swi_remark" property="swiRemark" jdbcType="VARCHAR" />
+     <result column="swi_equip_state" property="swiEquipState" jdbcType="INTEGER" />
+      <result column="tier_num" property="tierNum" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+     id, swi_canal_code, sitetype_code, device_water_code, device_water_name, swi_device_no, 
+    swi_addr, swi_build_time, swi_simcard, swi_simoperator, swi_ip_port, swi_longitude, 
+    swi_latitude, swi_height, site_depth, site_radius, site_canal_bottom_lenth, site_canal_bottom_u_height, 
+    site_canal_wellpaper_angle, site_canal_bottom_u_r, site_canal_bottom_height, fracture_appearance_code, 
+    hydraulic_slope,rounghness,ratio,flow_function_code,swi_devicemodel_code, device_height, swi_photo_before, 
+    swi_photo_after, system_code, swi_create_time, swi_edit_time, swi_remark, tier_num,
+    swi_equip_state
+  </sql>
+ 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_water_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 返回List<SiteWaterInfo> -->
+  <select id="findSiteWaterByCanalCodes" resultMap="BaseResultMap" parameterType="java.util.List">
+    select 
+    <include refid="Base_Column_List" />
+    from site_water_info
+    where swi_canal_code in 
+    <foreach collection="list" index="index" item="swiCanalCode" open="(" separator="," close=")">  
+        #{swiCanalCode}  
+    </foreach>
+  </select>
+  
+  <!-- 返回List<SiteWaterInfo> -->
+  <select id="findSiteWaterByCanalCodesJoin" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select distinct
+	a.id, a.swi_canal_code, a.sitetype_code, a.device_water_code, a.device_water_name, a.swi_device_no, 
+    a.swi_addr, a.swi_build_time, a.swi_simcard, a.swi_simoperator, a.swi_ip_port, a.swi_longitude, 
+    a.swi_latitude, a.swi_height, a.site_depth, a.site_radius, a.site_canal_bottom_lenth, a.site_canal_bottom_u_height, 
+    a.site_canal_wellpaper_angle, a.site_canal_bottom_u_r, a.site_canal_bottom_height, a.fracture_appearance_code, 
+    a.hydraulic_slope,a.rounghness,a.ratio,a.flow_function_code,a.swi_devicemodel_code, a.device_height, a.swi_photo_before, 
+    a.swi_photo_after, a.system_code, a.swi_create_time, a.swi_edit_time, a.swi_remark, a.tier_num,
+    a.swi_equip_state
+    from site_water_info a
+    inner join site_middle_canal b
+    on a.device_water_code = b.site_water_code
+    where b.canal_code = #{swiCanalCode}
+  </select>
+  
+    <!-- 返回List<SiteWaterInfo> -->
+  <select id="findSiteWaterByCanalCodeJoinCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(*)
+    from site_water_info a
+    inner join site_middle_canal b
+    on a.device_water_code = b.site_water_code
+    where b.canal_code = #{swiCanalCode}
+  </select>
+  
+  <!-- 返回List<SiteWaterInfo> -->
+  <select id="findSiteWaterCount" resultType="java.lang.Integer" parameterType="java.util.List">
+    select count(*)
+    from site_water_info
+    where swi_canal_code in 
+    <foreach collection="list" index="index" item="swiCanalCode" open="(" separator="," close=")">  
+        #{swiCanalCode}  
+    </foreach>
+  </select>
+  
+  <!-- 返回List<String> -->
+   <select id="findSiteWaterByCanalString" resultType="java.lang.String" parameterType="java.lang.String">
+    select device_water_code from site_water_info where swi_canal_code in 
+    <foreach collection="list" index="index" item="swiCanalCode" open="(" separator="," close=")">  
+        #{swiCanalCode}  
+    </foreach>
+  </select>
+  
+	<!--   根据水位站名称查询 -->
+	<select id="selectName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		 select 
+    <include refid="Base_Column_List" />
+    from site_water_info
+    where device_water_name = #{deviceWaterName,jdbcType=VARCHAR} limit 0,1
+	</select>
+
+  <select id="findSiteWaterInfoByCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select 
+    <include refid="Base_Column_List" />
+    from site_water_info
+    where device_water_code  = #{deviceWaterCode,jdbcType=VARCHAR} 
+  </select>
+  
+   <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_water_info
+  </select>
+  
+   <!-- 根据水管区编码查找动态表的水位站编码 -->
+   <select id="selectCode" resultMap="BaseResultMap" parameterType="java.util.List">
+   		select
+   		<include refid="Base_Column_List" />
+   		from site_water_info  where swi_canal_code in 
+	    <foreach collection="list" index="index" item="swiCanalCode" open="(" separator="," close=")">  
+	        #{swiCanalCode} 
+	    </foreach>
+   </select>
+   
+   <!--按渠道查询历史数据 -->
+   <select id="selectCodecanal" resultMap="BaseResultMap" parameterType="java.util.List">
+   		select
+   		<include refid="Base_Column_List" />
+   		from site_water_info  where device_water_code in 
+	    <foreach collection="list" index="index" item="swiCanalCode" open="(" separator="," close=")">  
+	        #{swiCanalCode} 
+	    </foreach>
+   </select>
+  
+   <!-- 按照时间段查询类型渠道-->
+   <select id="selectCodetype" resultMap="BaseResultMap" parameterType="java.util.List">
+   		select
+   		<include refid="Base_Column_List" />
+   		from site_water_info  where swi_canal_code in 
+	    <foreach collection="swiCanalCode" index="index" item="swiCanalCode" open="(" separator="," close=")">  
+	        #{swiCanalCode} 
+	    </foreach>
+	   and swi_devicemodel_code = #{swiDevicemodelCode,jdbcType=INTEGER}
+   </select>
+  
+   <select id="findSiteWaterInfoByCanalCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_water_info
+    where swi_canal_code = #{swiCanalCode,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from site_water_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.SiteWaterInfo" >
+    insert into site_water_info (id, swi_canal_code, sitetype_code, 
+      device_water_code, device_water_name, swi_device_no, 
+      swi_addr, swi_build_time, swi_simcard, 
+      swi_simoperator, swi_ip_port, swi_longitude, 
+      swi_latitude, swi_height, site_depth, 
+      site_radius, site_canal_bottom_lenth, site_canal_bottom_u_height, 
+      site_canal_wellpaper_angle, site_canal_bottom_u_r, 
+      site_canal_bottom_height, fracture_appearance_code, 
+      hydraulic_slope, rounghness, ratio,flow_function_code, 
+      swi_devicemodel_code, device_height, swi_photo_before, 
+      swi_photo_after, system_code, swi_create_time, 
+      swi_edit_time, swi_remark,swi_equip_state,tier_num)
+    values (#{id,jdbcType=VARCHAR}, #{swiCanalCode,jdbcType=VARCHAR}, #{sitetypeCode,jdbcType=VARCHAR}, 
+      #{deviceWaterCode,jdbcType=VARCHAR}, #{deviceWaterName,jdbcType=VARCHAR}, #{swiDeviceNo,jdbcType=VARCHAR}, 
+      #{swiAddr,jdbcType=VARCHAR}, #{swiBuildTime,jdbcType=TIMESTAMP}, #{swiSimcard,jdbcType=VARCHAR}, 
+      #{swiSimoperator,jdbcType=VARCHAR}, #{swiIpPort,jdbcType=VARCHAR}, #{swiLongitude,jdbcType=DECIMAL}, 
+      #{swiLatitude,jdbcType=DECIMAL}, #{swiHeight,jdbcType=DECIMAL}, #{siteDepth,jdbcType=DECIMAL}, 
+      #{siteRadius,jdbcType=DECIMAL}, #{siteCanalBottomLenth,jdbcType=DECIMAL}, #{siteCanalBottomUHeight,jdbcType=DECIMAL}, 
+      #{siteCanalWellpaperAngle,jdbcType=DECIMAL}, #{siteCanalBottomUR,jdbcType=DECIMAL}, 
+      #{siteCanalBottomHeight,jdbcType=DECIMAL}, #{fractureAppearanceCode,jdbcType=VARCHAR}, 
+      #{hydraulicSlope,jdbcType=DECIMAL}, #{rounghness,jdbcType=DECIMAL}, #{ratio,jdbcType=DECIMAL},#{flowFunctionCode,jdbcType=VARCHAR} ,
+      #{swiDevicemodelCode,jdbcType=INTEGER}, #{deviceHeight,jdbcType=DECIMAL}, #{swiPhotoBefore,jdbcType=VARCHAR}, 
+      #{swiPhotoAfter,jdbcType=VARCHAR}, #{systemCode,jdbcType=INTEGER}, #{swiCreateTime,jdbcType=TIMESTAMP}, 
+      #{swiEditTime,jdbcType=TIMESTAMP}, #{swiRemark,jdbcType=VARCHAR}, #{swiEquipState,jdbcType=INTEGER}, #{tierNum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.SiteWaterInfo" >
+  	<!-- <selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		
+  	</selectKey>-->
+    insert into site_water_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="swiCanalCode != null" >
+        swi_canal_code,
+      </if>
+      <if test="sitetypeCode != null" >
+        sitetype_code,
+      </if>
+      <if test="deviceWaterCode != null" >
+        device_water_code,
+      </if>
+      <if test="deviceWaterName != null" >
+        device_water_name,
+      </if>
+      <if test="swiDeviceNo != null" >
+        swi_device_no,
+      </if>
+      <if test="swiAddr != null" >
+        swi_addr,
+      </if>
+      <if test="swiBuildTime != null" >
+        swi_build_time,
+      </if>
+      <if test="swiSimcard != null" >
+        swi_simcard,
+      </if>
+      <if test="swiSimoperator != null" >
+        swi_simoperator,
+      </if>
+      <if test="swiIpPort != null" >
+        swi_ip_port,
+      </if>
+      <if test="swiLongitude != null" >
+        swi_longitude,
+      </if>
+      <if test="swiLatitude != null" >
+        swi_latitude,
+      </if>
+      <if test="swiHeight != null" >
+        swi_height,
+      </if>
+      <if test="siteDepth != null" >
+        site_depth,
+      </if>
+      <if test="siteRadius != null" >
+        site_radius,
+      </if>
+      <if test="siteCanalBottomLenth != null" >
+        site_canal_bottom_lenth,
+      </if>
+      <if test="siteCanalBottomUHeight != null" >
+        site_canal_bottom_u_height,
+      </if>
+      <if test="siteCanalWellpaperAngle != null" >
+        site_canal_wellpaper_angle,
+      </if>
+      <if test="siteCanalBottomUR != null" >
+        site_canal_bottom_u_r,
+      </if>
+      <if test="siteCanalBottomHeight != null" >
+        site_canal_bottom_height,
+      </if>
+      <if test="fractureAppearanceCode != null" >
+        fracture_appearance_code,
+      </if>
+      <if test="hydraulicSlope != null" >
+        hydraulic_slope,
+      </if>
+      <if test="rounghness != null" >
+        rounghness,
+      </if>
+      <if test="ratio != null" >
+        ratio,
+      </if>
+      <if test="flowFunctionCode != null" >
+        flow_function_code,
+      </if>
+      <if test="swiDevicemodelCode != null" >
+        swi_devicemodel_code,
+      </if>
+      <if test="deviceHeight != null" >
+        device_height,
+      </if>
+      <if test="swiPhotoBefore != null" >
+        swi_photo_before,
+      </if>
+      <if test="swiPhotoAfter != null" >
+        swi_photo_after,
+      </if>
+      <if test="systemCode != null" >
+        system_code,
+      </if>
+      <if test="swiCreateTime != null" >
+        swi_create_time,
+      </if>
+      <if test="swiEditTime != null" >
+        swi_edit_time,
+      </if>
+      <if test="swiRemark != null" >
+        swi_remark,
+      </if>
+       <if test="swiEquipState != null" >
+        swi_equip_state,
+      </if>
+        <if test="tierNum != null" >
+        tier_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="swiCanalCode != null" >
+        #{swiCanalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sitetypeCode != null" >
+        #{sitetypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceWaterCode != null" >
+        #{deviceWaterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceWaterName != null" >
+        #{deviceWaterName,jdbcType=VARCHAR},
+      </if>
+      <if test="swiDeviceNo != null" >
+        #{swiDeviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="swiAddr != null" >
+        #{swiAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="swiBuildTime != null" >
+        #{swiBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swiSimcard != null" >
+        #{swiSimcard,jdbcType=VARCHAR},
+      </if>
+      <if test="swiSimoperator != null" >
+        #{swiSimoperator,jdbcType=VARCHAR},
+      </if>
+      <if test="swiIpPort != null" >
+        #{swiIpPort,jdbcType=VARCHAR},
+      </if>
+      <if test="swiLongitude != null" >
+        #{swiLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="swiLatitude != null" >
+        #{swiLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="swiHeight != null" >
+        #{swiHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="siteDepth != null" >
+        #{siteDepth,jdbcType=DECIMAL},
+      </if>
+      <if test="siteRadius != null" >
+        #{siteRadius,jdbcType=DECIMAL},
+      </if>
+      <if test="siteCanalBottomLenth != null" >
+        #{siteCanalBottomLenth,jdbcType=DECIMAL},
+      </if>
+      <if test="siteCanalBottomUHeight != null" >
+        #{siteCanalBottomUHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="siteCanalWellpaperAngle != null" >
+        #{siteCanalWellpaperAngle,jdbcType=DECIMAL},
+      </if>
+      <if test="siteCanalBottomUR != null" >
+        #{siteCanalBottomUR,jdbcType=DECIMAL},
+      </if>
+      <if test="siteCanalBottomHeight != null" >
+        #{siteCanalBottomHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="fractureAppearanceCode != null" >
+        #{fractureAppearanceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="hydraulicSlope != null" >
+        #{hydraulicSlope,jdbcType=DECIMAL},
+      </if>
+      <if test="rounghness != null" >
+        #{rounghness,jdbcType=DECIMAL},
+      </if>
+      <if test="ratio != null" >
+        #{ratio,jdbcType=DECIMAL},
+      </if>
+      
+      <if test="flowFunctionCode != null" >
+        #{flowFunctionCode,jdbcType=DECIMAL},
+      </if>
+      <if test="swiDevicemodelCode != null" >
+        #{swiDevicemodelCode,jdbcType=INTEGER},
+      </if>
+      <if test="deviceHeight != null" >
+        #{deviceHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="swiPhotoBefore != null" >
+        #{swiPhotoBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="swiPhotoAfter != null" >
+        #{swiPhotoAfter,jdbcType=VARCHAR},
+      </if>
+      <if test="systemCode != null" >
+        #{systemCode,jdbcType=INTEGER},
+      </if>
+      <if test="swiCreateTime != null" >
+        #{swiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swiEditTime != null" >
+        #{swiEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swiRemark != null" >
+        #{swiRemark,jdbcType=VARCHAR},
+      </if>
+       <if test="swiEquipState != null" >
+        #{swiEquipState,jdbcType=INTEGER},
+      </if>
+       <if test="tierNum != null" >
+        #{tierNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.SiteWaterInfo" >
+    update site_water_info
+    <set >
+      <if test="swiCanalCode != null" >
+        swi_canal_code = #{swiCanalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sitetypeCode != null" >
+        sitetype_code = #{sitetypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceWaterCode != null" >
+        device_water_code = #{deviceWaterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceWaterName != null" >
+        device_water_name = #{deviceWaterName,jdbcType=VARCHAR},
+      </if>
+      <if test="swiDeviceNo != null" >
+        swi_device_no = #{swiDeviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="swiAddr != null" >
+        swi_addr = #{swiAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="swiBuildTime != null" >
+        swi_build_time = #{swiBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swiSimcard != null" >
+        swi_simcard = #{swiSimcard,jdbcType=VARCHAR},
+      </if>
+      <if test="swiSimoperator != null" >
+        swi_simoperator = #{swiSimoperator,jdbcType=VARCHAR},
+      </if>
+      <if test="swiIpPort != null" >
+        swi_ip_port = #{swiIpPort,jdbcType=VARCHAR},
+      </if>
+      <if test="swiLongitude != null" >
+        swi_longitude = #{swiLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="swiLatitude != null" >
+        swi_latitude = #{swiLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="swiHeight != null" >
+        swi_height = #{swiHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="siteDepth != null" >
+        site_depth = #{siteDepth,jdbcType=DECIMAL},
+      </if>
+      <if test="siteRadius != null" >
+        site_radius = #{siteRadius,jdbcType=DECIMAL},
+      </if>
+      <if test="siteCanalBottomLenth != null" >
+        site_canal_bottom_lenth = #{siteCanalBottomLenth,jdbcType=DECIMAL},
+      </if>
+      <if test="siteCanalBottomUHeight != null" >
+        site_canal_bottom_u_height = #{siteCanalBottomUHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="siteCanalWellpaperAngle != null" >
+        site_canal_wellpaper_angle = #{siteCanalWellpaperAngle,jdbcType=DECIMAL},
+      </if>
+      <if test="siteCanalBottomUR != null" >
+        site_canal_bottom_u_r = #{siteCanalBottomUR,jdbcType=DECIMAL},
+      </if>
+      <if test="siteCanalBottomHeight != null" >
+        site_canal_bottom_height = #{siteCanalBottomHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="fractureAppearanceCode != null" >
+        fracture_appearance_code = #{fractureAppearanceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="hydraulicSlope != null" >
+        hydraulic_slope = #{hydraulicSlope,jdbcType=DECIMAL},
+      </if>
+      <if test="rounghness != null" >
+        rounghness = #{rounghness,jdbcType=DECIMAL},
+      </if>
+      <if test="ratio != null" >
+        ratio = #{ratio,jdbcType=DECIMAL},
+      </if>
+      <if test="flowFunctionCode != null" >
+        flow_function_code = #{flowFunctionCode,jdbcType=DECIMAL},
+      </if>
+      <if test="swiDevicemodelCode != null" >
+        swi_devicemodel_code = #{swiDevicemodelCode,jdbcType=INTEGER},
+      </if>
+      <if test="deviceHeight != null" >
+        device_height = #{deviceHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="swiPhotoBefore != null" >
+        swi_photo_before = #{swiPhotoBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="swiPhotoAfter != null" >
+        swi_photo_after = #{swiPhotoAfter,jdbcType=VARCHAR},
+      </if>
+      <if test="systemCode != null" >
+        system_code = #{systemCode,jdbcType=INTEGER},
+      </if>
+      <if test="swiCreateTime != null" >
+        swi_create_time = #{swiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swiEditTime != null" >
+        swi_edit_time = #{swiEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swiRemark != null" >
+        swi_remark = #{swiRemark,jdbcType=VARCHAR},
+      </if>
+       <if test="swiEquipState != null" >
+        swi_equip_state = #{swiEquipState,jdbcType=INTEGER},
+      </if>
+      <if test="tierNum != null" >
+        tier_num = #{tierNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.SiteWaterInfo" >
+    update site_water_info
+    set swi_canal_code = #{swiCanalCode,jdbcType=VARCHAR},
+      sitetype_code = #{sitetypeCode,jdbcType=VARCHAR},
+      device_water_code = #{deviceWaterCode,jdbcType=VARCHAR},
+      device_water_name = #{deviceWaterName,jdbcType=VARCHAR},
+      swi_device_no = #{swiDeviceNo,jdbcType=VARCHAR},
+      swi_addr = #{swiAddr,jdbcType=VARCHAR},
+      swi_build_time = #{swiBuildTime,jdbcType=TIMESTAMP},
+      swi_simcard = #{swiSimcard,jdbcType=VARCHAR},
+      swi_simoperator = #{swiSimoperator,jdbcType=VARCHAR},
+      swi_ip_port = #{swiIpPort,jdbcType=VARCHAR},
+      swi_longitude = #{swiLongitude,jdbcType=DECIMAL},
+      swi_latitude = #{swiLatitude,jdbcType=DECIMAL},
+      site_depth = #{siteDepth,jdbcType=DECIMAL},
+      site_radius = #{siteRadius,jdbcType=DECIMAL},
+      site_canal_param_a = #{siteCanalParamA,jdbcType=DECIMAL},
+      site_canal_param_b = #{siteCanalParamB,jdbcType=DECIMAL},
+      site_canal_param_c = #{siteCanalParamC,jdbcType=DECIMAL},
+      swi_devicemodel_code = #{swiDevicemodelCode,jdbcType=INTEGER},
+      device_height = #{deviceHeight,jdbcType=DECIMAL},
+      swi_photo_before = #{swiPhotoBefore,jdbcType=VARCHAR},
+      swi_photo_after = #{swiPhotoAfter,jdbcType=VARCHAR},
+      system_code = #{systemCode,jdbcType=INTEGER},
+      swi_create_time = #{swiCreateTime,jdbcType=TIMESTAMP},
+      swi_edit_time = #{swiEditTime,jdbcType=TIMESTAMP},
+      swi_remark = #{swiRemark,jdbcType=VARCHAR},
+       swi_equip_state = #{swiEquipState,jdbcType=INTEGER},
+       tier_num = #{tierNum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

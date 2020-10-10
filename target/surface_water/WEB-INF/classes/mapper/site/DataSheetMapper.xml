@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.site.dao.DataSheetMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.site.entity.DataSheet" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="water_name" property="waterName" jdbcType="VARCHAR" />
+    <result column="water_code" property="waterCode" jdbcType="VARCHAR" />
+    <result column="january" property="january" jdbcType="DECIMAL" />
+    <result column="february" property="february" jdbcType="DECIMAL" />
+    <result column="march" property="march" jdbcType="DECIMAL" />
+    <result column="april" property="april" jdbcType="DECIMAL" />
+    <result column="may" property="may" jdbcType="DECIMAL" />
+    <result column="june" property="june" jdbcType="DECIMAL" />
+    <result column="july" property="july" jdbcType="DECIMAL" />
+    <result column="august" property="august" jdbcType="DECIMAL" />
+    <result column="september" property="september" jdbcType="DECIMAL" />
+    <result column="october" property="october" jdbcType="DECIMAL" />
+    <result column="november" property="november" jdbcType="DECIMAL" />
+    <result column="december" property="december" jdbcType="DECIMAL" />
+    <result column="comm_one" property="commOne" jdbcType="DECIMAL" />
+    <result column="comm_two" property="commTwo" jdbcType="DECIMAL" />
+    <result column="comm_three" property="commThree" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, water_name, water_code, january, february, march, april, may, june, july, august, 
+    september, october, november, december, comm_one, comm_two, comm_three
+  </sql>
+  <!-- 根据站点编码查询 当年月累计流量数据    李玥 -->
+  <select id="addUpData" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		SELECT * FROM data_sheet WHERE water_code=#{waterCode,jdbcType=VARCHAR} AND YEAR(creat_time)=YEAR(NOW());
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from data_sheet
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	select
+  	 <include refid="Base_Column_List" />
+  	 from data_sheet
+  	 where water_code = #{waterCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select
+  	<include refid="Base_Column_List" />
+  	 from data_sheet where year = #{year}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from data_sheet
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zyjz.site.entity.DataSheet" >
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+    insert into data_sheet (id, water_name, water_code, 
+      january, february, march, 
+      april, may, june, july, 
+      august, september, october, 
+      november, december, comm_one, 
+      comm_two, comm_three)
+    values (#{id,jdbcType=VARCHAR}, #{waterName,jdbcType=VARCHAR}, #{waterCode,jdbcType=VARCHAR}, 
+      #{january,jdbcType=DECIMAL}, #{february,jdbcType=DECIMAL}, #{march,jdbcType=DECIMAL}, 
+      #{april,jdbcType=DECIMAL}, #{may,jdbcType=DECIMAL}, #{june,jdbcType=DECIMAL}, #{july,jdbcType=DECIMAL}, 
+      #{august,jdbcType=DECIMAL}, #{september,jdbcType=DECIMAL}, #{october,jdbcType=DECIMAL}, 
+      #{november,jdbcType=DECIMAL}, #{december,jdbcType=DECIMAL}, #{commOne,jdbcType=DECIMAL}, 
+      #{commTwo,jdbcType=DECIMAL}, #{commThree,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.site.entity.DataSheet" >
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+    insert into data_sheet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="waterName != null" >
+        water_name,
+      </if>
+      <if test="waterCode != null" >
+        water_code,
+      </if>
+      <if test="january != null" >
+        january,
+      </if>
+      <if test="february != null" >
+        february,
+      </if>
+      <if test="march != null" >
+        march,
+      </if>
+      <if test="april != null" >
+        april,
+      </if>
+      <if test="may != null" >
+        may,
+      </if>
+      <if test="june != null" >
+        june,
+      </if>
+      <if test="july != null" >
+        july,
+      </if>
+      <if test="august != null" >
+        august,
+      </if>
+      <if test="september != null" >
+        september,
+      </if>
+      <if test="october != null" >
+        october,
+      </if>
+      <if test="november != null" >
+        november,
+      </if>
+      <if test="december != null" >
+        december,
+      </if>
+      <if test="commOne != null" >
+        comm_one,
+      </if>
+      <if test="commTwo != null" >
+        comm_two,
+      </if>
+      <if test="commThree != null" >
+        comm_three,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="waterName != null" >
+        #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="waterCode != null" >
+        #{waterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="january != null" >
+        #{january,jdbcType=DECIMAL},
+      </if>
+      <if test="february != null" >
+        #{february,jdbcType=DECIMAL},
+      </if>
+      <if test="march != null" >
+        #{march,jdbcType=DECIMAL},
+      </if>
+      <if test="april != null" >
+        #{april,jdbcType=DECIMAL},
+      </if>
+      <if test="may != null" >
+        #{may,jdbcType=DECIMAL},
+      </if>
+      <if test="june != null" >
+        #{june,jdbcType=DECIMAL},
+      </if>
+      <if test="july != null" >
+        #{july,jdbcType=DECIMAL},
+      </if>
+      <if test="august != null" >
+        #{august,jdbcType=DECIMAL},
+      </if>
+      <if test="september != null" >
+        #{september,jdbcType=DECIMAL},
+      </if>
+      <if test="october != null" >
+        #{october,jdbcType=DECIMAL},
+      </if>
+      <if test="november != null" >
+        #{november,jdbcType=DECIMAL},
+      </if>
+      <if test="december != null" >
+        #{december,jdbcType=DECIMAL},
+      </if>
+      <if test="commOne != null" >
+        #{commOne,jdbcType=DECIMAL},
+      </if>
+      <if test="commTwo != null" >
+        #{commTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="commThree != null" >
+        #{commThree,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update data_sheet
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.waterName != null" >
+        water_name = #{record.waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.waterCode != null" >
+        water_code = #{record.waterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.january != null" >
+        january = #{record.january,jdbcType=DECIMAL},
+      </if>
+      <if test="record.february != null" >
+        february = #{record.february,jdbcType=DECIMAL},
+      </if>
+      <if test="record.march != null" >
+        march = #{record.march,jdbcType=DECIMAL},
+      </if>
+      <if test="record.april != null" >
+        april = #{record.april,jdbcType=DECIMAL},
+      </if>
+      <if test="record.may != null" >
+        may = #{record.may,jdbcType=DECIMAL},
+      </if>
+      <if test="record.june != null" >
+        june = #{record.june,jdbcType=DECIMAL},
+      </if>
+      <if test="record.july != null" >
+        july = #{record.july,jdbcType=DECIMAL},
+      </if>
+      <if test="record.august != null" >
+        august = #{record.august,jdbcType=DECIMAL},
+      </if>
+      <if test="record.september != null" >
+        september = #{record.september,jdbcType=DECIMAL},
+      </if>
+      <if test="record.october != null" >
+        october = #{record.october,jdbcType=DECIMAL},
+      </if>
+      <if test="record.november != null" >
+        november = #{record.november,jdbcType=DECIMAL},
+      </if>
+      <if test="record.december != null" >
+        december = #{record.december,jdbcType=DECIMAL},
+      </if>
+      <if test="record.commOne != null" >
+        comm_one = #{record.commOne,jdbcType=DECIMAL},
+      </if>
+      <if test="record.commTwo != null" >
+        comm_two = #{record.commTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="record.commThree != null" >
+        comm_three = #{record.commThree,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update data_sheet
+    set id = #{record.id,jdbcType=VARCHAR},
+      water_name = #{record.waterName,jdbcType=VARCHAR},
+      water_code = #{record.waterCode,jdbcType=VARCHAR},
+      january = #{record.january,jdbcType=DECIMAL},
+      february = #{record.february,jdbcType=DECIMAL},
+      march = #{record.march,jdbcType=DECIMAL},
+      april = #{record.april,jdbcType=DECIMAL},
+      may = #{record.may,jdbcType=DECIMAL},
+      june = #{record.june,jdbcType=DECIMAL},
+      july = #{record.july,jdbcType=DECIMAL},
+      august = #{record.august,jdbcType=DECIMAL},
+      september = #{record.september,jdbcType=DECIMAL},
+      october = #{record.october,jdbcType=DECIMAL},
+      november = #{record.november,jdbcType=DECIMAL},
+      december = #{record.december,jdbcType=DECIMAL},
+      comm_one = #{record.commOne,jdbcType=DECIMAL},
+      comm_two = #{record.commTwo,jdbcType=DECIMAL},
+      comm_three = #{record.commThree,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.site.entity.DataSheet" >
+    update data_sheet
+    <set >
+      <if test="waterName != null" >
+        water_name = #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="waterCode != null" >
+        water_code = #{waterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="january != null" >
+        january = #{january,jdbcType=DECIMAL},
+      </if>
+      <if test="february != null" >
+        february = #{february,jdbcType=DECIMAL},
+      </if>
+      <if test="march != null" >
+        march = #{march,jdbcType=DECIMAL},
+      </if>
+      <if test="april != null" >
+        april = #{april,jdbcType=DECIMAL},
+      </if>
+      <if test="may != null" >
+        may = #{may,jdbcType=DECIMAL},
+      </if>
+      <if test="june != null" >
+        june = #{june,jdbcType=DECIMAL},
+      </if>
+      <if test="july != null" >
+        july = #{july,jdbcType=DECIMAL},
+      </if>
+      <if test="august != null" >
+        august = #{august,jdbcType=DECIMAL},
+      </if>
+      <if test="september != null" >
+        september = #{september,jdbcType=DECIMAL},
+      </if>
+      <if test="october != null" >
+        october = #{october,jdbcType=DECIMAL},
+      </if>
+      <if test="november != null" >
+        november = #{november,jdbcType=DECIMAL},
+      </if>
+      <if test="december != null" >
+        december = #{december,jdbcType=DECIMAL},
+      </if>
+      <if test="commOne != null" >
+        comm_one = #{commOne,jdbcType=DECIMAL},
+      </if>
+      <if test="commTwo != null" >
+        comm_two = #{commTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="commThree != null" >
+        comm_three = #{commThree,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.site.entity.DataSheet" >
+    update data_sheet
+    set water_name = #{waterName,jdbcType=VARCHAR},
+      water_code = #{waterCode,jdbcType=VARCHAR},
+      january = #{january,jdbcType=DECIMAL},
+      february = #{february,jdbcType=DECIMAL},
+      march = #{march,jdbcType=DECIMAL},
+      april = #{april,jdbcType=DECIMAL},
+      may = #{may,jdbcType=DECIMAL},
+      june = #{june,jdbcType=DECIMAL},
+      july = #{july,jdbcType=DECIMAL},
+      august = #{august,jdbcType=DECIMAL},
+      september = #{september,jdbcType=DECIMAL},
+      october = #{october,jdbcType=DECIMAL},
+      november = #{november,jdbcType=DECIMAL},
+      december = #{december,jdbcType=DECIMAL},
+      comm_one = #{commOne,jdbcType=DECIMAL},
+      comm_two = #{commTwo,jdbcType=DECIMAL},
+      comm_three = #{commThree,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

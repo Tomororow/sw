@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.BpForecastWaterMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.plan.entity.BpForecastWater" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="table_no" property="tableNo" jdbcType="VARCHAR" />
+    <result column="canal_code" property="canalCode" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="DECIMAL" />
+    <result column="create_people" property="createPeople" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="comm1" property="comm1" jdbcType="VARCHAR" />
+    <result column="comm2" property="comm2" jdbcType="VARCHAR" />
+    <result column="comm3" property="comm3" jdbcType="VARCHAR" />
+    <result column="comm4" property="comm4" jdbcType="VARCHAR" />
+    <result column="comm5" property="comm5" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  
+  <sql id="Base_Column_List" >
+    id, table_no, canal_code, year, create_time, create_people, remark, comm1, comm2, 
+    comm3, comm4, comm5
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bp_forecast_water
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bp_forecast_water
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.plan.entity.BpForecastWater" >
+    insert into bp_forecast_water (id, table_no, canal_code, 
+      year, create_time, create_people, 
+      remark, comm1, comm2, 
+      comm3, comm4, comm5
+      )
+    values (#{id,jdbcType=VARCHAR}, #{tableNo,jdbcType=VARCHAR}, #{canalCode,jdbcType=VARCHAR}, 
+      #{year,jdbcType=INTEGER}, #{createTime,jdbcType=DECIMAL}, #{createPeople,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{comm1,jdbcType=VARCHAR}, #{comm2,jdbcType=VARCHAR}, 
+      #{comm3,jdbcType=VARCHAR}, #{comm4,jdbcType=VARCHAR}, #{comm5,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.plan.entity.BpForecastWater" >
+    insert into bp_forecast_water
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tableNo != null" >
+        table_no,
+      </if>
+      <if test="canalCode != null" >
+        canal_code,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPeople != null" >
+        create_people,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="comm1 != null" >
+        comm1,
+      </if>
+      <if test="comm2 != null" >
+        comm2,
+      </if>
+      <if test="comm3 != null" >
+        comm3,
+      </if>
+      <if test="comm4 != null" >
+        comm4,
+      </if>
+      <if test="comm5 != null" >
+        comm5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tableNo != null" >
+        #{tableNo,jdbcType=VARCHAR},
+      </if>
+      <if test="canalCode != null" >
+        #{canalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DECIMAL},
+      </if>
+      <if test="createPeople != null" >
+        #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="comm1 != null" >
+        #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        #{comm5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.BpForecastWater" >
+    update bp_forecast_water
+    <set >
+      <if test="tableNo != null" >
+        table_no = #{tableNo,jdbcType=VARCHAR},
+      </if>
+      <if test="canalCode != null" >
+        canal_code = #{canalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DECIMAL},
+      </if>
+      <if test="createPeople != null" >
+        create_people = #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="comm1 != null" >
+        comm1 = #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        comm2 = #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        comm3 = #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        comm4 = #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        comm5 = #{comm5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.plan.entity.BpForecastWater" >
+    update bp_forecast_water
+    set table_no = #{tableNo,jdbcType=VARCHAR},
+      canal_code = #{canalCode,jdbcType=VARCHAR},
+      year = #{year,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=DECIMAL},
+      create_people = #{createPeople,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      comm1 = #{comm1,jdbcType=VARCHAR},
+      comm2 = #{comm2,jdbcType=VARCHAR},
+      comm3 = #{comm3,jdbcType=VARCHAR},
+      comm4 = #{comm4,jdbcType=VARCHAR},
+      comm5 = #{comm5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

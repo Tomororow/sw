@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.SiteRainInfoMapper">
+	<resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.SiteRainInfo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="sysarea_id" property="sysareaId" jdbcType="VARCHAR" />
+	    <result column="sri_devicemodel_code" property="sriDevicemodelCode" jdbcType="INTEGER" />
+	    <result column="system_code" property="systemCode" jdbcType="INTEGER" />
+	    <result column="device_rain_code" property="deviceRainCode" jdbcType="VARCHAR" />
+	    <result column="device_rain_name" property="deviceRainName" jdbcType="VARCHAR" />
+	    <result column="sri_addr" property="sriAddr" jdbcType="VARCHAR" />
+	    <result column="sri_build_time" property="sriBuildTime" jdbcType="TIMESTAMP" />
+	    <result column="sri_ip" property="sriIp" jdbcType="VARCHAR" />
+	    <result column="sri_longitude" property="sriLongitude" jdbcType="DECIMAL" />
+	    <result column="sri_latitude" property="sriLatitude" jdbcType="DECIMAL" />
+	    <result column="sri_height" property="sriHeight" jdbcType="DECIMAL" />
+	    <result column="sri_photo_before" property="sriPhotoBefore" jdbcType="VARCHAR" />
+	    <result column="sri_photo_after" property="sriPhotoAfter" jdbcType="VARCHAR" />
+	    <result column="sri_create_time" property="sriCreateTime" jdbcType="TIMESTAMP" />
+	    <result column="sri_edit_time" property="sriEditTime" jdbcType="TIMESTAMP" />
+	    <result column="sri_remark" property="sriRemark" jdbcType="VARCHAR" />
+	    <!-- 设备类型信息 -->
+	    <result column="device_name" property="deviceName" jdbcType="VARCHAR" />
+	    <result column="device_brand" property="deviceBrand" jdbcType="VARCHAR" />
+	    <result column="device_model" property="deviceModel" jdbcType="VARCHAR" />
+	    <!-- 数据提取系统信息 -->
+	    <result column="system_name" property="systemName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 通用信息查询基础列 -->
+	<sql id="Base_Column_List">
+		id, sysarea_id, sri_devicemodel_code, system_code, device_rain_code, device_rain_name, 
+	    sri_addr, sri_build_time, sri_ip, sri_longitude, sri_latitude, sri_height, sri_photo_before, 
+	    sri_photo_after, sri_create_time, sri_edit_time, sri_remark
+	</sql>
+	
+	<!-- 根据行政区域获取雨量站名称 -->
+	<select id="getRainNameByAreaId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select id, sysarea_id, device_rain_code, device_rain_name
+		from site_rain_info where sysarea_id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 获取所属区域下雨量站相关联的全部信息 -->
+	<select id="getRainSiteByAreaId" resultMap="BaseResultMap" parameterType="map">
+		select sri.*, sdm.device_name, sdi.system_name
+		from site_rain_info sri left join site_device_model sdm on sri.sri_devicemodel_code = sdm.device_code
+		left join sys_database_info sdi on sri.system_code = sdi.system_code
+		where 1=1
+		<if test="areaIdsList != null and areaIdsList.size() > 0">
+			and sri.sysarea_id in
+        	<foreach collection="areaIdsList" item="item" index="index" open="(" separator="," close=")">
+        		#{item}
+        	</foreach>
+		</if>
+		order by sri.device_rain_code asc
+	</select>
+	
+	
+	<select id="findSiteRainByAreaIds" resultMap="BaseResultMap" parameterType="java.util.List">
+	    select 
+	    <include refid="Base_Column_List" />
+	    from site_rain_info
+	    where sysarea_id in 
+	    <foreach collection="list" index="index" item="sysareaId" open="(" separator="," close=")">  
+	        #{sysareaId}  
+	    </foreach>
+	</select>
+	
+	
+	<!-- 根据主键联合查询信息 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select sri.*, sdm.device_name, sdm.device_brand, sdm.device_model, sdi.system_name
+		from site_rain_info sri left join site_device_model sdm on sri.sri_devicemodel_code = sdm.device_code
+		left join sys_database_info sdi on sri.system_code = sdi.system_code
+		where sri.id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据主键删除 -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from site_rain_info
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 新增全部信息 -->
+	<insert id="insert" parameterType="com.zyjz.sysmanage.entity.SiteRainInfo">
+		insert into site_rain_info (id, sysarea_id, sri_devicemodel_code, 
+	      system_code, device_rain_code, device_rain_name, 
+	      sri_addr, sri_build_time, sri_ip, 
+	      sri_longitude, sri_latitude, sri_height, sri_photo_before, 
+	      sri_photo_after, sri_create_time, sri_edit_time, 
+	      sri_remark)
+	    values (#{id,jdbcType=VARCHAR}, #{sysareaId,jdbcType=VARCHAR}, #{sriDevicemodelCode,jdbcType=INTEGER}, 
+	      #{systemCode,jdbcType=INTEGER}, #{deviceRainCode,jdbcType=VARCHAR}, #{deviceRainName,jdbcType=VARCHAR}, 
+	      #{sriAddr,jdbcType=VARCHAR}, #{sriBuildTime,jdbcType=TIMESTAMP}, #{sriIp,jdbcType=VARCHAR}, 
+	      #{sriLongitude,jdbcType=DECIMAL}, #{sriLatitude,jdbcType=DECIMAL}, #{sriHeight,jdbcType=DECIMAL}, #{sriPhotoBefore,jdbcType=VARCHAR}, 
+	      #{sriPhotoAfter,jdbcType=VARCHAR}, #{sriCreateTime,jdbcType=TIMESTAMP}, #{sriEditTime,jdbcType=TIMESTAMP}, 
+	      #{sriRemark,jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 有选择性的新增信息 -->
+	<insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.SiteRainInfo">
+		insert into site_rain_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="sysareaId != null">
+				sysarea_id,
+			</if>
+			<if test="sriDevicemodelCode != null">
+				sri_devicemodel_code,
+			</if>
+			<if test="systemCode != null">
+				system_code,
+			</if>
+			<if test="deviceRainCode != null">
+				device_rain_code,
+			</if>
+			<if test="deviceRainName != null">
+				device_rain_name,
+			</if>
+			<if test="sriAddr != null">
+				sri_addr,
+			</if>
+			<if test="sriBuildTime != null">
+				sri_build_time,
+			</if>
+			<if test="sriIp != null">
+				sri_ip,
+			</if>
+			<if test="sriLongitude != null">
+				sri_longitude,
+			</if>
+			<if test="sriLatitude != null">
+				sri_latitude,
+			</if>
+			<if test="sriHeight != null">
+				sri_height,
+			</if>
+			<if test="sriPhotoBefore != null">
+				sri_photo_before,
+			</if>
+			<if test="sriPhotoAfter != null">
+				sri_photo_after,
+			</if>
+			<if test="sriCreateTime != null">
+				sri_create_time,
+			</if>
+			<if test="sriEditTime != null">
+				sri_edit_time,
+			</if>
+			<if test="sriRemark != null">
+				sri_remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="sysareaId != null">
+				#{sysareaId,jdbcType=VARCHAR},
+			</if>
+			<if test="sriDevicemodelCode != null">
+				#{sriDevicemodelCode,jdbcType=INTEGER},
+			</if>
+			<if test="systemCode != null">
+				#{systemCode,jdbcType=INTEGER},
+			</if>
+			<if test="deviceRainCode != null">
+				#{deviceRainCode,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceRainName != null">
+				#{deviceRainName,jdbcType=VARCHAR},
+			</if>
+			<if test="sriAddr != null">
+				#{sriAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="sriBuildTime != null">
+				#{sriBuildTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sriIp != null">
+				#{sriIp,jdbcType=VARCHAR},
+			</if>
+			<if test="sriLongitude != null">
+				#{sriLongitude,jdbcType=DECIMAL},
+			</if>
+			<if test="sriLatitude != null">
+				#{sriLatitude,jdbcType=DECIMAL},
+			</if>
+			<if test="sriHeight != null">
+				#{sriHeight,jdbcType=DECIMAL},
+			</if>
+			<if test="sriPhotoBefore != null">
+				#{sriPhotoBefore,jdbcType=VARCHAR},
+			</if>
+			<if test="sriPhotoAfter != null">
+				#{sriPhotoAfter,jdbcType=VARCHAR},
+			</if>
+			<if test="sriCreateTime != null">
+				#{sriCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sriEditTime != null">
+				#{sriEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sriRemark != null">
+				#{sriRemark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 有选择性的更新信息 -->
+	<update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.SiteRainInfo">
+		update site_rain_info
+		<set>
+			<if test="sysareaId != null">
+				sysarea_id = #{sysareaId,jdbcType=VARCHAR},
+			</if>
+			<if test="sriDevicemodelCode != null">
+				sri_devicemodel_code = #{sriDevicemodelCode,jdbcType=INTEGER},
+			</if>
+			<if test="systemCode != null">
+				system_code = #{systemCode,jdbcType=INTEGER},
+			</if>
+			<if test="deviceRainCode != null">
+				device_rain_code = #{deviceRainCode,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceRainName != null">
+				device_rain_name = #{deviceRainName,jdbcType=VARCHAR},
+			</if>
+			<if test="sriAddr != null">
+				sri_addr = #{sriAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="sriBuildTime != null">
+				sri_build_time = #{sriBuildTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sriIp != null">
+				sri_ip = #{sriIp,jdbcType=VARCHAR},
+			</if>
+			<if test="sriLongitude != null">
+				sri_longitude = #{sriLongitude,jdbcType=DECIMAL},
+			</if>
+			<if test="sriLatitude != null">
+				sri_latitude = #{sriLatitude,jdbcType=DECIMAL},
+			</if>
+			<if test="sriHeight != null">
+				sri_height = #{sriHeight,jdbcType=DECIMAL},
+			</if>
+			<if test="sriPhotoBefore != null">
+				sri_photo_before = #{sriPhotoBefore,jdbcType=VARCHAR},
+			</if>
+			<if test="sriPhotoAfter != null">
+				sri_photo_after = #{sriPhotoAfter,jdbcType=VARCHAR},
+			</if>
+			<if test="sriCreateTime != null">
+				sri_create_time = #{sriCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sriEditTime != null">
+				sri_edit_time = #{sriEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sriRemark != null">
+				sri_remark = #{sriRemark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 根据主键更新信息 -->
+	<update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.SiteRainInfo">
+		update site_rain_info
+		set sysarea_id = #{sysareaId,jdbcType=VARCHAR},
+		sri_devicemodel_code = #{sriDevicemodelCode,jdbcType=INTEGER},
+		system_code = #{systemCode,jdbcType=INTEGER},
+		device_rain_code = #{deviceRainCode,jdbcType=VARCHAR},
+		device_rain_name = #{deviceRainName,jdbcType=VARCHAR},
+		sri_addr = #{sriAddr,jdbcType=VARCHAR},
+		sri_build_time = #{sriBuildTime,jdbcType=TIMESTAMP},
+		sri_ip = #{sriIp,jdbcType=VARCHAR},
+		sri_longitude = #{sriLongitude,jdbcType=DECIMAL},
+		sri_latitude = #{sriLatitude,jdbcType=DECIMAL},
+		sri_height = #{sriHeight,jdbcType=DECIMAL},
+		sri_photo_before = #{sriPhotoBefore,jdbcType=VARCHAR},
+		sri_photo_after = #{sriPhotoAfter,jdbcType=VARCHAR},
+		sri_create_time = #{sriCreateTime,jdbcType=TIMESTAMP},
+		sri_edit_time = #{sriEditTime,jdbcType=TIMESTAMP},
+		sri_remark = #{sriRemark,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+</mapper>

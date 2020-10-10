@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.site.dao.SiteSluiceDynamicInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.site.entity.SiteSluiceDynamicInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="devicesluice_code" property="devicesluiceCode" jdbcType="VARCHAR" />
+    <result column="ssdi_collect_time" property="ssdiCollectTime" jdbcType="TIMESTAMP" />
+    <result column="ssdi_net_state" property="ssdiNetState" jdbcType="INTEGER" />
+    <result column="before_water_level" property="beforeWaterLevel" jdbcType="DECIMAL" />
+    <result column="after_water_level" property="afterWaterLevel" jdbcType="DECIMAL" />
+    <result column="sluice_instant_speed" property="sluiceInstantSpeed" jdbcType="DECIMAL" />
+    <result column="sluice_instant_flow" property="sluiceInstantFlow" jdbcType="DECIMAL" />
+    <result column="sluice_height1" property="sluiceHeight1" jdbcType="DECIMAL" />
+    <result column="instant_traffic" property="instantTraffic" jdbcType="DECIMAL" />
+    <result column="cumulative_traffic" property="cumulativeTraffic" jdbcType="DECIMAL" />
+    <result column="gate_load1" property="gateLoad1" jdbcType="DECIMAL" />
+    <result column="sluice_height2" property="sluiceHeight2" jdbcType="DECIMAL" />
+    <result column="gate_load2" property="gateLoad2" jdbcType="DECIMAL" />
+    <result column="sluice_height3" property="sluiceHeight3" jdbcType="DECIMAL" />
+    <result column="gate_load3" property="gateLoad3" jdbcType="DECIMAL" />
+    <result column="sluice_height4" property="sluiceHeight4" jdbcType="DECIMAL" />
+    <result column="gate_load4" property="gateLoad4" jdbcType="DECIMAL" />
+    <result column="sluice_height5" property="sluiceHeight5" jdbcType="DECIMAL" />
+    <result column="gate_load5" property="gateLoad5" jdbcType="DECIMAL" />
+    <result column="sluice_height6" property="sluiceHeight6" jdbcType="DECIMAL" />
+    <result column="gate_load6" property="gateLoad6" jdbcType="DECIMAL" />
+    <result column="ssdi_create_time" property="ssdiCreateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, devicesluice_code, ssdi_collect_time, ssdi_net_state, before_water_level, after_water_level, 
+    sluice_instant_speed, sluice_instant_flow, sluice_height1,instant_traffic,cumulative_traffic, gate_load1, sluice_height2, 
+    gate_load2, sluice_height3, gate_load3, sluice_height4, gate_load4, sluice_height5, 
+    gate_load5, sluice_height6, gate_load6, ssdi_create_time
+  </sql>
+<!--   根据闸门站编码查询动态数据 -->
+<select id="selectCode" resultMap="BaseResultMap" parameterType="java.util.List" >
+	select
+	 <include refid="Base_Column_List" />
+	from site_sluice_dynamic_info
+	where devicesluice_code in
+	<foreach collection="list" index="index" item="devicesluiceCode" open="(" separator="," close=")">
+		#{devicesluiceCode}
+	</foreach>
+	order by ssdi_create_time desc
+</select>
+
+<select id="selectLimit" resultMap="BaseResultMap" parameterType="java.lang.String">
+select  <include refid="Base_Column_List" />
+ from site_sluice_dynamic_info
+where devicesluice_code = #{deviceCode,jdbcType=VARCHAR}
+ORDER BY ssdi_create_time DESC LIMIT 1
+</select>
+
+<!--   根据时间日期查询 -->
+	<select id="selectDate"  resultMap="BaseResultMap" parameterType="map">
+		select
+		 <include refid="Base_Column_List" />
+		 from site_sluice_dynamic_info
+		 where ssdi_collect_time between #{startTime} and #{endTime} and devicesluice_code in   
+		 <foreach collection="Objectlist" index="index" item="devicesluiceCode" open="(" separator="," close=")">  
+	        #{devicesluiceCode} 
+	    </foreach>
+	    order by ssdi_create_time desc
+	</select>
+	<!-- 查询当前code的length -->
+	<select id="selectCodeLength" resultType="java.lang.Integer" parameterType="java.util.List">
+		select count(*)
+		from site_sluice_dynamic_info
+		where devicesluice_code in 
+	    <foreach collection="list" index="index" item="devicesluiceCode" open="(" separator="," close=")">  
+	        #{devicesluiceCode} 
+	    </foreach>
+	</select>
+	
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_sluice_dynamic_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from site_sluice_dynamic_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zyjz.site.entity.SiteSluiceDynamicInfo" >
+    insert into site_sluice_dynamic_info (id, devicesluice_code, ssdi_collect_time, 
+      ssdi_net_state, before_water_level, after_water_level, 
+      sluice_instant_speed, sluice_instant_flow, 
+      sluice_height1,instant_traffic, cumulative_traffic,gate_load1, sluice_height2, 
+      gate_load2, sluice_height3, gate_load3, 
+      sluice_height4, gate_load4, sluice_height5, 
+      gate_load5, sluice_height6, gate_load6, 
+      ssdi_create_time)
+    values (#{id,jdbcType=VARCHAR}, #{devicesluiceCode,jdbcType=VARCHAR}, #{ssdiCollectTime,jdbcType=TIMESTAMP}, 
+      #{ssdiNetState,jdbcType=INTEGER}, #{beforeWaterLevel,jdbcType=DECIMAL}, #{afterWaterLevel,jdbcType=DECIMAL}, 
+      #{sluiceInstantSpeed,jdbcType=DECIMAL}, #{sluiceInstantFlow,jdbcType=DECIMAL}, 
+      #{sluiceHeight1,jdbcType=DECIMAL}, #{gateLoad1,jdbcType=DECIMAL},#{instantTraffic,jdbcType=DECIMAL}, #{cumulativeTraffic,jdbcType=DECIMAL}, #{sluiceHeight2,jdbcType=DECIMAL}, 
+      #{gateLoad2,jdbcType=DECIMAL}, #{sluiceHeight3,jdbcType=DECIMAL}, #{gateLoad3,jdbcType=DECIMAL}, 
+      #{sluiceHeight4,jdbcType=DECIMAL}, #{gateLoad4,jdbcType=DECIMAL}, #{sluiceHeight5,jdbcType=DECIMAL}, 
+      #{gateLoad5,jdbcType=DECIMAL}, #{sluiceHeight6,jdbcType=DECIMAL}, #{gateLoad6,jdbcType=DECIMAL}, 
+      #{ssdiCreateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.site.entity.SiteSluiceDynamicInfo" >
+  <selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		
+  		SELECT UUID()
+  	</selectKey>
+    insert into site_sluice_dynamic_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="devicesluiceCode != null" >
+        devicesluice_code,
+      </if>
+      <if test="ssdiCollectTime != null" >
+        ssdi_collect_time,
+      </if>
+      <if test="ssdiNetState != null" >
+        ssdi_net_state,
+      </if>
+      <if test="beforeWaterLevel != null" >
+        before_water_level,
+      </if>
+      <if test="afterWaterLevel != null" >
+        after_water_level,
+      </if>
+      <if test="sluiceInstantSpeed != null" >
+        sluice_instant_speed,
+      </if>
+      <if test="sluiceInstantFlow != null" >
+        sluice_instant_flow,
+      </if>
+      <if test="sluiceHeight1 != null" >
+        sluice_height1,
+      </if>
+      <if test="instantTraffic != null" >
+        instant_traffic,
+      </if>
+      <if test="cumulativeTraffic != null" >
+        cumulative_traffic,
+      </if>
+      <if test="gateLoad1 != null" >
+        gate_load1,
+      </if>
+      <if test="sluiceHeight2 != null" >
+        sluice_height2,
+      </if>
+      <if test="gateLoad2 != null" >
+        gate_load2,
+      </if>
+      <if test="sluiceHeight3 != null" >
+        sluice_height3,
+      </if>
+      <if test="gateLoad3 != null" >
+        gate_load3,
+      </if>
+      <if test="sluiceHeight4 != null" >
+        sluice_height4,
+      </if>
+      <if test="gateLoad4 != null" >
+        gate_load4,
+      </if>
+      <if test="sluiceHeight5 != null" >
+        sluice_height5,
+      </if>
+      <if test="gateLoad5 != null" >
+        gate_load5,
+      </if>
+      <if test="sluiceHeight6 != null" >
+        sluice_height6,
+      </if>
+      <if test="gateLoad6 != null" >
+        gate_load6,
+      </if>
+      <if test="ssdiCreateTime != null" >
+        ssdi_create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="devicesluiceCode != null" >
+        #{devicesluiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssdiCollectTime != null" >
+        #{ssdiCollectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssdiNetState != null" >
+        #{ssdiNetState,jdbcType=INTEGER},
+      </if>
+      <if test="beforeWaterLevel != null" >
+        #{beforeWaterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="afterWaterLevel != null" >
+        #{afterWaterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceInstantSpeed != null" >
+        #{sluiceInstantSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceInstantFlow != null" >
+        #{sluiceInstantFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight1 != null" >
+        #{sluiceHeight1,jdbcType=DECIMAL},
+      </if>
+        <if test="instantTraffic != null" >
+        #{instantTraffic,jdbcType=DECIMAL},
+      </if>
+      <if test="cumulativeTraffic != null" >
+        #{cumulativeTraffic,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad1 != null" >
+        #{gateLoad1,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight2 != null" >
+        #{sluiceHeight2,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad2 != null" >
+        #{gateLoad2,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight3 != null" >
+        #{sluiceHeight3,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad3 != null" >
+        #{gateLoad3,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight4 != null" >
+        #{sluiceHeight4,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad4 != null" >
+        #{gateLoad4,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight5 != null" >
+        #{sluiceHeight5,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad5 != null" >
+        #{gateLoad5,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight6 != null" >
+        #{sluiceHeight6,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad6 != null" >
+        #{gateLoad6,jdbcType=DECIMAL},
+      </if>
+      <if test="ssdiCreateTime != null" >
+        #{ssdiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update site_sluice_dynamic_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.devicesluiceCode != null" >
+        devicesluice_code = #{record.devicesluiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ssdiCollectTime != null" >
+        ssdi_collect_time = #{record.ssdiCollectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ssdiNetState != null" >
+        ssdi_net_state = #{record.ssdiNetState,jdbcType=INTEGER},
+      </if>
+      <if test="record.beforeWaterLevel != null" >
+        before_water_level = #{record.beforeWaterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="record.afterWaterLevel != null" >
+        after_water_level = #{record.afterWaterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sluiceInstantSpeed != null" >
+        sluice_instant_speed = #{record.sluiceInstantSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sluiceInstantFlow != null" >
+        sluice_instant_flow = #{record.sluiceInstantFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sluiceHeight1 != null" >
+        sluice_height1 = #{record.sluiceHeight1,jdbcType=DECIMAL},
+      </if>
+      <if test="record.instantTraffic != null" >
+       instant_traffic = #{record.instantTraffic,jdbcType=DECIMAL},
+      </if>
+      <if test="record.cumulativeTraffic != null" >
+      cumulative_traffic = #{record.cumulativeTraffic,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gateLoad1 != null" >
+        gate_load1 = #{record.gateLoad1,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sluiceHeight2 != null" >
+        sluice_height2 = #{record.sluiceHeight2,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gateLoad2 != null" >
+        gate_load2 = #{record.gateLoad2,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sluiceHeight3 != null" >
+        sluice_height3 = #{record.sluiceHeight3,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gateLoad3 != null" >
+        gate_load3 = #{record.gateLoad3,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sluiceHeight4 != null" >
+        sluice_height4 = #{record.sluiceHeight4,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gateLoad4 != null" >
+        gate_load4 = #{record.gateLoad4,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sluiceHeight5 != null" >
+        sluice_height5 = #{record.sluiceHeight5,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gateLoad5 != null" >
+        gate_load5 = #{record.gateLoad5,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sluiceHeight6 != null" >
+        sluice_height6 = #{record.sluiceHeight6,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gateLoad6 != null" >
+        gate_load6 = #{record.gateLoad6,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ssdiCreateTime != null" >
+        ssdi_create_time = #{record.ssdiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update site_sluice_dynamic_info
+    set id = #{record.id,jdbcType=VARCHAR},
+      devicesluice_code = #{record.devicesluiceCode,jdbcType=VARCHAR},
+      ssdi_collect_time = #{record.ssdiCollectTime,jdbcType=TIMESTAMP},
+      ssdi_net_state = #{record.ssdiNetState,jdbcType=INTEGER},
+      before_water_level = #{record.beforeWaterLevel,jdbcType=DECIMAL},
+      after_water_level = #{record.afterWaterLevel,jdbcType=DECIMAL},
+      sluice_instant_speed = #{record.sluiceInstantSpeed,jdbcType=DECIMAL},
+      sluice_instant_flow = #{record.sluiceInstantFlow,jdbcType=DECIMAL},
+      sluice_height1 = #{record.sluiceHeight1,jdbcType=DECIMAL},
+      instant_traffic = #{record.instantTraffic,jdbcType=DECIMAL},
+      cumulative_traffic = #{record.cumulativeTraffic,jdbcType=DECIMAL},
+      gate_load1 = #{record.gateLoad1,jdbcType=DECIMAL},
+      sluice_height2 = #{record.sluiceHeight2,jdbcType=DECIMAL},
+      gate_load2 = #{record.gateLoad2,jdbcType=DECIMAL},
+      sluice_height3 = #{record.sluiceHeight3,jdbcType=DECIMAL},
+      gate_load3 = #{record.gateLoad3,jdbcType=DECIMAL},
+      sluice_height4 = #{record.sluiceHeight4,jdbcType=DECIMAL},
+      gate_load4 = #{record.gateLoad4,jdbcType=DECIMAL},
+      sluice_height5 = #{record.sluiceHeight5,jdbcType=DECIMAL},
+      gate_load5 = #{record.gateLoad5,jdbcType=DECIMAL},
+      sluice_height6 = #{record.sluiceHeight6,jdbcType=DECIMAL},
+      gate_load6 = #{record.gateLoad6,jdbcType=DECIMAL},
+      ssdi_create_time = #{record.ssdiCreateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.site.entity.SiteSluiceDynamicInfo" >
+    update site_sluice_dynamic_info
+    <set >
+      <if test="devicesluiceCode != null" >
+        devicesluice_code = #{devicesluiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ssdiCollectTime != null" >
+        ssdi_collect_time = #{ssdiCollectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssdiNetState != null" >
+        ssdi_net_state = #{ssdiNetState,jdbcType=INTEGER},
+      </if>
+      <if test="beforeWaterLevel != null" >
+        before_water_level = #{beforeWaterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="afterWaterLevel != null" >
+        after_water_level = #{afterWaterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceInstantSpeed != null" >
+        sluice_instant_speed = #{sluiceInstantSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceInstantFlow != null" >
+        sluice_instant_flow = #{sluiceInstantFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight1 != null" >
+        sluice_height1 = #{sluiceHeight1,jdbcType=DECIMAL},
+      </if>
+       <if test="instantTraffic != null" >
+        instant_traffic = #{instantTraffic,jdbcType=DECIMAL},
+      </if>
+       <if test="cumulativeTraffic != null" >
+        cumulative_traffic = #{cumulativeTraffic,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad1 != null" >
+        gate_load1 = #{gateLoad1,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight2 != null" >
+        sluice_height2 = #{sluiceHeight2,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad2 != null" >
+        gate_load2 = #{gateLoad2,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight3 != null" >
+        sluice_height3 = #{sluiceHeight3,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad3 != null" >
+        gate_load3 = #{gateLoad3,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight4 != null" >
+        sluice_height4 = #{sluiceHeight4,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad4 != null" >
+        gate_load4 = #{gateLoad4,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight5 != null" >
+        sluice_height5 = #{sluiceHeight5,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad5 != null" >
+        gate_load5 = #{gateLoad5,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight6 != null" >
+        sluice_height6 = #{sluiceHeight6,jdbcType=DECIMAL},
+      </if>
+      <if test="gateLoad6 != null" >
+        gate_load6 = #{gateLoad6,jdbcType=DECIMAL},
+      </if>
+      <if test="ssdiCreateTime != null" >
+        ssdi_create_time = #{ssdiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.site.entity.SiteSluiceDynamicInfo" >
+    update site_sluice_dynamic_info
+    set devicesluice_code = #{devicesluiceCode,jdbcType=VARCHAR},
+      ssdi_collect_time = #{ssdiCollectTime,jdbcType=TIMESTAMP},
+      ssdi_net_state = #{ssdiNetState,jdbcType=INTEGER},
+      before_water_level = #{beforeWaterLevel,jdbcType=DECIMAL},
+      after_water_level = #{afterWaterLevel,jdbcType=DECIMAL},
+      sluice_instant_speed = #{sluiceInstantSpeed,jdbcType=DECIMAL},
+      sluice_instant_flow = #{sluiceInstantFlow,jdbcType=DECIMAL},
+      sluice_height1 = #{sluiceHeight1,jdbcType=DECIMAL},
+      instant_traffic = #{instantTraffic,jdbcType=DECIMAL},
+      cumulative_traffic = #{cumulativeTraffic,jdbcType=DECIMAL},
+      gate_load1 = #{gateLoad1,jdbcType=DECIMAL},
+      sluice_height2 = #{sluiceHeight2,jdbcType=DECIMAL},
+      gate_load2 = #{gateLoad2,jdbcType=DECIMAL},
+      sluice_height3 = #{sluiceHeight3,jdbcType=DECIMAL},
+      gate_load3 = #{gateLoad3,jdbcType=DECIMAL},
+      sluice_height4 = #{sluiceHeight4,jdbcType=DECIMAL},
+      gate_load4 = #{gateLoad4,jdbcType=DECIMAL},
+      sluice_height5 = #{sluiceHeight5,jdbcType=DECIMAL},
+      gate_load5 = #{gateLoad5,jdbcType=DECIMAL},
+      sluice_height6 = #{sluiceHeight6,jdbcType=DECIMAL},
+      gate_load6 = #{gateLoad6,jdbcType=DECIMAL},
+      ssdi_create_time = #{ssdiCreateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

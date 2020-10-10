@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.site.dao.SiteYearFlowMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.site.entity.SiteYearFlow" >
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="WATER_CODE" jdbcType="VARCHAR" property="waterCode" />
+    <result column="WATER_NAME" jdbcType="VARCHAR" property="waterName" />
+    <result column="YEAR_FLOW" jdbcType="DECIMAL" property="yearFlow" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="IN_YEAR" jdbcType="INTEGER" property="inYear" />
+    <result column="DEVICE_TYPE" jdbcType="VARCHAR" property="deviceType" />
+    <result column="TEMP1" jdbcType="VARCHAR" property="temp1" />
+    <result column="TEMP2" jdbcType="VARCHAR" property="temp2" />
+    <result column="TEMP3" jdbcType="VARCHAR" property="temp3" />
+    <result column="TEMP4" jdbcType="VARCHAR" property="temp4" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, WATER_CODE, WATER_NAME, YEAR_FLOW, CREATE_TIME, IN_YEAR, DEVICE_TYPE, TEMP1,
+    TEMP2, TEMP3, TEMP4
+  </sql>
+
+  <select id="selectSYFWithCodeAndTime" parameterType="java.lang.String" resultType="java.lang.Integer" >
+    select count(*) from site_year_flow
+    where WATER_CODE = #{code,jdbcType=VARCHAR} and DATE_FORMAT(CREATE_TIME,'%Y') = #{time}
+  </select>
+
+  <select id="findSiteYearFlowList" resultMap="BaseResultMap">
+    select
+    ID, WATER_CODE, WATER_NAME, YEAR_FLOW, CREATE_TIME, ROUND(SUM(YEAR_FLOW)/#{number},3) as avgYearFlow, DEVICE_TYPE
+    from site_year_flow
+    where DATE_FORMAT(CREATE_TIME,'%Y') = #{time} GROUP BY WATER_CODE
+  </select>
+
+  <!--查询当年是否有数据信息-->
+  <select id="selectInfoByCodeAndTime" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from site_year_flow
+    where WATER_CODE = #{waterCode}
+    and IN_YEAR = #{year}
+    and DEVICE_TYPE = #{deviceType}
+  </select>
+
+  <!--年引水量查询-->
+  <select id="selectSiteYearFlowListByCanalCode" resultMap="BaseResultMap">
+    select syf.*
+    from site_year_flow syf
+    LEFT JOIN site_middle_canal smc on syf.WATER_CODE = smc.site_water_code
+    where smc.canal_code = #{canalCode}
+    and syf.IN_YEAR = #{year}
+  </select>
+
+<!--  <insert id="insert" parameterType="com.zyjz.wxInterface.user.model.SiteYearFlow" >
+    insert into site_year_flow (ID, SYF_WATER_CODE, SYF_WATER__NAME, 
+      YEAR_FLOW, SYF_CREATE_TIME, SYF_TYPE, 
+      TEMP1, TEMP2, TEMP3, 
+      TEMP4)
+    values (#{id,jdbcType=INTEGER}, #{syfWaterCode,jdbcType=VARCHAR}, #{syfWaterName,jdbcType=VARCHAR}, 
+      #{yearFlow,jdbcType=DECIMAL}, #{syfCreateTime,jdbcType=TIMESTAMP}, #{syfType,jdbcType=VARCHAR}, 
+      #{temp1,jdbcType=VARCHAR}, #{temp2,jdbcType=VARCHAR}, #{temp3,jdbcType=VARCHAR}, 
+      #{temp4,jdbcType=VARCHAR})
+  </insert>-->
+
+  <insert id="insertSYFWithCodeAndTime" parameterType="com.zyjz.site.entity.SiteYearFlow" >
+    insert into site_year_flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="waterCode != null">
+        WATER_CODE,
+      </if>
+      <if test="waterName != null">
+        WATER_NAME,
+      </if>
+      <if test="yearFlow != null">
+        YEAR_FLOW,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="inYear != null">
+        IN_YEAR,
+      </if>
+      <if test="deviceType != null">
+        DEVICE_TYPE,
+      </if>
+      <if test="temp1 != null">
+        TEMP1,
+      </if>
+      <if test="temp2 != null">
+        TEMP2,
+      </if>
+      <if test="temp3 != null">
+        TEMP3,
+      </if>
+      <if test="temp4 != null">
+        TEMP4,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="waterCode != null">
+        #{waterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterName != null">
+        #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="yearFlow != null">
+        #{yearFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inYear != null">
+        #{inYear,jdbcType=INTEGER},
+      </if>
+      <if test="deviceType != null">
+        #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="temp1 != null">
+        #{temp1,jdbcType=VARCHAR},
+      </if>
+      <if test="temp2 != null">
+        #{temp2,jdbcType=VARCHAR},
+      </if>
+      <if test="temp3 != null">
+        #{temp3,jdbcType=VARCHAR},
+      </if>
+      <if test="temp4 != null">
+        #{temp4,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateSYFWithCodeAndTime" parameterType="com.zyjz.site.entity.SiteYearFlow" >
+    update site_year_flow
+    <set>
+      <if test="waterCode != null">
+        WATER_CODE = #{waterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterName != null">
+        WATER_NAME = #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="yearFlow != null">
+        YEAR_FLOW = #{yearFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inYear != null">
+        IN_YEAR = #{inYear,jdbcType=INTEGER},
+      </if>
+      <if test="deviceType != null">
+        DEVICE_TYPE = #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="temp1 != null">
+        TEMP1 = #{temp1,jdbcType=VARCHAR},
+      </if>
+      <if test="temp2 != null">
+        TEMP2 = #{temp2,jdbcType=VARCHAR},
+      </if>
+      <if test="temp3 != null">
+        TEMP3 = #{temp3,jdbcType=VARCHAR},
+      </if>
+      <if test="temp4 != null">
+        TEMP4 = #{temp4,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where WATER_CODE = #{syfWaterCode,jdbcType=VARCHAR}
+    and DATE_FORMAT(CREATE_TIME,'%Y') = DATE_FORMAT(#{syfCreateTime,jdbcType=TIMESTAMP},'%Y')
+  </update>
+
+  <insert id="insert" parameterType="com.zyjz.site.entity.SiteYearFlow">
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    insert into site_year_flow (ID, WATER_CODE, WATER_NAME,
+    YEAR_FLOW, CREATE_TIME, IN_YEAR,
+    DEVICE_TYPE, TEMP1, TEMP2,
+    TEMP3, TEMP4)
+    values (#{id,jdbcType=INTEGER}, #{waterCode,jdbcType=VARCHAR}, #{waterName,jdbcType=VARCHAR},
+    #{yearFlow,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{inYear,jdbcType=INTEGER},
+    #{deviceType,jdbcType=VARCHAR}, #{temp1,jdbcType=VARCHAR}, #{temp2,jdbcType=VARCHAR},
+    #{temp3,jdbcType=VARCHAR}, #{temp4,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.zyjz.site.entity.SiteYearFlow">
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    insert into site_year_flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="waterCode != null">
+        WATER_CODE,
+      </if>
+      <if test="waterName != null">
+        WATER_NAME,
+      </if>
+      <if test="yearFlow != null">
+        YEAR_FLOW,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="inYear != null">
+        IN_YEAR,
+      </if>
+      <if test="deviceType != null">
+        DEVICE_TYPE,
+      </if>
+      <if test="temp1 != null">
+        TEMP1,
+      </if>
+      <if test="temp2 != null">
+        TEMP2,
+      </if>
+      <if test="temp3 != null">
+        TEMP3,
+      </if>
+      <if test="temp4 != null">
+        TEMP4,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="waterCode != null">
+        #{waterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterName != null">
+        #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="yearFlow != null">
+        #{yearFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inYear != null">
+        #{inYear,jdbcType=INTEGER},
+      </if>
+      <if test="deviceType != null">
+        #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="temp1 != null">
+        #{temp1,jdbcType=VARCHAR},
+      </if>
+      <if test="temp2 != null">
+        #{temp2,jdbcType=VARCHAR},
+      </if>
+      <if test="temp3 != null">
+        #{temp3,jdbcType=VARCHAR},
+      </if>
+      <if test="temp4 != null">
+        #{temp4,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.site.entity.SiteYearFlow">
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    update site_year_flow
+    <set>
+      <if test="waterCode != null">
+        WATER_CODE = #{waterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterName != null">
+        WATER_NAME = #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="yearFlow != null">
+        YEAR_FLOW = #{yearFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inYear != null">
+        IN_YEAR = #{inYear,jdbcType=INTEGER},
+      </if>
+      <if test="deviceType != null">
+        DEVICE_TYPE = #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="temp1 != null">
+        TEMP1 = #{temp1,jdbcType=VARCHAR},
+      </if>
+      <if test="temp2 != null">
+        TEMP2 = #{temp2,jdbcType=VARCHAR},
+      </if>
+      <if test="temp3 != null">
+        TEMP3 = #{temp3,jdbcType=VARCHAR},
+      </if>
+      <if test="temp4 != null">
+        TEMP4 = #{temp4,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.site.entity.SiteYearFlow">
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    update site_year_flow
+    set WATER_CODE = #{waterCode,jdbcType=VARCHAR},
+    WATER_NAME = #{waterName,jdbcType=VARCHAR},
+    YEAR_FLOW = #{yearFlow,jdbcType=DECIMAL},
+    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+    IN_YEAR = #{inYear,jdbcType=INTEGER},
+    DEVICE_TYPE = #{deviceType,jdbcType=VARCHAR},
+    TEMP1 = #{temp1,jdbcType=VARCHAR},
+    TEMP2 = #{temp2,jdbcType=VARCHAR},
+    TEMP3 = #{temp3,jdbcType=VARCHAR},
+    TEMP4 = #{temp4,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

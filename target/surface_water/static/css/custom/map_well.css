@@ -1,0 +1,10 @@
+#righteject_well{ position:absolute; top:0px; left:40px; z-index:900000000;
+_position:absolute;/*兼容IE6*/
+/*_top: expression(offsetParent.scrollTop+document.documentElement.clientHeight-this.offsetHeight);始终位于底部*/
+_top: expression(documentElement.scrollTop+200);}/*兼容IE6*/
+.rightejecttit_well{border-bottom-left-radius:10px;border-bottom-right-radius:10px;filter:alpha(Opacity=80);-moz-opacity:0.7;opacity: 0.7; width:0;height:0; text-align:center;display:block;cursor:pointer;
+background-color:#000; color:#FFF; }
+.rightejectcon_well{ width:300px; height:0px;overflow:hidden; float:right;
+background-color:#CCC;}
+.rightejecttit_well span{ position:relative; top:50%;display:block;z-index:910000000;}
+.rightejectthis_well{ background-color:blue}

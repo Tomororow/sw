@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.watersupply.dao.SynPipeNetworkMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.watersupply.entity.SynPipeNetwork" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="waterworks_id" property="waterworksId" jdbcType="VARCHAR" />
+    <result column="equipment_id" property="equipmentId" jdbcType="VARCHAR" />
+    <result column="pumping_house_id" property="pumpingHouseId" jdbcType="VARCHAR" />
+    <result column="pipe_network_name" property="pipeNetworkName" jdbcType="VARCHAR" />
+    <result column="pipe_network_num" property="pipeNetworkNum" jdbcType="VARCHAR" />
+    <result column="pipe_network_parent_id" property="pipeNetworkParentId" jdbcType="VARCHAR" />
+    <result column="pipe_network_level_code" property="pipeNetworkLevelCode" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="pipe_network_length" property="pipeNetworkLength" jdbcType="DECIMAL" />
+    <result column="pipe_network_type" property="pipeNetworkType" jdbcType="VARCHAR" />
+    <result column="pipe_network_creation_time" property="pipeNetworkCreationTime" jdbcType="TIMESTAMP" />
+    <result column="pipe_network_update_time" property="pipeNetworkUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="pipe_network_remark" property="pipeNetworkRemark" jdbcType="VARCHAR" />
+    <result column="pipe_network_comm1" property="pipeNetworkComm1" jdbcType="VARCHAR" />
+    <result column="pipe_network_comm2" property="pipeNetworkComm2" jdbcType="VARCHAR" />
+    <result column="pipe_network_comm3" property="pipeNetworkComm3" jdbcType="VARCHAR" />
+    <result column="pipe_network_comm4" property="pipeNetworkComm4" jdbcType="VARCHAR" />
+    <result column="pipe_network_comm5" property="pipeNetworkComm5" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, waterworks_id, equipment_id, pumping_house_id, pipe_network_name, pipe_network_num, 
+    pipe_network_parent_id, pipe_network_level_code, description, pipe_network_length, 
+    pipe_network_type, pipe_network_creation_time, pipe_network_update_time, pipe_network_remark, 
+    pipe_network_comm1, pipe_network_comm2, pipe_network_comm3, pipe_network_comm4, pipe_network_comm5
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from syn_pipe_network
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from syn_pipe_network
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.watersupply.entity.SynPipeNetwork" >
+    insert into syn_pipe_network (id, waterworks_id, equipment_id, 
+      pumping_house_id, pipe_network_name, pipe_network_num, 
+      pipe_network_parent_id, pipe_network_level_code, 
+      description, pipe_network_length, pipe_network_type, 
+      pipe_network_creation_time, pipe_network_update_time, 
+      pipe_network_remark, pipe_network_comm1, pipe_network_comm2, 
+      pipe_network_comm3, pipe_network_comm4, pipe_network_comm5
+      )
+    values (#{id,jdbcType=VARCHAR}, #{waterworksId,jdbcType=VARCHAR}, #{equipmentId,jdbcType=VARCHAR}, 
+      #{pumpingHouseId,jdbcType=VARCHAR}, #{pipeNetworkName,jdbcType=VARCHAR}, #{pipeNetworkNum,jdbcType=VARCHAR}, 
+      #{pipeNetworkParentId,jdbcType=VARCHAR}, #{pipeNetworkLevelCode,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{pipeNetworkLength,jdbcType=DECIMAL}, #{pipeNetworkType,jdbcType=VARCHAR}, 
+      #{pipeNetworkCreationTime,jdbcType=TIMESTAMP}, #{pipeNetworkUpdateTime,jdbcType=TIMESTAMP}, 
+      #{pipeNetworkRemark,jdbcType=VARCHAR}, #{pipeNetworkComm1,jdbcType=VARCHAR}, #{pipeNetworkComm2,jdbcType=VARCHAR}, 
+      #{pipeNetworkComm3,jdbcType=VARCHAR}, #{pipeNetworkComm4,jdbcType=VARCHAR}, #{pipeNetworkComm5,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.watersupply.entity.SynPipeNetwork" >
+  <selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		
+  		SELECT UUID()
+  	</selectKey>
+    insert into syn_pipe_network
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="waterworksId != null" >
+        waterworks_id,
+      </if>
+      <if test="equipmentId != null" >
+        equipment_id,
+      </if>
+      <if test="pumpingHouseId != null" >
+        pumping_house_id,
+      </if>
+      <if test="pipeNetworkName != null" >
+        pipe_network_name,
+      </if>
+      <if test="pipeNetworkNum != null" >
+        pipe_network_num,
+      </if>
+      <if test="pipeNetworkParentId != null" >
+        pipe_network_parent_id,
+      </if>
+      <if test="pipeNetworkLevelCode != null" >
+        pipe_network_level_code,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="pipeNetworkLength != null" >
+        pipe_network_length,
+      </if>
+      <if test="pipeNetworkType != null" >
+        pipe_network_type,
+      </if>
+      <if test="pipeNetworkCreationTime != null" >
+        pipe_network_creation_time,
+      </if>
+      <if test="pipeNetworkUpdateTime != null" >
+        pipe_network_update_time,
+      </if>
+      <if test="pipeNetworkRemark != null" >
+        pipe_network_remark,
+      </if>
+      <if test="pipeNetworkComm1 != null" >
+        pipe_network_comm1,
+      </if>
+      <if test="pipeNetworkComm2 != null" >
+        pipe_network_comm2,
+      </if>
+      <if test="pipeNetworkComm3 != null" >
+        pipe_network_comm3,
+      </if>
+      <if test="pipeNetworkComm4 != null" >
+        pipe_network_comm4,
+      </if>
+      <if test="pipeNetworkComm5 != null" >
+        pipe_network_comm5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="waterworksId != null" >
+        #{waterworksId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentId != null" >
+        #{equipmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingHouseId != null" >
+        #{pumpingHouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkName != null" >
+        #{pipeNetworkName,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkNum != null" >
+        #{pipeNetworkNum,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkParentId != null" >
+        #{pipeNetworkParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkLevelCode != null" >
+        #{pipeNetworkLevelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkLength != null" >
+        #{pipeNetworkLength,jdbcType=DECIMAL},
+      </if>
+      <if test="pipeNetworkType != null" >
+        #{pipeNetworkType,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkCreationTime != null" >
+        #{pipeNetworkCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pipeNetworkUpdateTime != null" >
+        #{pipeNetworkUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pipeNetworkRemark != null" >
+        #{pipeNetworkRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkComm1 != null" >
+        #{pipeNetworkComm1,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkComm2 != null" >
+        #{pipeNetworkComm2,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkComm3 != null" >
+        #{pipeNetworkComm3,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkComm4 != null" >
+        #{pipeNetworkComm4,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkComm5 != null" >
+        #{pipeNetworkComm5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.watersupply.entity.SynPipeNetwork" >
+    update syn_pipe_network
+    <set >
+      <if test="waterworksId != null" >
+        waterworks_id = #{waterworksId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentId != null" >
+        equipment_id = #{equipmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingHouseId != null" >
+        pumping_house_id = #{pumpingHouseId,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkName != null" >
+        pipe_network_name = #{pipeNetworkName,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkNum != null" >
+        pipe_network_num = #{pipeNetworkNum,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkParentId != null" >
+        pipe_network_parent_id = #{pipeNetworkParentId,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkLevelCode != null" >
+        pipe_network_level_code = #{pipeNetworkLevelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkLength != null" >
+        pipe_network_length = #{pipeNetworkLength,jdbcType=DECIMAL},
+      </if>
+      <if test="pipeNetworkType != null" >
+        pipe_network_type = #{pipeNetworkType,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkCreationTime != null" >
+        pipe_network_creation_time = #{pipeNetworkCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pipeNetworkUpdateTime != null" >
+        pipe_network_update_time = #{pipeNetworkUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pipeNetworkRemark != null" >
+        pipe_network_remark = #{pipeNetworkRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkComm1 != null" >
+        pipe_network_comm1 = #{pipeNetworkComm1,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkComm2 != null" >
+        pipe_network_comm2 = #{pipeNetworkComm2,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkComm3 != null" >
+        pipe_network_comm3 = #{pipeNetworkComm3,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkComm4 != null" >
+        pipe_network_comm4 = #{pipeNetworkComm4,jdbcType=VARCHAR},
+      </if>
+      <if test="pipeNetworkComm5 != null" >
+        pipe_network_comm5 = #{pipeNetworkComm5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.watersupply.entity.SynPipeNetwork" >
+    update syn_pipe_network
+    set waterworks_id = #{waterworksId,jdbcType=VARCHAR},
+      equipment_id = #{equipmentId,jdbcType=VARCHAR},
+      pumping_house_id = #{pumpingHouseId,jdbcType=VARCHAR},
+      pipe_network_name = #{pipeNetworkName,jdbcType=VARCHAR},
+      pipe_network_num = #{pipeNetworkNum,jdbcType=VARCHAR},
+      pipe_network_parent_id = #{pipeNetworkParentId,jdbcType=VARCHAR},
+      pipe_network_level_code = #{pipeNetworkLevelCode,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      pipe_network_length = #{pipeNetworkLength,jdbcType=DECIMAL},
+      pipe_network_type = #{pipeNetworkType,jdbcType=VARCHAR},
+      pipe_network_creation_time = #{pipeNetworkCreationTime,jdbcType=TIMESTAMP},
+      pipe_network_update_time = #{pipeNetworkUpdateTime,jdbcType=TIMESTAMP},
+      pipe_network_remark = #{pipeNetworkRemark,jdbcType=VARCHAR},
+      pipe_network_comm1 = #{pipeNetworkComm1,jdbcType=VARCHAR},
+      pipe_network_comm2 = #{pipeNetworkComm2,jdbcType=VARCHAR},
+      pipe_network_comm3 = #{pipeNetworkComm3,jdbcType=VARCHAR},
+      pipe_network_comm4 = #{pipeNetworkComm4,jdbcType=VARCHAR},
+      pipe_network_comm5 = #{pipeNetworkComm5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

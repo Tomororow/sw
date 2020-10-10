@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.ReservoirWaterLevelVolumMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.ReservoirWaterLevelVolum" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="reservoir_code" property="reservoirCode" jdbcType="VARCHAR" />
+    <result column="water_hight_level" property="waterHightLevel" jdbcType="DECIMAL" />
+    <result column="volume" property="volume" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_people" property="createPeople" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, reservoir_code, water_hight_level, volume, create_time, create_people, remark
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from reservoir_water_level_volum
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="findAllReservoirWaterLevelVolumsByReservoirCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from reservoir_water_level_volum
+    where reservoir_code = #{reservoirCode,jdbcType=VARCHAR}
+    order by water_hight_level ASC
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from reservoir_water_level_volum
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+ 
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.ReservoirWaterLevelVolum" >
+    insert into reservoir_water_level_volum (id, reservoir_code, water_hight_level, 
+      volume, create_time, create_people, 
+      remark)
+    values (#{id,jdbcType=VARCHAR}, #{reservoirCode,jdbcType=VARCHAR}, #{waterHightLevel,jdbcType=DECIMAL}, 
+      #{volume,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{createPeople,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.ReservoirWaterLevelVolum" >
+    insert into reservoir_water_level_volum
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reservoirCode != null" >
+        reservoir_code,
+      </if>
+      <if test="waterHightLevel != null" >
+        water_hight_level,
+      </if>
+      <if test="volume != null" >
+        volume,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createPeople != null" >
+        create_people,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="reservoirCode != null" >
+        #{reservoirCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterHightLevel != null" >
+        #{waterHightLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="volume != null" >
+        #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPeople != null" >
+        #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.ReservoirWaterLevelVolum" >
+    update reservoir_water_level_volum
+    <set >
+      <if test="reservoirCode != null" >
+        reservoir_code = #{reservoirCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterHightLevel != null" >
+        water_hight_level = #{waterHightLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPeople != null" >
+        create_people = #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.ReservoirWaterLevelVolum" >
+    update reservoir_water_level_volum
+    set reservoir_code = #{reservoirCode,jdbcType=VARCHAR},
+      water_hight_level = #{waterHightLevel,jdbcType=DECIMAL},
+      volume = #{volume,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_people = #{createPeople,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

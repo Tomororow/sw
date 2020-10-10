@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.user.dao.SysPermissionMapper">
+	<resultMap id="BaseResultMap" type="com.zyjz.user.entity.SysPermission">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="menu_code" property="menuCode" jdbcType="INTEGER" />
+		<result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+		<result column="menu_name_code" property="menuNameCode" jdbcType="VARCHAR" />
+		
+		
+		<result column="menu_level" property="menuLevel" jdbcType="INTEGER" />
+		<result column="menu_order" property="menuOrder" jdbcType="INTEGER" />
+		<result column="parent_menu_id" property="parentMenuId" jdbcType="VARCHAR" />
+		<result column="menu_href" property="menuHref" jdbcType="VARCHAR" />
+		<result column="is_menu" property="isMenu" jdbcType="INTEGER" />
+		<result column="is_mable" property="isMable" jdbcType="INTEGER" />
+		<result column="menu_icon" property="menuIcon" jdbcType="VARCHAR" />
+		<result column="sm_create_time" property="smCreateTime" jdbcType="TIMESTAMP" />
+		<result column="sm_edit_time" property="smEditTime" jdbcType="TIMESTAMP" />
+		<result column="sm_remark" property="smRemark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, menu_code, menu_name,menu_name_code, menu_level, menu_order, parent_menu_id,
+		menu_href,is_menu,is_mable, menu_icon,
+		sm_create_time, sm_edit_time, sm_remark
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_permission
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAllPermission" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_permission 
+		order by  menu_level,menu_code,menu_order ASC
+	</select>
+	
+	<select id="findPermissionByMenuLevel" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from sys_permission
+		
+		where menu_level = #{menuLevel,jdbcType=INTEGER}
+	</select>
+	
+	<select id="findPermissionByPId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_permission
+		
+		where parent_menu_id = #{parentMenuId,jdbcType=VARCHAR}
+	</select>
+	
+	<!--更据id集合查询  -->
+	<select id="findPermissionByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_permission
+    where id in 
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">  
+        #{id}  
+    </foreach>
+    order by menu_level,menu_order ASC
+  </select>
+	
+	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from sys_permission
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.zyjz.user.entity.SysPermission">
+		insert into sys_permission (id, menu_code, menu_name,menu_name_code,
+		menu_level, menu_order, parent_menu_id,
+		menu_href, is_menu,is_mable,menu_icon, sm_create_time,
+		sm_edit_time, sm_remark)
+		values (#{id,jdbcType=VARCHAR}, #{menuCode,jdbcType=INTEGER},
+		#{menuName,jdbcType=VARCHAR},#{menuNameCode,jdbcType=VARCHAR},
+		#{menuLevel,jdbcType=INTEGER}, #{menuOrder,jdbcType=INTEGER}, #{parentMenuId,jdbcType=VARCHAR},
+		#{menuHref,jdbcType=VARCHAR},#{isMenu,jdbcType=INTEGER}
+		,#{isMable,jdbcType=INTEGER},#{menuIcon,jdbcType=VARCHAR},
+		#{smCreateTime,jdbcType=TIMESTAMP},
+		#{smEditTime,jdbcType=TIMESTAMP}, #{smRemark,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.zyjz.user.entity.SysPermission">
+		<selectKey keyColumn="id" keyProperty="id" order="BEFORE"
+			resultType="java.lang.String">
+			SELECT UUID()
+		</selectKey>
+		insert into sys_permission
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="menuCode != null">
+				menu_code,
+			</if>
+			<if test="menuName != null">
+				menu_name,
+			</if>
+			<if test="menuNameCode != null">
+				menu_name_code,
+			</if>
+			<if test="menuLevel != null">
+				menu_level,
+			</if>
+			<if test="menuOrder != null">
+				menu_order,
+			</if>
+			<if test="parentMenuId != null">
+				parent_menu_id,
+			</if>
+			<if test="menuHref != null">
+				menu_href,
+			</if>
+
+			<if test="isMenu !=null">
+				is_menu,
+			</if>
+			<if test="isMable !=null">
+				is_mable,
+			</if>
+			<if test="menuIcon != null">
+				menu_icon,
+			</if>
+			<if test="smCreateTime != null">
+				sm_create_time,
+			</if>
+			<if test="smEditTime != null">
+				sm_edit_time,
+			</if>
+			<if test="smRemark != null">
+				sm_remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="menuCode != null">
+				#{menuCode,jdbcType=INTEGER},
+			</if>
+			<if test="menuName != null">
+				#{menuName,jdbcType=VARCHAR},
+			</if>
+			<if test="menuNameCode != null">
+				#{menuNameCode,jdbcType=VARCHAR},
+			</if>
+			<if test="menuLevel != null">
+				#{menuLevel,jdbcType=INTEGER},
+			</if>
+			<if test="menuOrder != null">
+				#{menuOrder,jdbcType=INTEGER},
+			</if>
+			<if test="parentMenuId != null">
+				#{parentMenuId,jdbcType=VARCHAR},
+			</if>
+			<if test="menuHref != null">
+				#{menuHref,jdbcType=VARCHAR},
+			</if>
+			<if test="isMenu != null">
+				#{isMenu,jdbcType=VARCHAR},
+			</if>
+			<if test="isMable != null">
+				#{isMable,jdbcType=VARCHAR},
+			</if>
+			<if test="menuIcon != null">
+				#{menuIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="smCreateTime != null">
+				#{smCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="smEditTime != null">
+				#{smEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="smRemark != null">
+				#{smRemark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.zyjz.user.entity.SysPermission">
+		update sys_permission
+		<set>
+			<if test="menuCode != null">
+				menu_code = #{menuCode,jdbcType=INTEGER},
+			</if>
+			<if test="menuName != null">
+				menu_name = #{menuName,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="menuNameCode != null">
+				menu_name_code = #{menuNameCode,jdbcType=VARCHAR},
+			</if>
+			<if test="menuLevel != null">
+				menu_level = #{menuLevel,jdbcType=INTEGER},
+			</if>
+			<if test="menuOrder != null">
+				menu_order = #{menuOrder,jdbcType=INTEGER},
+			</if>
+			<if test="parentMenuId != null">
+				parent_menu_id = #{parentMenuId,jdbcType=VARCHAR},
+			</if>
+			<if test="menuHref != null">
+				menu_href = #{menuHref,jdbcType=VARCHAR},
+			</if>
+			<if test="isMenu != null">
+				is_menu = #{isMenu,jdbcType=VARCHAR},
+			</if>
+			<if test="isMable != null">
+				is_mable = #{isMable,jdbcType=VARCHAR},
+			</if>
+			<if test="menuIcon != null">
+				menu_icon = #{menuIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="smCreateTime != null">
+				sm_create_time = #{smCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="smEditTime != null">
+				sm_edit_time = #{smEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="smRemark != null">
+				sm_remark = #{smRemark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="com.zyjz.user.entity.SysPermission">
+		update sys_permission
+		set menu_code = #{menuCode,jdbcType=INTEGER},
+		menu_name = #{menuName,jdbcType=VARCHAR},
+		menu_level = #{menuLevel,jdbcType=INTEGER},
+		menu_order = #{menuOrder,jdbcType=INTEGER},
+		parent_menu_id = #{parentMenuId,jdbcType=VARCHAR},
+		menu_href = #{menuHref,jdbcType=VARCHAR},
+		menu_icon = #{menuIcon,jdbcType=VARCHAR},
+		sm_create_time = #{smCreateTime,jdbcType=TIMESTAMP},
+		sm_edit_time = #{smEditTime,jdbcType=TIMESTAMP},
+		sm_remark = #{smRemark,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

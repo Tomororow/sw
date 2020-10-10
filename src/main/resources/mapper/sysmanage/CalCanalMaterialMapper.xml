@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.CalCanalMaterialMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.CalCanalMaterial" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="canal_material_code" property="canalMaterialCode" jdbcType="INTEGER" />
+    <result column="canal_material_name" property="canalMaterialName" jdbcType="VARCHAR" />
+    <result column="ccm_create_time" property="ccmCreateTime" jdbcType="TIMESTAMP" />
+    <result column="ccm_edit_time" property="ccmEditTime" jdbcType="TIMESTAMP" />
+    <result column="ccm_remark" property="ccmRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, canal_material_code, canal_material_name, ccm_create_time, ccm_edit_time, ccm_remark
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_material
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_material
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cal_canal_material
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.CalCanalMaterial" >
+    insert into cal_canal_material (id, canal_material_code, canal_material_name, 
+      ccm_create_time, ccm_edit_time, ccm_remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{canalMaterialCode,jdbcType=INTEGER}, #{canalMaterialName,jdbcType=VARCHAR}, 
+      #{ccmCreateTime,jdbcType=TIMESTAMP}, #{ccmEditTime,jdbcType=TIMESTAMP}, #{ccmRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.CalCanalMaterial" >
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+  
+    insert into cal_canal_material
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="canalMaterialCode != null" >
+        canal_material_code,
+      </if>
+      <if test="canalMaterialName != null" >
+        canal_material_name,
+      </if>
+      <if test="ccmCreateTime != null" >
+        ccm_create_time,
+      </if>
+      <if test="ccmEditTime != null" >
+        ccm_edit_time,
+      </if>
+      <if test="ccmRemark != null" >
+        ccm_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="canalMaterialCode != null" >
+        #{canalMaterialCode,jdbcType=INTEGER},
+      </if>
+      <if test="canalMaterialName != null" >
+        #{canalMaterialName,jdbcType=VARCHAR},
+      </if>
+      <if test="ccmCreateTime != null" >
+        #{ccmCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ccmEditTime != null" >
+        #{ccmEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ccmRemark != null" >
+        #{ccmRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.CalCanalMaterial" >
+    update cal_canal_material
+    <set >
+      <if test="canalMaterialCode != null" >
+        canal_material_code = #{canalMaterialCode,jdbcType=INTEGER},
+      </if>
+      <if test="canalMaterialName != null" >
+        canal_material_name = #{canalMaterialName,jdbcType=VARCHAR},
+      </if>
+      <if test="ccmCreateTime != null" >
+        ccm_create_time = #{ccmCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ccmEditTime != null" >
+        ccm_edit_time = #{ccmEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ccmRemark != null" >
+        ccm_remark = #{ccmRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.CalCanalMaterial" >
+    update cal_canal_material
+    set canal_material_code = #{canalMaterialCode,jdbcType=INTEGER},
+      canal_material_name = #{canalMaterialName,jdbcType=VARCHAR},
+      ccm_create_time = #{ccmCreateTime,jdbcType=TIMESTAMP},
+      ccm_edit_time = #{ccmEditTime,jdbcType=TIMESTAMP},
+      ccm_remark = #{ccmRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.watersupply.dao.SynFpudMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.watersupply.entity.SynFpud" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="waterworks_id" property="waterworksId" jdbcType="VARCHAR" />
+    <result column="sysarea_id" property="sysareaId" jdbcType="VARCHAR" />
+    <result column="sysarea_code" property="sysareaCode" jdbcType="VARCHAR" />
+    <result column="fpud_number" property="fpudNumber" jdbcType="VARCHAR" />
+    <result column="fpud_name" property="fpudName" jdbcType="VARCHAR" />
+    <result column="photos" property="photos" jdbcType="VARCHAR" />
+    <result column="build_time" property="buildTime" jdbcType="TIMESTAMP" />
+    <result column="longitude" property="longitude" jdbcType="DECIMAL" />
+    <result column="latitude" property="latitude" jdbcType="DECIMAL" />
+    <result column="elevation" property="elevation" jdbcType="DECIMAL" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="sim_clip" property="simClip" jdbcType="VARCHAR" />
+    <result column="sim_clip_operator" property="simClipOperator" jdbcType="VARCHAR" />
+    <result column="creation_time" property="creationTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="comm1" property="comm1" jdbcType="VARCHAR" />
+    <result column="comm2" property="comm2" jdbcType="VARCHAR" />
+    <result column="comm3" property="comm3" jdbcType="VARCHAR" />
+    <result column="comm4" property="comm4" jdbcType="VARCHAR" />
+    <result column="comm5" property="comm5" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, waterworks_id, sysarea_id, sysarea_code, fpud_number, fpud_name, photos, build_time, 
+    longitude, latitude, elevation, address, sim_clip, sim_clip_operator, creation_time, 
+    update_time, comm1, comm2, comm3, comm4, comm5
+  </sql>
+ 
+  
+  <!-- 根据行政区id查询 -->
+	<select id="selectSysareaId" resultMap="BaseResultMap" parameterType="com.zyjz.watersupply.entity.SynFpud">
+		select
+		<include refid="Base_Column_List" />
+		from syn_fpud
+		where sysarea_id = #{sysarea_id,jdbcType=VARCHAR}
+	</select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from syn_fpud
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from syn_fpud
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.watersupply.entity.SynFpud" >
+    insert into syn_fpud (id, waterworks_id, sysarea_id, 
+      sysarea_code, fpud_number, fpud_name, 
+      photos, build_time, longitude, 
+      latitude, elevation, address, 
+      sim_clip, sim_clip_operator, creation_time, 
+      update_time, comm1, comm2, 
+      comm3, comm4, comm5
+      )
+    values (#{id,jdbcType=VARCHAR}, #{waterworksId,jdbcType=VARCHAR}, #{sysareaId,jdbcType=VARCHAR}, 
+      #{sysareaCode,jdbcType=VARCHAR}, #{fpudNumber,jdbcType=VARCHAR}, #{fpudName,jdbcType=VARCHAR}, 
+      #{photos,jdbcType=VARCHAR}, #{buildTime,jdbcType=TIMESTAMP}, #{longitude,jdbcType=DECIMAL}, 
+      #{latitude,jdbcType=DECIMAL}, #{elevation,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, 
+      #{simClip,jdbcType=VARCHAR}, #{simClipOperator,jdbcType=VARCHAR}, #{creationTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{comm1,jdbcType=VARCHAR}, #{comm2,jdbcType=VARCHAR}, 
+      #{comm3,jdbcType=VARCHAR}, #{comm4,jdbcType=VARCHAR}, #{comm5,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.watersupply.entity.SynFpud" >
+  <selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		
+  		SELECT UUID()
+  	</selectKey>
+    insert into syn_fpud
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="waterworksId != null" >
+        waterworks_id,
+      </if>
+      <if test="sysareaId != null" >
+        sysarea_id,
+      </if>
+      <if test="sysareaCode != null" >
+        sysarea_code,
+      </if>
+      <if test="fpudNumber != null" >
+        fpud_number,
+      </if>
+      <if test="fpudName != null" >
+        fpud_name,
+      </if>
+      <if test="photos != null" >
+        photos,
+      </if>
+      <if test="buildTime != null" >
+        build_time,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="elevation != null" >
+        elevation,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="simClip != null" >
+        sim_clip,
+      </if>
+      <if test="simClipOperator != null" >
+        sim_clip_operator,
+      </if>
+      <if test="creationTime != null" >
+        creation_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="comm1 != null" >
+        comm1,
+      </if>
+      <if test="comm2 != null" >
+        comm2,
+      </if>
+      <if test="comm3 != null" >
+        comm3,
+      </if>
+      <if test="comm4 != null" >
+        comm4,
+      </if>
+      <if test="comm5 != null" >
+        comm5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="waterworksId != null" >
+        #{waterworksId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysareaId != null" >
+        #{sysareaId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysareaCode != null" >
+        #{sysareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fpudNumber != null" >
+        #{fpudNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fpudName != null" >
+        #{fpudName,jdbcType=VARCHAR},
+      </if>
+      <if test="photos != null" >
+        #{photos,jdbcType=VARCHAR},
+      </if>
+      <if test="buildTime != null" >
+        #{buildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="elevation != null" >
+        #{elevation,jdbcType=DECIMAL},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="simClip != null" >
+        #{simClip,jdbcType=VARCHAR},
+      </if>
+      <if test="simClipOperator != null" >
+        #{simClipOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="creationTime != null" >
+        #{creationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comm1 != null" >
+        #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        #{comm5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  <update id="updateByExampleSelective" parameterType="map" >
+    update syn_fpud
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.waterworksId != null" >
+        waterworks_id = #{record.waterworksId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysareaId != null" >
+        sysarea_id = #{record.sysareaId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysareaCode != null" >
+        sysarea_code = #{record.sysareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fpudNumber != null" >
+        fpud_number = #{record.fpudNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fpudName != null" >
+        fpud_name = #{record.fpudName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photos != null" >
+        photos = #{record.photos,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildTime != null" >
+        build_time = #{record.buildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.longitude != null" >
+        longitude = #{record.longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="record.latitude != null" >
+        latitude = #{record.latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="record.elevation != null" >
+        elevation = #{record.elevation,jdbcType=DECIMAL},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.simClip != null" >
+        sim_clip = #{record.simClip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.simClipOperator != null" >
+        sim_clip_operator = #{record.simClipOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creationTime != null" >
+        creation_time = #{record.creationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.comm1 != null" >
+        comm1 = #{record.comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comm2 != null" >
+        comm2 = #{record.comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comm3 != null" >
+        comm3 = #{record.comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comm4 != null" >
+        comm4 = #{record.comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comm5 != null" >
+        comm5 = #{record.comm5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update syn_fpud
+    set id = #{record.id,jdbcType=VARCHAR},
+      waterworks_id = #{record.waterworksId,jdbcType=VARCHAR},
+      sysarea_id = #{record.sysareaId,jdbcType=VARCHAR},
+      sysarea_code = #{record.sysareaCode,jdbcType=VARCHAR},
+      fpud_number = #{record.fpudNumber,jdbcType=VARCHAR},
+      fpud_name = #{record.fpudName,jdbcType=VARCHAR},
+      photos = #{record.photos,jdbcType=VARCHAR},
+      build_time = #{record.buildTime,jdbcType=TIMESTAMP},
+      longitude = #{record.longitude,jdbcType=DECIMAL},
+      latitude = #{record.latitude,jdbcType=DECIMAL},
+      elevation = #{record.elevation,jdbcType=DECIMAL},
+      address = #{record.address,jdbcType=VARCHAR},
+      sim_clip = #{record.simClip,jdbcType=VARCHAR},
+      sim_clip_operator = #{record.simClipOperator,jdbcType=VARCHAR},
+      creation_time = #{record.creationTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      comm1 = #{record.comm1,jdbcType=VARCHAR},
+      comm2 = #{record.comm2,jdbcType=VARCHAR},
+      comm3 = #{record.comm3,jdbcType=VARCHAR},
+      comm4 = #{record.comm4,jdbcType=VARCHAR},
+      comm5 = #{record.comm5,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.watersupply.entity.SynFpud" >
+    update syn_fpud
+    <set >
+      <if test="waterworksId != null" >
+        waterworks_id = #{waterworksId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysareaId != null" >
+        sysarea_id = #{sysareaId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysareaCode != null" >
+        sysarea_code = #{sysareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fpudNumber != null" >
+        fpud_number = #{fpudNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fpudName != null" >
+        fpud_name = #{fpudName,jdbcType=VARCHAR},
+      </if>
+      <if test="photos != null" >
+        photos = #{photos,jdbcType=VARCHAR},
+      </if>
+      <if test="buildTime != null" >
+        build_time = #{buildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="elevation != null" >
+        elevation = #{elevation,jdbcType=DECIMAL},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="simClip != null" >
+        sim_clip = #{simClip,jdbcType=VARCHAR},
+      </if>
+      <if test="simClipOperator != null" >
+        sim_clip_operator = #{simClipOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="creationTime != null" >
+        creation_time = #{creationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comm1 != null" >
+        comm1 = #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        comm2 = #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        comm3 = #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        comm4 = #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        comm5 = #{comm5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.watersupply.entity.SynFpud" >
+    update syn_fpud
+    set waterworks_id = #{waterworksId,jdbcType=VARCHAR},
+      sysarea_id = #{sysareaId,jdbcType=VARCHAR},
+      sysarea_code = #{sysareaCode,jdbcType=VARCHAR},
+      fpud_number = #{fpudNumber,jdbcType=VARCHAR},
+      fpud_name = #{fpudName,jdbcType=VARCHAR},
+      photos = #{photos,jdbcType=VARCHAR},
+      build_time = #{buildTime,jdbcType=TIMESTAMP},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      elevation = #{elevation,jdbcType=DECIMAL},
+      address = #{address,jdbcType=VARCHAR},
+      sim_clip = #{simClip,jdbcType=VARCHAR},
+      sim_clip_operator = #{simClipOperator,jdbcType=VARCHAR},
+      creation_time = #{creationTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      comm1 = #{comm1,jdbcType=VARCHAR},
+      comm2 = #{comm2,jdbcType=VARCHAR},
+      comm3 = #{comm3,jdbcType=VARCHAR},
+      comm4 = #{comm4,jdbcType=VARCHAR},
+      comm5 = #{comm5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

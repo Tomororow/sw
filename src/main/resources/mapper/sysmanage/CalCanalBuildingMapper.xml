@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.CalCanalBuildingMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.CalCanalBuilding" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="canal_id" property="canalId" jdbcType="VARCHAR" />
+    <result column="building_code" property="buildingCode" jdbcType="VARCHAR" />
+    <result column="building_photo" property="buildingPhoto" jdbcType="VARCHAR" />
+    <result column="building_photo_no" property="buildingPhotoNo" jdbcType="VARCHAR" />
+    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
+    <result column="building_type" property="buildingType" jdbcType="VARCHAR" />
+    
+    <result column="building_longitude" property="buildingLongitude" jdbcType="DECIMAL" />
+    <result column="building_latitude" property="buildingLatitude" jdbcType="DECIMAL" />
+    <result column="building_height" property="buildingHeight" jdbcType="DECIMAL" />
+    
+    <result column="building_build_time" property="buildingBuildTime" jdbcType="TIMESTAMP" />
+    <result column="building_repair_time" property="buildingRepairTime" jdbcType="TIMESTAMP" />
+    
+    <result column="building_one" property="buildingOne" jdbcType="INTEGER" />
+    <result column="building_two" property="buildingTwo" jdbcType="INTEGER" />
+    <result column="building_three" property="buildingThree" jdbcType="INTEGER" />
+    <result column="ccb_create_time" property="ccbCreateTime" jdbcType="TIMESTAMP" />
+    
+    <result column="other" property="other" jdbcType="INTEGER" />
+    <result column="ccb_remark" property="ccbRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, canal_id,building_code ,building_photo, building_photo_no, building_name,building_type, building_longitude,
+    building_latitude ,building_height,building_build_time,building_repair_time, building_one, building_two, 
+    building_three,ccb_create_time, other, ccb_remark
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_building
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectCalCanalBuildingByCanalId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_building
+    where canal_id = #{canalId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cal_canal_building
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.CalCanalBuilding" >
+    insert into cal_canal_building (id, canal_id,building_code ,building_photo, building_photo_no, building_name,building_type, building_longitude,
+    building_latitude ,building_height,building_build_time,building_repair_time, building_one, building_two, 
+    building_three,ccb_create_time, other, ccb_remark)
+    values (#{id,jdbcType=VARCHAR}, #{canalId,jdbcType=VARCHAR},#{buildingCode,jdbcType=VARCHAR} ,#{buildingPhoto,jdbcType=VARCHAR}, 
+      #{buildingPhotoNo,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR},#{buildingType,jdbcType=VARCHAR} , 
+      
+      #{buildingLongitude,jdbcType=DECIMAL},#{buildingLatitude,jdbcType=DECIMAL},#{buildingHeight,jdbcType=DECIMAL},
+      #{buildingBuildTime,jdbcType=TIMESTAMP}, #{buildingRepairTime,jdbcType=TIMESTAMP},
+      
+      
+      #{buildingOne,jdbcType=INTEGER}, 
+      #{buildingTwo,jdbcType=INTEGER}, #{buildingThree,jdbcType=INTEGER}, 
+      
+      
+      #{ccbCreateTime,jdbcType=TIMESTAMP},
+      #{other,jdbcType=INTEGER}, 
+      #{ccbRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.CalCanalBuilding" >
+  
+  <selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+    insert into cal_canal_building
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="canalId != null" >
+        canal_id,
+      </if>
+      <if test="buildingCode != null" >
+        building_code,
+      </if>
+      
+      <if test="buildingPhoto != null" >
+        building_photo,
+      </if>
+      <if test="buildingPhotoNo != null" >
+        building_photo_no,
+      </if>
+      <if test="buildingName != null" >
+        building_name,
+      </if>
+      
+      <if test="buildingType != null" >
+        building_type,
+      </if>
+      
+      
+       <if test="buildingLongitude != null" >
+        building_longitude,
+      </if>
+      
+       <if test="buildingLatitude != null" >
+        building_latitude,
+      </if>
+      
+       <if test="buildingHeight != null" >
+        building_height,
+      </if>
+
+	 <if test="buildingBuildTime != null" >
+        building_build_time,
+      </if>
+      
+       <if test="buildingRepairTime != null" >
+        building_repair_time,
+      </if>
+      
+      <if test="buildingOne != null" >
+        building_one,
+      </if>
+      <if test="buildingTwo != null" >
+        building_two,
+      </if>
+      <if test="buildingThree != null" >
+        building_three,
+      </if>
+      
+      <if test="ccbCreateTime != null" >
+        ccb_create_time,
+      </if>
+      
+      
+      <if test="other != null" >
+        other,
+      </if>
+      <if test="ccbRemark != null" >
+        ccb_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="canalId != null" >
+        #{canalId,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="buildingCode != null" >
+        #{buildingCode,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="buildingPhoto != null" >
+        #{buildingPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingPhotoNo != null" >
+        #{buildingPhotoNo,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingType != null" >
+        #{buildingType,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="buildingLongitude != null" >
+        #{buildingLongitude,jdbcType=DECIMAL},
+      </if>
+      
+      <if test="buildingLatitude != null" >
+        #{buildingLatitude,jdbcType=DECIMAL},
+      </if>
+      
+      <if test="buildingHeight != null" >
+        #{buildingHeight,jdbcType=DECIMAL},
+      </if>
+      
+      <if test="buildingBuildTime != null" >
+        #{buildingBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      
+      <if test="buildingRepairTime != null" >
+        #{buildingRepairTime,jdbcType=TIMESTAMP},
+      </if>
+      
+      
+      <if test="buildingOne != null" >
+        #{buildingOne,jdbcType=INTEGER},
+      </if>
+      <if test="buildingTwo != null" >
+        #{buildingTwo,jdbcType=INTEGER},
+      </if>
+      <if test="buildingThree != null" >
+        #{buildingThree,jdbcType=INTEGER},
+      </if>
+      
+       <if test="ccbCreateTime != null" >
+        #{ccbCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      
+      <if test="other != null" >
+        #{other,jdbcType=INTEGER},
+      </if>
+      <if test="ccbRemark != null" >
+        #{ccbRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.CalCanalBuilding" >
+    update cal_canal_building
+    <set >
+      <if test="canalId != null" >
+        canal_id = #{canalId,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingCode != null" >
+        building_code = #{buildingCode,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="buildingPhoto != null" >
+        building_photo= #{buildingPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingPhotoNo != null" >
+        building_photo_no = #{buildingPhotoNo,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        building_name  = #{buildingName,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="buildingType != null" >
+        building_type =  #{buildingType,jdbcType=VARCHAR},
+      </if>
+      
+      
+       <if test="buildingLongitude != null" >
+        building_longitude=#{buildingLongitude,jdbcType=DECIMAL},
+      </if>
+      
+       <if test="buildingLatitude != null" >
+        building_latitude=#{buildingLatitude,jdbcType=DECIMAL},
+      </if>
+      
+       <if test="buildingHeight != null" >
+        building_height=#{buildingHeight,jdbcType=DECIMAL},
+      </if>
+
+	 <if test="buildingBuildTime != null" >
+        building_build_time = #{buildingBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      
+       <if test="buildingRepairTime != null" >
+        building_repair_time = #{buildingRepairTime,jdbcType=TIMESTAMP},
+      </if>
+      
+      <if test="buildingOne != null" >
+        building_one =#{buildingOne,jdbcType=INTEGER},
+      </if>
+      <if test="buildingTwo != null" >
+        building_two=#{buildingTwo,jdbcType=INTEGER},
+      </if>
+      <if test="buildingThree != null" >
+        building_three=#{buildingThree,jdbcType=INTEGER},
+      </if>
+      
+      <if test="ccbCreateTime != null" >
+        ccb_create_time=#{ccbCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      
+      
+      <if test="other != null" >
+        other=#{other,jdbcType=INTEGER},
+      </if>
+      <if test="ccbRemark != null" >
+        ccb_remark= #{ccbRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.CalCanalBuilding" >
+    update cal_canal_building
+    set canal_id = #{canalId,jdbcType=VARCHAR},
+      building_photo = #{buildingPhoto,jdbcType=VARCHAR},
+      building_photo_no = #{buildingPhotoNo,jdbcType=VARCHAR},
+      building_name = #{buildingName,jdbcType=VARCHAR},
+      building_type = #{buildingType,jdbcType=VARCHAR},
+      building_one = #{buildingOne,jdbcType=INTEGER},
+      building_two = #{buildingTwo,jdbcType=INTEGER},
+      building_three = #{buildingThree,jdbcType=INTEGER},
+      other = #{other,jdbcType=INTEGER},
+      ccb_remark = #{ccbRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,73 @@
+#btnProDiv{position:absolute;bottom: 0;background: #293038e8;width:100%;height: 300px;display:none;right: 0;}
+.ztree *{font-size: 14px;}
+.ztree li span.button.switch{height: 23px;}
+#btnClose{border: solid 1px blue;height:30px;width: 30px;position: absolute;right: 0;color: #0a001f;font-size: 25px;}
+#monMap{height: 270px;display: flex}
+#monMap div{float: left;height: 100%;}
+#waterInfo{width: 25%;border-right: solid 1px #9c6f08;}
+#waterInfo table{width: 100%;margin-top: 20px;}
+#waterInfo td{border:solid 1px #775e2f;color: #fff;width: 25%;text-align: center;height: 50px;font-size: 14px;}
+#waterMonitor{width: 50%;border-right: solid 1px #9c6f08;}
+#videoMonitor{width: 25%;}
+#EchartMain canvas{width: 100%;}
+body{position: absolute;height: 100%}
+#baiDuMapPage{height: 100%}
+body,#cesiumContainer {
+    width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+}
+.leftBtn{
+    height: 50%;
+    width: 33px;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    z-index: 999;
+}
+.topBtn{
+    z-index: 999;
+    width: 60%;
+    height: auto;
+    position: absolute;
+    left: 20%;
+}
+.treeBack{
+    z-index: 999;
+    height: auto;
+    position: absolute;
+    width: auto;
+    left: 100px;
+    border: solid 1px #ad7c10;
+    display:none;
+    background: #020202bf;
+    border-bottom-right-radius:10px;
+    border-bottom-left-radius:10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+ul{padding: 0;margin: 0}
+.leftBtn ul li{list-style: none;float: left;margin-bottom:30px;
+    width: 33px;
+    height: auto;
+    background: #020202a1;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    color:#fff;
+    font-size:14px;
+    cursor:pointer;
+}
+.topBtn ul li{list-style: none;float: left;margin-right:30px;
+    width: auto;
+    height: 33px;
+    line-height: 30px;
+    background: #020202a1;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    text-align: center;
+    color:#fff;
+    font-size:14px;
+    cursor:pointer;
+}
+.leftBtn ul li:hover{background:#0099cc;opacity: 0.7;cursor: pointer }
+.topBtn ul li:hover{background:#0099cc;opacity: 0.7;cursor: pointer }
+
+

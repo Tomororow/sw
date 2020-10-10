@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.NeedWaterReportMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.plan.entity.NeedWaterReport" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="report_no" property="reportNo" jdbcType="VARCHAR" />
+    <result column="canal_code" property="canalCode" jdbcType="VARCHAR" />
+    <result column="canal_decision_area" property="canalDecisionArea" jdbcType="DECIMAL" />
+    <result column="soil_type" property="soilType" jdbcType="VARCHAR" />
+    <result column="crops_type" property="cropsType" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="DECIMAL" />
+    
+    <result column="year" property="year" jdbcType="INTEGER" />
+    
+     <!-- <result column="soilName" property="soilName" jdbcType="VARCHAR" />
+     <result column="cropsName" property="cropsName" jdbcType="VARCHAR" /> -->
+    
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="repair_time" property="repairTime" jdbcType="TIMESTAMP" />
+    <result column="report_people_name" property="reportPeopleName" jdbcType="VARCHAR" />
+    <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+ 
+  <sql id="Base_Column_List" >
+    id, report_no, canal_code, canal_decision_area, soil_type, crops_type, area,year, create_time, 
+    repair_time, report_people_name, phone_number, remark
+  </sql>
+  <!-- 根据渠道id查询该渠道下所有的需水提报 -->
+  <select id="findCanaCodeByNeedWaterReportList" resultType="com.zyjz.plan.entity.NeedWaterReport" parameterType="java.lang.String" >
+    SELECT 
+	  (SELECT so.soil_name FROM soil_type_info so WHERE so.soil_code=ne.soil_type) AS soilName,
+	  (SELECT cr.crops_name FROM crops_type_info cr WHERE cr.crops_code=ne.crops_type) AS cropsName, 
+	  ne.soil_type as soilType,ne.crops_type as cropsType, ne.area as area, ne.year as year
+	FROM
+	  need_water_report ne
+	WHERE canal_code  = #{canalCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from need_water_report
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findNeedWaterReportByCanalCodeAndYearAndSoilTypeAndCropsType" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from need_water_report
+    where 
+    canal_code = #{canalCode,jdbcType=VARCHAR}
+    and
+    year = #{year,jdbcType=INTEGER}
+    and
+    soil_type = #{soilType,jdbcType=VARCHAR}
+    and
+    crops_type = #{cropsType,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findNeedWaterReportByCanalCodeAndYear" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from need_water_report
+    where 
+    canal_code = #{canalCode,jdbcType=VARCHAR}
+    and
+    year = #{year,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findNeedWaterReportByCanalCodeAndYearJoin" resultMap="BaseResultMap">
+    select 
+    a.*
+    from need_water_report a
+    inner join site_middle_canal b
+    on a.report_no = b.report_no
+    where 
+    b.canal_code = #{canalCode,jdbcType=VARCHAR}
+    and
+    a.year = #{year,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findNeedWaterReportByCanalCodeAndYearGroupByCropsType" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from need_water_report
+    where 
+    canal_code = #{canalCode,jdbcType=VARCHAR}
+    and
+    year = #{year,jdbcType=INTEGER}
+    group by crops_type
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from need_water_report group by year ORDER BY year DESC
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from need_water_report
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.plan.entity.NeedWaterReport" >
+    insert into need_water_report (id, report_no, canal_code, 
+      canal_decision_area, soil_type, crops_type, 
+      area,year, create_time, repair_time, 
+      report_people_name, phone_number, remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{reportNo,jdbcType=VARCHAR}, #{canalCode,jdbcType=VARCHAR}, 
+      #{canalDecisionArea,jdbcType=DECIMAL}, #{soilType,jdbcType=VARCHAR}, #{cropsType,jdbcType=VARCHAR}, 
+      #{area,jdbcType=DECIMAL},#{year,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{repairTime,jdbcType=TIMESTAMP}, 
+      #{reportPeopleName,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.plan.entity.NeedWaterReport" >
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  	</selectKey>
+    insert into need_water_report
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reportNo != null" >
+        report_no,
+      </if>
+      <if test="canalCode != null" >
+        canal_code,
+      </if>
+      <if test="canalDecisionArea != null" >
+        canal_decision_area,
+      </if>
+      <if test="soilType != null" >
+        soil_type,
+      </if>
+      <if test="cropsType != null" >
+        crops_type,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="repairTime != null" >
+        repair_time,
+      </if>
+      <if test="reportPeopleName != null" >
+        report_people_name,
+      </if>
+      <if test="phoneNumber != null" >
+        phone_number,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="reportNo != null" >
+        #{reportNo,jdbcType=VARCHAR},
+      </if>
+      <if test="canalCode != null" >
+        #{canalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="canalDecisionArea != null" >
+        #{canalDecisionArea,jdbcType=DECIMAL},
+      </if>
+      <if test="soilType != null" >
+        #{soilType,jdbcType=VARCHAR},
+      </if>
+      <if test="cropsType != null" >
+        #{cropsType,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=DECIMAL},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="repairTime != null" >
+        #{repairTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportPeopleName != null" >
+        #{reportPeopleName,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.NeedWaterReport" >
+    update need_water_report
+    <set >
+      <if test="reportNo != null" >
+        report_no = #{reportNo,jdbcType=VARCHAR},
+      </if>
+      <if test="canalCode != null" >
+        canal_code = #{canalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="canalDecisionArea != null" >
+        canal_decision_area = #{canalDecisionArea,jdbcType=DECIMAL},
+      </if>
+      <if test="soilType != null" >
+        soil_type = #{soilType,jdbcType=VARCHAR},
+      </if>
+      <if test="cropsType != null" >
+        crops_type = #{cropsType,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=DECIMAL},
+      </if>
+      
+      <if test="year != null" >
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="repairTime != null" >
+        repair_time = #{repairTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportPeopleName != null" >
+        report_people_name = #{reportPeopleName,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.plan.entity.NeedWaterReport" >
+    update need_water_report
+    set report_no = #{reportNo,jdbcType=VARCHAR},
+      canal_code = #{canalCode,jdbcType=VARCHAR},
+      canal_decision_area = #{canalDecisionArea,jdbcType=DECIMAL},
+      soil_type = #{soilType,jdbcType=VARCHAR},
+      crops_type = #{cropsType,jdbcType=VARCHAR},
+      area = #{area,jdbcType=DECIMAL},
+      year = #{year,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      repair_time = #{repairTime,jdbcType=TIMESTAMP},
+      report_people_name = #{reportPeopleName,jdbcType=VARCHAR},
+      phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

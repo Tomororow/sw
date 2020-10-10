@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.CalCanalUsetypeMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.CalCanalUsetype" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="canal_usetype_code" property="canalUsetypeCode" jdbcType="INTEGER" />
+    <result column="canal_usetype_name" property="canalUsetypeName" jdbcType="VARCHAR" />
+    <result column="ccu_create_time" property="ccuCreateTime" jdbcType="TIMESTAMP" />
+    <result column="ccu_edit_time" property="ccuEditTime" jdbcType="TIMESTAMP" />
+    <result column="ccu_remark" property="ccuRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    id, canal_usetype_code, canal_usetype_name, ccu_create_time, ccu_edit_time, ccu_remark
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_usetype
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_usetype
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cal_canal_usetype
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.CalCanalUsetype" >
+    insert into cal_canal_usetype (id, canal_usetype_code, canal_usetype_name, 
+      ccu_create_time, ccu_edit_time, ccu_remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{canalUsetypeCode,jdbcType=INTEGER}, #{canalUsetypeName,jdbcType=VARCHAR}, 
+      #{ccuCreateTime,jdbcType=TIMESTAMP}, #{ccuEditTime,jdbcType=TIMESTAMP}, #{ccuRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.CalCanalUsetype" >
+  
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+  
+    insert into cal_canal_usetype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="canalUsetypeCode != null" >
+        canal_usetype_code,
+      </if>
+      <if test="canalUsetypeName != null" >
+        canal_usetype_name,
+      </if>
+      <if test="ccuCreateTime != null" >
+        ccu_create_time,
+      </if>
+      <if test="ccuEditTime != null" >
+        ccu_edit_time,
+      </if>
+      <if test="ccuRemark != null" >
+        ccu_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="canalUsetypeCode != null" >
+        #{canalUsetypeCode,jdbcType=INTEGER},
+      </if>
+      <if test="canalUsetypeName != null" >
+        #{canalUsetypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="ccuCreateTime != null" >
+        #{ccuCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ccuEditTime != null" >
+        #{ccuEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ccuRemark != null" >
+        #{ccuRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.CalCanalUsetype" >
+    update cal_canal_usetype
+    <set >
+      <if test="canalUsetypeCode != null" >
+        canal_usetype_code = #{canalUsetypeCode,jdbcType=INTEGER},
+      </if>
+      <if test="canalUsetypeName != null" >
+        canal_usetype_name = #{canalUsetypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="ccuCreateTime != null" >
+        ccu_create_time = #{ccuCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ccuEditTime != null" >
+        ccu_edit_time = #{ccuEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ccuRemark != null" >
+        ccu_remark = #{ccuRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.CalCanalUsetype" >
+    update cal_canal_usetype
+    set canal_usetype_code = #{canalUsetypeCode,jdbcType=INTEGER},
+      canal_usetype_name = #{canalUsetypeName,jdbcType=VARCHAR},
+      ccu_create_time = #{ccuCreateTime,jdbcType=TIMESTAMP},
+      ccu_edit_time = #{ccuEditTime,jdbcType=TIMESTAMP},
+      ccu_remark = #{ccuRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

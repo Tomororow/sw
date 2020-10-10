@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.CalCanalPhotoMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.CalCanalPhoto" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="canal_id" property="canalId" jdbcType="VARCHAR" />
+    <result column="canal_photoImg" property="canalPhotoimg" jdbcType="VARCHAR" />
+    <result column="ccp_remark" property="ccpRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, canal_id, canal_photoImg, ccp_remark
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_photo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="findAllByCanalId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_photo
+    where canal_id = #{canalId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectCalCanalPhotoByCanalId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_photo
+     where 1=1
+    and canal_id = #{canalId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from cal_canal_photo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+ 
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.CalCanalPhoto" >
+    insert into cal_canal_photo (id, canal_id, canal_photoImg, 
+      ccp_remark)
+    values (#{id,jdbcType=VARCHAR}, #{canalId,jdbcType=VARCHAR}, #{canalPhotoimg,jdbcType=VARCHAR}, 
+      #{ccpRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.CalCanalPhoto" >
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+  
+  
+  
+    insert into cal_canal_photo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="canalId != null" >
+        canal_id,
+      </if>
+      <if test="canalPhotoimg != null" >
+        canal_photoImg,
+      </if>
+      <if test="ccpRemark != null" >
+        ccp_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="canalId != null" >
+        #{canalId,jdbcType=VARCHAR},
+      </if>
+      <if test="canalPhotoimg != null" >
+        #{canalPhotoimg,jdbcType=VARCHAR},
+      </if>
+      <if test="ccpRemark != null" >
+        #{ccpRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.CalCanalPhoto" >
+    update cal_canal_photo
+    <set >
+      <if test="canalId != null" >
+        canal_id = #{canalId,jdbcType=VARCHAR},
+      </if>
+      <if test="canalPhotoimg != null" >
+        canal_photoImg = #{canalPhotoimg,jdbcType=VARCHAR},
+      </if>
+      <if test="ccpRemark != null" >
+        ccp_remark = #{ccpRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.CalCanalPhoto" >
+    update cal_canal_photo
+    set canal_id = #{canalId,jdbcType=VARCHAR},
+      canal_photoImg = #{canalPhotoimg,jdbcType=VARCHAR},
+      ccp_remark = #{ccpRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.site.dao.SiteRainDynamicInfoMapper">
+	<resultMap id="BaseResultMap" type="com.zyjz.site.entity.SiteRainDynamicInfo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="devicerain_code" property="devicerainCode" jdbcType="VARCHAR" />
+		<result column="srdi_collect_time" property="srdiCollectTime" jdbcType="TIMESTAMP" />
+		<result column="srdi_net_state" property="srdiNetState" jdbcType="INTEGER" />
+		<result column="time_rainfall" property="timeRainfall" jdbcType="DECIMAL" />
+		<result column="time_long" property="timeLong" jdbcType="DECIMAL" />
+		<result column="day_total_rainfall" property="dayTotalRainfall" jdbcType="DECIMAL" />
+		<!-- 站点名称 -->
+		<result column="device_rain_name" property="deviceRainName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 雨量站动态信息基础列 -->
+	<sql id="Base_Column_List">
+		id, devicerain_code, srdi_collect_time, srdi_net_state, time_rainfall,
+		time_long, day_total_rainfall
+	</sql>
+	
+	<!-- 根据主键查询信息 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from site_rain_dynamic_info
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据站点编码查询雨情信息 -->
+	<select id="getInfoByDeviceCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select srdi.*, sri.device_rain_name
+		from site_rain_dynamic_info srdi inner join site_rain_info sri on srdi.devicerain_code = sri.device_rain_code
+		where devicerain_code = #{deviceCode,jdbcType=VARCHAR}
+		order by srdi_collect_time asc
+	</select>
+	
+	 <select id="findOneDaySiteRainDynamicInfoByDevicerainCodeAndTime" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    
+   		 select  
+    	<include refid="Base_Column_List" />
+    
+    	from   site_rain_dynamic_info
+    
+    	where devicerain_code = #{devicerainCode} 
+    
+    	 and srdi_collect_time between #{startTime} and #{endTime}
+ 
+  	</select>
+	
+	<!-- 根据主键删除信息 -->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from site_rain_dynamic_info
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 插入信息 -->
+	<insert id="insert" parameterType="com.zyjz.site.entity.SiteRainDynamicInfo">
+		insert into site_rain_dynamic_info (id, devicerain_code,
+		srdi_collect_time, srdi_net_state, time_rainfall, time_long,
+		day_total_rainfall)
+		values (#{id,jdbcType=VARCHAR}, #{devicerainCode,jdbcType=VARCHAR},
+		#{srdiCollectTime,jdbcType=TIMESTAMP},
+		#{srdiNetState,jdbcType=INTEGER}, #{timeRainfall,jdbcType=DECIMAL},
+		#{timeLong,jdbcType=DECIMAL},
+		#{dayTotalRainfall,jdbcType=DECIMAL})
+	</insert>
+	
+	<!-- 有选择性的插入信息 -->
+	<insert id="insertSelective" parameterType="com.zyjz.site.entity.SiteRainDynamicInfo">
+		insert into site_rain_dynamic_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="devicerainCode != null">
+				devicerain_code,
+			</if>
+			<if test="srdiCollectTime != null">
+				srdi_collect_time,
+			</if>
+			<if test="srdiNetState != null">
+				srdi_net_state,
+			</if>
+			<if test="timeRainfall != null">
+				time_rainfall,
+			</if>
+			<if test="timeLong != null">
+				time_long,
+			</if>
+			<if test="dayTotalRainfall != null">
+				day_total_rainfall,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="devicerainCode != null">
+				#{devicerainCode,jdbcType=VARCHAR},
+			</if>
+			<if test="srdiCollectTime != null">
+				#{srdiCollectTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="srdiNetState != null">
+				#{srdiNetState,jdbcType=INTEGER},
+			</if>
+			<if test="timeRainfall != null">
+				#{timeRainfall,jdbcType=DECIMAL},
+			</if>
+			<if test="timeLong != null">
+				#{timeLong,jdbcType=DECIMAL},
+			</if>
+			<if test="dayTotalRainfall != null">
+				#{dayTotalRainfall,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	
+</mapper>

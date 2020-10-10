@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.SiteSluiceInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.SiteSluiceInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ssi_canal_code" property="ssiCanalCode" jdbcType="VARCHAR" />
+    <result column="sitetype_code" property="sitetypeCode" jdbcType="INTEGER" />
+    <result column="device_sluice_code" property="deviceSluiceCode" jdbcType="VARCHAR" />
+    <result column="device_sluice_name" property="deviceSluiceName" jdbcType="VARCHAR" />
+    <result column="sluicetype_code" property="sluicetypeCode" jdbcType="INTEGER" />
+    <result column="ssi_device_no" property="ssiDeviceNo" jdbcType="VARCHAR" />
+    <result column="ssi_devicemodel_code" property="ssiDevicemodelCode" jdbcType="INTEGER" />
+    <result column="ssi_addr" property="ssiAddr" jdbcType="VARCHAR" />
+    <result column="ssi_build_time" property="ssiBuildTime" jdbcType="TIMESTAMP" />
+    <result column="ssi_simcard" property="ssiSimcard" jdbcType="VARCHAR" />
+    <result column="ssi_simoperator" property="ssiSimoperator" jdbcType="VARCHAR" />
+    <result column="ssi_ip_port" property="ssiIpPort" jdbcType="VARCHAR" />
+    <result column="ssi_longitude" property="ssiLongitude" jdbcType="DECIMAL" />
+    <result column="ssi_latitude" property="ssiLatitude" jdbcType="DECIMAL" />
+    <result column="ssi_height" property="ssiHeight" jdbcType="DECIMAL" />
+    <result column="sluice_before_site_water_id" property="sluiceBeforeSiteWaterId" jdbcType="VARCHAR" />
+    <result column="sluice_after_site_water_id" property="sluiceAfterSiteWaterId" jdbcType="VARCHAR" />
+    <result column="sluice_movie_site_id" property="sluiceMovieSiteId" jdbcType="VARCHAR" />
+    <result column="ssi_photo_before" property="ssiPhotoBefore" jdbcType="VARCHAR" />
+    <result column="ssi_photo_after" property="ssiPhotoAfter" jdbcType="VARCHAR" />
+    <result column="ssi_create_time" property="ssiCreateTime" jdbcType="TIMESTAMP" />
+    <result column="ssi_edit_time" property="ssiEditTime" jdbcType="TIMESTAMP" />
+    <result column="ssi_remark" property="ssiRemark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, ssi_canal_code, sitetype_code, device_sluice_code, device_sluice_name, sluicetype_code, 
+    ssi_device_no, ssi_devicemodel_code, ssi_addr, ssi_build_time, ssi_simcard, ssi_simoperator, 
+    ssi_ip_port, ssi_longitude, ssi_latitude,ssi_height, sluice_before_site_water_id,sluice_after_site_water_id,sluice_movie_site_id,ssi_photo_before, ssi_photo_after, ssi_create_time, 
+    ssi_edit_time, ssi_remark
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.util.List" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_sluice_info
+    where ssi_canal_code in 
+    <foreach collection="list" index="index" item="ssiCanalCode" open="(" separator="," close=")">  
+        #{ssiCanalCode}  
+    </foreach>
+  </select>
+  
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_sluice_info
+    where id =#{id,jdbcType=VARCHAR}
+  </select>
+  
+   <!--   根据渠道编码查询闸门站的基本信息 -->
+  <select id="findByCode" resultMap="BaseResultMap"  parameterType="java.util.List">
+    select 
+    <include refid="Base_Column_List" />
+    from site_sluice_info
+    where ssi_canal_code in
+    <foreach collection="list" index="index" item="ssiCanalCode" open="(" separator="," close=")">
+    	#{ssiCanalCode}
+    </foreach>
+  </select>
+  
+  
+  <select id="findSiteSluiceInfoByCanalCode" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_sluice_info
+    where ssi_canal_code = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findSiteSluiceInfoByCanalCodeJoin" resultMap="BaseResultMap" parameterType="java.lang.String">
+    	SELECT
+        ssi.*
+    	from site_sluice_info ssi
+        LEFT JOIN site_middle_canal smc on ssi.device_sluice_code = smc.device_sluice_code
+        where smc.canal_code = #{ssiCanalCode,jdbcType=VARCHAR}
+  </select>
+
+   <!--按闸门站编码或名称查询闸门数据 -->
+   <select id="findSiteSluiceInfoByCanalCodeByCodeOrName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    	SELECT
+        ssi.*
+    	from site_sluice_info ssi
+        LEFT JOIN site_middle_canal smc on ssi.device_sluice_code = smc.device_sluice_code
+        where smc.canal_code = #{canalCode,jdbcType=VARCHAR}
+       <if test="deviceSluiceCode != null and deviceSluiceCode !=''">
+           and  ssi.device_sluice_code = #{deviceSluiceCode,jdbcType=VARCHAR}
+       </if>
+       <if test="deviceSluiceName != null and deviceSluiceName !=''">
+           and  ssi.device_sluice_name like "%"#{deviceSluiceName,jdbcType=VARCHAR}"%"
+       </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from site_sluice_info
+    where id = #{ssiCanalCode,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.SiteSluiceInfo" >
+    insert into site_sluice_info (id, ssi_canal_code, sitetype_code, 
+      device_sluice_code, device_sluice_name, sluicetype_code, 
+      ssi_device_no, ssi_devicemodel_code, ssi_addr, 
+      ssi_build_time, ssi_simcard, ssi_simoperator, 
+      ssi_ip_port, ssi_longitude, ssi_latitude,ssi_height, sluice_before_site_water_id,sluice_after_site_water_id,sluice_movie_site_id, 
+      ssi_photo_before, ssi_photo_after, ssi_create_time, 
+      ssi_edit_time, ssi_remark)
+    values (#{id,jdbcType=VARCHAR}, #{ssiCanalCode,jdbcType=VARCHAR}, #{sitetypeCode,jdbcType=INTEGER}, 
+      #{deviceSluiceCode,jdbcType=VARCHAR}, #{deviceSluiceName,jdbcType=VARCHAR}, #{sluicetypeCode,jdbcType=INTEGER}, 
+      #{ssiDeviceNo,jdbcType=VARCHAR}, #{ssiDevicemodelCode,jdbcType=INTEGER}, #{ssiAddr,jdbcType=VARCHAR}, 
+      #{ssiBuildTime,jdbcType=TIMESTAMP}, #{ssiSimcard,jdbcType=VARCHAR}, #{ssiSimoperator,jdbcType=VARCHAR}, 
+      #{ssiIpPort,jdbcType=VARCHAR}, #{ssiLongitude,jdbcType=DECIMAL}, #{ssiLatitude,jdbcType=DECIMAL}, #{ssiHeight,jdbcType=DECIMAL},
+      #{sluiceBeforeSiteWaterId,jdbcType=VARCHAR},#{sluiceAfterSiteWaterId,jdbcType=VARCHAR},#{sluiceMovieSiteId,jdbcType=VARCHAR},
+      #{ssiPhotoBefore,jdbcType=VARCHAR}, #{ssiPhotoAfter,jdbcType=VARCHAR}, #{ssiCreateTime,jdbcType=TIMESTAMP}, 
+      #{ssiEditTime,jdbcType=TIMESTAMP}, #{ssiRemark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.SiteSluiceInfo" >
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+    insert into site_sluice_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ssiCanalCode != null" >
+        ssi_canal_code,
+      </if>
+      <if test="sitetypeCode != null" >
+        sitetype_code,
+      </if>
+      <if test="deviceSluiceCode != null" >
+        device_sluice_code,
+      </if>
+      <if test="deviceSluiceName != null" >
+        device_sluice_name,
+      </if>
+      <if test="sluicetypeCode != null" >
+        sluicetype_code,
+      </if>
+      <if test="ssiDeviceNo != null" >
+        ssi_device_no,
+      </if>
+      <if test="ssiDevicemodelCode != null" >
+        ssi_devicemodel_code,
+      </if>
+      <if test="ssiAddr != null" >
+        ssi_addr,
+      </if>
+      <if test="ssiBuildTime != null" >
+        ssi_build_time,
+      </if>
+      <if test="ssiSimcard != null" >
+        ssi_simcard,
+      </if>
+      <if test="ssiSimoperator != null" >
+        ssi_simoperator,
+      </if>
+      <if test="ssiIpPort != null" >
+        ssi_ip_port,
+      </if>
+      <if test="ssiLongitude != null" >
+        ssi_longitude,
+      </if>
+      <if test="ssiLatitude != null" >
+        ssi_latitude,
+      </if>
+      
+      
+      <if test="ssiHeight != null" >
+        ssi_height,
+      </if>
+      
+      <if test="sluiceBeforeSiteWaterId != null" >
+        sluice_before_site_water_id,
+      </if>
+      
+      <if test="sluiceAfterSiteWaterId != null" >
+        sluice_after_site_water_id,
+      </if>
+      
+      
+      <if test="sluiceMovieSiteId != null" >
+        sluice_movie_site_id,
+      </if>
+      
+      
+      
+      
+      <if test="ssiPhotoBefore != null" >
+        ssi_photo_before,
+      </if>
+      <if test="ssiPhotoAfter != null" >
+        ssi_photo_after,
+      </if>
+      <if test="ssiCreateTime != null" >
+        ssi_create_time,
+      </if>
+      <if test="ssiEditTime != null" >
+        ssi_edit_time,
+      </if>
+      <if test="ssiRemark != null" >
+        ssi_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiCanalCode != null" >
+        #{ssiCanalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sitetypeCode != null" >
+        #{sitetypeCode,jdbcType=INTEGER},
+      </if>
+      <if test="deviceSluiceCode != null" >
+        #{deviceSluiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceSluiceName != null" >
+        #{deviceSluiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="sluicetypeCode != null" >
+        #{sluicetypeCode,jdbcType=INTEGER},
+      </if>
+      <if test="ssiDeviceNo != null" >
+        #{ssiDeviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiDevicemodelCode != null" >
+        #{ssiDevicemodelCode,jdbcType=INTEGER},
+      </if>
+      <if test="ssiAddr != null" >
+        #{ssiAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiBuildTime != null" >
+        #{ssiBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiSimcard != null" >
+        #{ssiSimcard,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiSimoperator != null" >
+        #{ssiSimoperator,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiIpPort != null" >
+        #{ssiIpPort,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiLongitude != null" >
+        #{ssiLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="ssiLatitude != null" >
+        #{ssiLatitude,jdbcType=DECIMAL},
+      </if>
+      
+      
+      
+      
+       <if test="ssiHeight != null" >
+        #{ssiHeight,jdbcType=DECIMAL},
+      </if>
+      
+       <if test="sluiceBeforeSiteWaterId != null" >
+        #{sluiceBeforeSiteWaterId,jdbcType=VARCHAR},
+      </if>
+      
+       <if test="sluiceAfterSiteWaterId != null" >
+        #{sluiceAfterSiteWaterId,jdbcType=VARCHAR},
+      </if>
+       <if test="sluiceMovieSiteId != null" >
+        #{sluiceMovieSiteId,jdbcType=VARCHAR},
+      </if>
+      
+      
+      <if test="ssiPhotoBefore != null" >
+        #{ssiPhotoBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiPhotoAfter != null" >
+        #{ssiPhotoAfter,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiCreateTime != null" >
+        #{ssiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiEditTime != null" >
+        #{ssiEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiRemark != null" >
+        #{ssiRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.SiteSluiceInfo" >
+    update site_sluice_info
+    <set >
+      <if test="ssiCanalCode != null" >
+        ssi_canal_code = #{ssiCanalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sitetypeCode != null" >
+        sitetype_code = #{sitetypeCode,jdbcType=INTEGER},
+      </if>
+      <if test="deviceSluiceCode != null" >
+        device_sluice_code = #{deviceSluiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceSluiceName != null" >
+        device_sluice_name = #{deviceSluiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="sluicetypeCode != null" >
+        sluicetype_code = #{sluicetypeCode,jdbcType=INTEGER},
+      </if>
+      <if test="ssiDeviceNo != null" >
+        ssi_device_no = #{ssiDeviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiDevicemodelCode != null" >
+        ssi_devicemodel_code = #{ssiDevicemodelCode,jdbcType=INTEGER},
+      </if>
+      <if test="ssiAddr != null" >
+        ssi_addr = #{ssiAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiBuildTime != null" >
+        ssi_build_time = #{ssiBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiSimcard != null" >
+        ssi_simcard = #{ssiSimcard,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiSimoperator != null" >
+        ssi_simoperator = #{ssiSimoperator,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiIpPort != null" >
+        ssi_ip_port = #{ssiIpPort,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiLongitude != null" >
+        ssi_longitude = #{ssiLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="ssiLatitude != null" >
+        ssi_latitude = #{ssiLatitude,jdbcType=DECIMAL},
+      </if>
+      
+      <if test="ssiHeight != null" >
+        ssi_height = #{ssiHeight,jdbcType=DECIMAL},
+      </if>
+      
+      <if test="sluiceBeforeSiteWaterId != null" >
+        sluice_before_site_water_id = #{sluiceBeforeSiteWaterId,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="sluiceAfterSiteWaterId != null" >
+        sluice_after_site_water_id = #{sluiceAfterSiteWaterId,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="sluiceMovieSiteId != null" >
+        sluice_movie_site_id = #{sluiceMovieSiteId,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="ssiPhotoBefore != null" >
+        ssi_photo_before = #{ssiPhotoBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiPhotoAfter != null" >
+        ssi_photo_after = #{ssiPhotoAfter,jdbcType=VARCHAR},
+      </if>
+      <if test="ssiCreateTime != null" >
+        ssi_create_time = #{ssiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiEditTime != null" >
+        ssi_edit_time = #{ssiEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ssiRemark != null" >
+        ssi_remark = #{ssiRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.SiteSluiceInfo" >
+    update site_sluice_info
+    set ssi_canal_code = #{ssiCanalCode,jdbcType=VARCHAR},
+      sitetype_code = #{sitetypeCode,jdbcType=INTEGER},
+      device_sluice_code = #{deviceSluiceCode,jdbcType=VARCHAR},
+      device_sluice_name = #{deviceSluiceName,jdbcType=VARCHAR},
+      sluicetype_code = #{sluicetypeCode,jdbcType=INTEGER},
+      ssi_device_no = #{ssiDeviceNo,jdbcType=VARCHAR},
+      ssi_devicemodel_code = #{ssiDevicemodelCode,jdbcType=INTEGER},
+      ssi_addr = #{ssiAddr,jdbcType=VARCHAR},
+      ssi_build_time = #{ssiBuildTime,jdbcType=TIMESTAMP},
+      ssi_simcard = #{ssiSimcard,jdbcType=VARCHAR},
+      ssi_simoperator = #{ssiSimoperator,jdbcType=VARCHAR},
+      ssi_ip_port = #{ssiIpPort,jdbcType=VARCHAR},
+      ssi_longitude = #{ssiLongitude,jdbcType=DECIMAL},
+      ssi_latitude = #{ssiLatitude,jdbcType=DECIMAL},
+      ssi_photo_before = #{ssiPhotoBefore,jdbcType=VARCHAR},
+      ssi_photo_after = #{ssiPhotoAfter,jdbcType=VARCHAR},
+      ssi_create_time = #{ssiCreateTime,jdbcType=TIMESTAMP},
+      ssi_edit_time = #{ssiEditTime,jdbcType=TIMESTAMP},
+      ssi_remark = #{ssiRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

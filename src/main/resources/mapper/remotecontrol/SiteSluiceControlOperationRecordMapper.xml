@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.remotecontrol.dao.SiteSluiceControlOperationRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.remotecontrol.entity.SiteSluiceControlOperationRecord" >
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sscor_sluice_code" jdbcType="VARCHAR" property="sscorSluiceCode" />
+    <result column="sscor_sluice_name" jdbcType="VARCHAR" property="sscorSluiceName" />
+    <result column="sluice_height_change_before" jdbcType="DECIMAL" property="sluiceHeightChangeBefore" />
+    <result column="sluice_height_change_after" jdbcType="DECIMAL" property="sluiceHeightChangeAfter" />
+    <result column="sluice_change_type" jdbcType="VARCHAR" property="sluiceChangeType" />
+    <result column="operator_ip" jdbcType="VARCHAR" property="operatorIp" />
+    <result column="sluice_operator_name" jdbcType="VARCHAR" property="sluiceOperatorName" />
+    <result column="sluice_operator_code" jdbcType="VARCHAR" property="sluiceOperatorCode" />
+    <result column="sscor_create_time" jdbcType="TIMESTAMP" property="sscorCreateTime" />
+    <result column="operator_source" jdbcType="INTEGER" property="operatorSource" />
+    <result column="back_one" jdbcType="VARCHAR" property="backOne" />
+    <result column="back_two" jdbcType="VARCHAR" property="backTwo" />
+    <result column="back_three" jdbcType="VARCHAR" property="backThree" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <!--一对一-->
+    <association property="siteSluiceGateInfo" javaType="com.zyjz.remotecontrol.entity.SiteSluiceGateInfo">
+      <!--<id column="id" property="id" jdbcType="VARCHAR" />-->
+      <result column="ssgi_sluice_gate_code" property="ssgiSluiceGateCode" jdbcType="VARCHAR" />
+      <result column="ssgi_sluice_gate_name" property="ssgiSluiceGateName" jdbcType="VARCHAR" />
+      <result column="ssgi_sluice_info_id" property="ssgiSluiceInfoId" jdbcType="VARCHAR" />
+      <result column="ssgi_sluice_info_name" property="ssgiSluiceInfoName" jdbcType="VARCHAR" />
+      <result column="ssgi_sluice_movie_id" property="ssgiSluiceMovieId" jdbcType="VARCHAR" />
+      <result column="ssgi_create_time" property="ssgiCreateTime" jdbcType="TIMESTAMP" />
+    </association>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, sscor_sluice_code, sscor_sluice_name, sluice_height_change_before, sluice_height_change_after,
+    sluice_change_type, operator_ip, sluice_operator_name, sluice_operator_code, sscor_create_time,
+    operator_source, back_one, back_two, back_three, remark
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_sluice_control_operation_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!--按渠道查询闸门操作记录表-->
+  <select id="selectLatestOperationRecord" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    sscor.*,ssgi.ssgi_sluice_info_id
+    from site_sluice_gate_info ssgi
+    RIGHT JOIN  (SELECT * FROM (SELECT * from site_sluice_control_operation_record  ORDER BY sscor_create_time DESC limit 10) t GROUP BY sscor_sluice_code) sscor
+    on ssgi.ssgi_sluice_gate_code = sscor.sscor_sluice_code;
+  </select>
+
+  <!--查询闸门操作记录前1000条-->
+  <select id="selectHistoryDataList" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from site_sluice_control_operation_record
+    where sscor_sluice_code = #{sscorSluiceCode,jdbcType=VARCHAR}
+    ORDER BY sscor_create_time desc limit 1000;
+  </select>
+
+  <!--根据时间日期查询历史记录-->
+  <select id="selectHistoryDataListByDate" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from site_sluice_control_operation_record
+    where sscor_sluice_code = #{sscorSluiceCode}
+    and sluice_height_modify_time between #{startTime} and #{endTime}
+    ORDER BY sscor_create_time desc;
+  </select>
+
+  <!--按闸门站编码或名称查询闸门数据-->
+  <select id="selectOperationRecordByCodeOrName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    sscor.*,ssgi.ssgi_sluice_info_id
+    from site_sluice_gate_info ssgi
+    RIGHT JOIN  (SELECT * FROM (SELECT * from site_sluice_control_operation_record  ORDER BY sscor_create_time DESC limit 10) t GROUP BY sscor_sluice_code) sscor
+    on ssgi.ssgi_sluice_gate_code = sscor.sscor_sluice_code
+    where 1=1
+    <if test="sscorSluiceCode != null and sscorSluiceCode !=''">
+      and  sscor.sscor_sluice_code = #{sscorSluiceCode,jdbcType=VARCHAR}
+    </if>
+    <if test="sscorSluiceName != null and sscorSluiceName !=''">
+      and  sscor.sscor_sluice_name like "%"#{sscorSluiceName,jdbcType=VARCHAR}"%"
+    </if>
+  </select>
+
+  <!--按闸门控制操作人员查询闸门数据-->
+  <select id="selectOperationRecordByOperator" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    sscor.*,ssgi.ssgi_sluice_info_id
+    from site_sluice_gate_info ssgi
+    RIGHT JOIN  (SELECT * FROM (SELECT * from site_sluice_control_operation_record  ORDER BY sscor_create_time DESC limit 10) t GROUP BY sscor_sluice_code) sscor
+    on ssgi.ssgi_sluice_gate_code = sscor.sscor_sluice_code
+    where 1=1
+    <if test="sluiceOperatorName != null and sluiceOperatorName !=''">
+      and  sscor.sluice_operator_name like "%"#{sluiceOperatorName,jdbcType=VARCHAR}"%"
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from site_sluice_control_operation_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceControlOperationRecord">
+    insert into site_sluice_control_operation_record (id, sscor_sluice_code, sscor_sluice_name,
+    sluice_height_change_before, sluice_height_change_after,
+    sluice_change_type, operator_ip, sluice_operator_name,
+    sluice_operator_code, sscor_create_time,
+    operator_source, back_one, back_two,
+    back_three, remark)
+    values (#{id,jdbcType=INTEGER}, #{sscorSluiceCode,jdbcType=VARCHAR}, #{sscorSluiceName,jdbcType=VARCHAR},
+    #{sluiceHeightChangeBefore,jdbcType=DECIMAL}, #{sluiceHeightChangeAfter,jdbcType=DECIMAL},
+    #{sluiceChangeType,jdbcType=VARCHAR}, #{operatorIp,jdbcType=VARCHAR}, #{sluiceOperatorName,jdbcType=VARCHAR},
+    #{sluiceOperatorCode,jdbcType=VARCHAR}, #{sscorCreateTime,jdbcType=TIMESTAMP},
+    #{operatorSource,jdbcType=INTEGER}, #{backOne,jdbcType=VARCHAR}, #{backTwo,jdbcType=VARCHAR},
+    #{backThree,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceControlOperationRecord">
+    insert into site_sluice_control_operation_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sscorSluiceCode != null">
+        sscor_sluice_code,
+      </if>
+      <if test="sscorSluiceName != null">
+        sscor_sluice_name,
+      </if>
+      <if test="sluiceHeightChangeBefore != null">
+        sluice_height_change_before,
+      </if>
+      <if test="sluiceHeightChangeAfter != null">
+        sluice_height_change_after,
+      </if>
+      <if test="sluiceChangeType != null">
+        sluice_change_type,
+      </if>
+      <if test="operatorIp != null">
+        operator_ip,
+      </if>
+      <if test="sluiceOperatorName != null">
+        sluice_operator_name,
+      </if>
+      <if test="sluiceOperatorCode != null">
+        sluice_operator_code,
+      </if>
+      <if test="sscorCreateTime != null">
+        sscor_create_time,
+      </if>
+      <if test="operatorSource != null">
+        operator_source,
+      </if>
+      <if test="backOne != null">
+        back_one,
+      </if>
+      <if test="backTwo != null">
+        back_two,
+      </if>
+      <if test="backThree != null">
+        back_three,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sscorSluiceCode != null">
+        #{sscorSluiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sscorSluiceName != null">
+        #{sscorSluiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceHeightChangeBefore != null">
+        #{sluiceHeightChangeBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeightChangeAfter != null">
+        #{sluiceHeightChangeAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceChangeType != null">
+        #{sluiceChangeType,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorIp != null">
+        #{operatorIp,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceOperatorName != null">
+        #{sluiceOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceOperatorCode != null">
+        #{sluiceOperatorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sscorCreateTime != null">
+        #{sscorCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorSource != null">
+        #{operatorSource,jdbcType=INTEGER},
+      </if>
+      <if test="backOne != null">
+        #{backOne,jdbcType=VARCHAR},
+      </if>
+      <if test="backTwo != null">
+        #{backTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="backThree != null">
+        #{backThree,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceControlOperationRecord">
+    update site_sluice_control_operation_record
+    <set>
+      <if test="sscorSluiceCode != null">
+        sscor_sluice_code = #{sscorSluiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sscorSluiceName != null">
+        sscor_sluice_name = #{sscorSluiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceHeightChangeBefore != null">
+        sluice_height_change_before = #{sluiceHeightChangeBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeightChangeAfter != null">
+        sluice_height_change_after = #{sluiceHeightChangeAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceChangeType != null">
+        sluice_change_type = #{sluiceChangeType,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorIp != null">
+        operator_ip = #{operatorIp,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceOperatorName != null">
+        sluice_operator_name = #{sluiceOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceOperatorCode != null">
+        sluice_operator_code = #{sluiceOperatorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sscorCreateTime != null">
+        sscor_create_time = #{sscorCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorSource != null">
+        operator_source = #{operatorSource,jdbcType=INTEGER},
+      </if>
+      <if test="backOne != null">
+        back_one = #{backOne,jdbcType=VARCHAR},
+      </if>
+      <if test="backTwo != null">
+        back_two = #{backTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="backThree != null">
+        back_three = #{backThree,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.remotecontrol.entity.SiteSluiceControlOperationRecord">
+    update site_sluice_control_operation_record
+    set sscor_sluice_code = #{sscorSluiceCode,jdbcType=VARCHAR},
+    sscor_sluice_name = #{sscorSluiceName,jdbcType=VARCHAR},
+    sluice_height_change_before = #{sluiceHeightChangeBefore,jdbcType=DECIMAL},
+    sluice_height_change_after = #{sluiceHeightChangeAfter,jdbcType=DECIMAL},
+    sluice_change_type = #{sluiceChangeType,jdbcType=VARCHAR},
+    operator_ip = #{operatorIp,jdbcType=VARCHAR},
+    sluice_operator_name = #{sluiceOperatorName,jdbcType=VARCHAR},
+    sluice_operator_code = #{sluiceOperatorCode,jdbcType=VARCHAR},
+    sscor_create_time = #{sscorCreateTime,jdbcType=TIMESTAMP},
+    operator_source = #{operatorSource,jdbcType=INTEGER},
+    back_one = #{backOne,jdbcType=VARCHAR},
+    back_two = #{backTwo,jdbcType=VARCHAR},
+    back_three = #{backThree,jdbcType=VARCHAR},
+    remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

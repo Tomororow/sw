@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.DistWaterPlanConsumerMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.plan.entity.DistWaterPlanConsumer" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+    <result column="phoneNumber" property="phonenumber" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="water_right_area" property="waterRightArea" jdbcType="DECIMAL" />
+    <result column="real_area" property="realArea" jdbcType="DECIMAL" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="dwpc_create_time" property="dwpcCreateTime" jdbcType="TIMESTAMP" />
+    <result column="dwpc_edit_time" property="dwpcEditTime" jdbcType="TIMESTAMP" />
+    <result column="dwpc_remark" property="dwpcRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    id, name, area_code, phoneNumber, account, password, water_right_area, real_area, 
+    address, dwpc_create_time, dwpc_edit_time, dwpc_remark
+  </sql>
+  
+  
+  <select id="getDistWaterPlanConsumersList" resultMap="BaseResultMap" parameterType="map" >
+		select * from dist_water_plan_consumer sti 
+		order by sti.dwpc_create_time
+ </select>
+	
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from dist_water_plan_consumer
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <select id="findDistWaterPlanConsumersByAreaCodes" resultMap="BaseResultMap" parameterType="java.util.List">
+    select 
+    <include refid="Base_Column_List" />
+    from dist_water_plan_consumer
+    where area_code in 
+    <foreach collection="list" index="index" item="areaCode" open="(" separator="," close=")">  
+        #{areaCode}  
+    </foreach>
+    order by dwpc_create_time desc
+  </select>
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from dist_water_plan_consumer
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.plan.entity.DistWaterPlanConsumer" >
+    insert into dist_water_plan_consumer (id, name, area_code, 
+      phoneNumber, account, password, 
+      water_right_area, real_area, address, 
+      dwpc_create_time, dwpc_edit_time, dwpc_remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, 
+      #{phonenumber,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{waterRightArea,jdbcType=DECIMAL}, #{realArea,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, 
+      #{dwpcCreateTime,jdbcType=TIMESTAMP}, #{dwpcEditTime,jdbcType=TIMESTAMP}, #{dwpcRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.plan.entity.DistWaterPlanConsumer" >
+  
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+  
+    insert into dist_water_plan_consumer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="areaCode != null" >
+        area_code,
+      </if>
+      <if test="phonenumber != null" >
+        phoneNumber,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="waterRightArea != null" >
+        water_right_area,
+      </if>
+      <if test="realArea != null" >
+        real_area,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="dwpcCreateTime != null" >
+        dwpc_create_time,
+      </if>
+      <if test="dwpcEditTime != null" >
+        dwpc_edit_time,
+      </if>
+      <if test="dwpcRemark != null" >
+        dwpc_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null" >
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null" >
+        #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="waterRightArea != null" >
+        #{waterRightArea,jdbcType=DECIMAL},
+      </if>
+      <if test="realArea != null" >
+        #{realArea,jdbcType=DECIMAL},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="dwpcCreateTime != null" >
+        #{dwpcCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dwpcEditTime != null" >
+        #{dwpcEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dwpcRemark != null" >
+        #{dwpcRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.DistWaterPlanConsumer" >
+    update dist_water_plan_consumer
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null" >
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null" >
+        phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="waterRightArea != null" >
+        water_right_area = #{waterRightArea,jdbcType=DECIMAL},
+      </if>
+      <if test="realArea != null" >
+        real_area = #{realArea,jdbcType=DECIMAL},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="dwpcCreateTime != null" >
+        dwpc_create_time = #{dwpcCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dwpcEditTime != null" >
+        dwpc_edit_time = #{dwpcEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dwpcRemark != null" >
+        dwpc_remark = #{dwpcRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.plan.entity.DistWaterPlanConsumer" >
+    update dist_water_plan_consumer
+    set name = #{name,jdbcType=VARCHAR},
+      area_code = #{areaCode,jdbcType=VARCHAR},
+      phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      water_right_area = #{waterRightArea,jdbcType=DECIMAL},
+      real_area = #{realArea,jdbcType=DECIMAL},
+      address = #{address,jdbcType=VARCHAR},
+      dwpc_create_time = #{dwpcCreateTime,jdbcType=TIMESTAMP},
+      dwpc_edit_time = #{dwpcEditTime,jdbcType=TIMESTAMP},
+      dwpc_remark = #{dwpcRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.watersupply.dao.SynPoolMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.watersupply.entity.SynPool" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="waterworks_id" property="waterworksId" jdbcType="VARCHAR" />
+    <result column="equipment_id" property="equipmentId" jdbcType="VARCHAR" />
+    <result column="pool_name" property="poolName" jdbcType="VARCHAR" />
+    <result column="pool_num" property="poolNum" jdbcType="VARCHAR" />
+    <result column="length" property="length" jdbcType="DECIMAL" />
+    <result column="wide" property="wide" jdbcType="DECIMAL" />
+    <result column="tall" property="tall" jdbcType="DECIMAL" />
+    <result column="bulk" property="bulk" jdbcType="DECIMAL" />
+    <result column="max_pondage" property="maxPondage" jdbcType="DECIMAL" />
+    <result column="pool_longitude" property="poolLongitude" jdbcType="DECIMAL" />
+    <result column="pool_latitude" property="poolLatitude" jdbcType="DECIMAL" />
+    <result column="pool_address" property="poolAddress" jdbcType="VARCHAR" />
+    <result column="pool_photos" property="poolPhotos" jdbcType="VARCHAR" />
+    <result column="pool_buildtime" property="poolBuildtime" jdbcType="TIMESTAMP" />
+    <result column="pool_sim" property="poolSim" jdbcType="VARCHAR" />
+    <result column="pool_sim_operator" property="poolSimOperator" jdbcType="VARCHAR" />
+    <result column="pool_creation_time" property="poolCreationTime" jdbcType="TIMESTAMP" />
+    <result column="pool_update_time" property="poolUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="pool_remark" property="poolRemark" jdbcType="VARCHAR" />
+    <result column="pool_comm1" property="poolComm1" jdbcType="VARCHAR" />
+    <result column="pool_comm2" property="poolComm2" jdbcType="VARCHAR" />
+    <result column="pool_comm3" property="poolComm3" jdbcType="VARCHAR" />
+    <result column="pool_comm4" property="poolComm4" jdbcType="VARCHAR" />
+    <result column="pool_comm5" property="poolComm5" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, waterworks_id, equipment_id, pool_name, pool_num, length, wide, tall, bulk, max_pondage, 
+    pool_longitude, pool_latitude, pool_address, pool_photos, pool_buildtime, pool_sim, 
+    pool_sim_operator, pool_creation_time, pool_update_time, pool_remark, pool_comm1, 
+    pool_comm2, pool_comm3, pool_comm4, pool_comm5
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from syn_pool
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from syn_pool
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.watersupply.entity.SynPool" >
+    insert into syn_pool (id, waterworks_id, equipment_id, 
+      pool_name, pool_num, length, 
+      wide, tall, bulk, max_pondage, 
+      pool_longitude, pool_latitude, pool_address, 
+      pool_photos, pool_buildtime, pool_sim, 
+      pool_sim_operator, pool_creation_time, pool_update_time, 
+      pool_remark, pool_comm1, pool_comm2, 
+      pool_comm3, pool_comm4, pool_comm5
+      )
+    values (#{id,jdbcType=VARCHAR}, #{waterworksId,jdbcType=VARCHAR}, #{equipmentId,jdbcType=VARCHAR}, 
+      #{poolName,jdbcType=VARCHAR}, #{poolNum,jdbcType=VARCHAR}, #{length,jdbcType=DECIMAL}, 
+      #{wide,jdbcType=DECIMAL}, #{tall,jdbcType=DECIMAL}, #{bulk,jdbcType=DECIMAL}, #{maxPondage,jdbcType=DECIMAL}, 
+      #{poolLongitude,jdbcType=DECIMAL}, #{poolLatitude,jdbcType=DECIMAL}, #{poolAddress,jdbcType=VARCHAR}, 
+      #{poolPhotos,jdbcType=VARCHAR}, #{poolBuildtime,jdbcType=TIMESTAMP}, #{poolSim,jdbcType=VARCHAR}, 
+      #{poolSimOperator,jdbcType=VARCHAR}, #{poolCreationTime,jdbcType=TIMESTAMP}, #{poolUpdateTime,jdbcType=TIMESTAMP}, 
+      #{poolRemark,jdbcType=VARCHAR}, #{poolComm1,jdbcType=VARCHAR}, #{poolComm2,jdbcType=VARCHAR}, 
+      #{poolComm3,jdbcType=VARCHAR}, #{poolComm4,jdbcType=VARCHAR}, #{poolComm5,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.watersupply.entity.SynPool" >
+    insert into syn_pool
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="waterworksId != null" >
+        waterworks_id,
+      </if>
+      <if test="equipmentId != null" >
+        equipment_id,
+      </if>
+      <if test="poolName != null" >
+        pool_name,
+      </if>
+      <if test="poolNum != null" >
+        pool_num,
+      </if>
+      <if test="length != null" >
+        length,
+      </if>
+      <if test="wide != null" >
+        wide,
+      </if>
+      <if test="tall != null" >
+        tall,
+      </if>
+      <if test="bulk != null" >
+        bulk,
+      </if>
+      <if test="maxPondage != null" >
+        max_pondage,
+      </if>
+      <if test="poolLongitude != null" >
+        pool_longitude,
+      </if>
+      <if test="poolLatitude != null" >
+        pool_latitude,
+      </if>
+      <if test="poolAddress != null" >
+        pool_address,
+      </if>
+      <if test="poolPhotos != null" >
+        pool_photos,
+      </if>
+      <if test="poolBuildtime != null" >
+        pool_buildtime,
+      </if>
+      <if test="poolSim != null" >
+        pool_sim,
+      </if>
+      <if test="poolSimOperator != null" >
+        pool_sim_operator,
+      </if>
+      <if test="poolCreationTime != null" >
+        pool_creation_time,
+      </if>
+      <if test="poolUpdateTime != null" >
+        pool_update_time,
+      </if>
+      <if test="poolRemark != null" >
+        pool_remark,
+      </if>
+      <if test="poolComm1 != null" >
+        pool_comm1,
+      </if>
+      <if test="poolComm2 != null" >
+        pool_comm2,
+      </if>
+      <if test="poolComm3 != null" >
+        pool_comm3,
+      </if>
+      <if test="poolComm4 != null" >
+        pool_comm4,
+      </if>
+      <if test="poolComm5 != null" >
+        pool_comm5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="waterworksId != null" >
+        #{waterworksId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentId != null" >
+        #{equipmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="poolName != null" >
+        #{poolName,jdbcType=VARCHAR},
+      </if>
+      <if test="poolNum != null" >
+        #{poolNum,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        #{length,jdbcType=DECIMAL},
+      </if>
+      <if test="wide != null" >
+        #{wide,jdbcType=DECIMAL},
+      </if>
+      <if test="tall != null" >
+        #{tall,jdbcType=DECIMAL},
+      </if>
+      <if test="bulk != null" >
+        #{bulk,jdbcType=DECIMAL},
+      </if>
+      <if test="maxPondage != null" >
+        #{maxPondage,jdbcType=DECIMAL},
+      </if>
+      <if test="poolLongitude != null" >
+        #{poolLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="poolLatitude != null" >
+        #{poolLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="poolAddress != null" >
+        #{poolAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="poolPhotos != null" >
+        #{poolPhotos,jdbcType=VARCHAR},
+      </if>
+      <if test="poolBuildtime != null" >
+        #{poolBuildtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="poolSim != null" >
+        #{poolSim,jdbcType=VARCHAR},
+      </if>
+      <if test="poolSimOperator != null" >
+        #{poolSimOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="poolCreationTime != null" >
+        #{poolCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="poolUpdateTime != null" >
+        #{poolUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="poolRemark != null" >
+        #{poolRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="poolComm1 != null" >
+        #{poolComm1,jdbcType=VARCHAR},
+      </if>
+      <if test="poolComm2 != null" >
+        #{poolComm2,jdbcType=VARCHAR},
+      </if>
+      <if test="poolComm3 != null" >
+        #{poolComm3,jdbcType=VARCHAR},
+      </if>
+      <if test="poolComm4 != null" >
+        #{poolComm4,jdbcType=VARCHAR},
+      </if>
+      <if test="poolComm5 != null" >
+        #{poolComm5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.watersupply.entity.SynPool" >
+    update syn_pool
+    <set >
+      <if test="waterworksId != null" >
+        waterworks_id = #{waterworksId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentId != null" >
+        equipment_id = #{equipmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="poolName != null" >
+        pool_name = #{poolName,jdbcType=VARCHAR},
+      </if>
+      <if test="poolNum != null" >
+        pool_num = #{poolNum,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        length = #{length,jdbcType=DECIMAL},
+      </if>
+      <if test="wide != null" >
+        wide = #{wide,jdbcType=DECIMAL},
+      </if>
+      <if test="tall != null" >
+        tall = #{tall,jdbcType=DECIMAL},
+      </if>
+      <if test="bulk != null" >
+        bulk = #{bulk,jdbcType=DECIMAL},
+      </if>
+      <if test="maxPondage != null" >
+        max_pondage = #{maxPondage,jdbcType=DECIMAL},
+      </if>
+      <if test="poolLongitude != null" >
+        pool_longitude = #{poolLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="poolLatitude != null" >
+        pool_latitude = #{poolLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="poolAddress != null" >
+        pool_address = #{poolAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="poolPhotos != null" >
+        pool_photos = #{poolPhotos,jdbcType=VARCHAR},
+      </if>
+      <if test="poolBuildtime != null" >
+        pool_buildtime = #{poolBuildtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="poolSim != null" >
+        pool_sim = #{poolSim,jdbcType=VARCHAR},
+      </if>
+      <if test="poolSimOperator != null" >
+        pool_sim_operator = #{poolSimOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="poolCreationTime != null" >
+        pool_creation_time = #{poolCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="poolUpdateTime != null" >
+        pool_update_time = #{poolUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="poolRemark != null" >
+        pool_remark = #{poolRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="poolComm1 != null" >
+        pool_comm1 = #{poolComm1,jdbcType=VARCHAR},
+      </if>
+      <if test="poolComm2 != null" >
+        pool_comm2 = #{poolComm2,jdbcType=VARCHAR},
+      </if>
+      <if test="poolComm3 != null" >
+        pool_comm3 = #{poolComm3,jdbcType=VARCHAR},
+      </if>
+      <if test="poolComm4 != null" >
+        pool_comm4 = #{poolComm4,jdbcType=VARCHAR},
+      </if>
+      <if test="poolComm5 != null" >
+        pool_comm5 = #{poolComm5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.watersupply.entity.SynPool" >
+    update syn_pool
+    set waterworks_id = #{waterworksId,jdbcType=VARCHAR},
+      equipment_id = #{equipmentId,jdbcType=VARCHAR},
+      pool_name = #{poolName,jdbcType=VARCHAR},
+      pool_num = #{poolNum,jdbcType=VARCHAR},
+      length = #{length,jdbcType=DECIMAL},
+      wide = #{wide,jdbcType=DECIMAL},
+      tall = #{tall,jdbcType=DECIMAL},
+      bulk = #{bulk,jdbcType=DECIMAL},
+      max_pondage = #{maxPondage,jdbcType=DECIMAL},
+      pool_longitude = #{poolLongitude,jdbcType=DECIMAL},
+      pool_latitude = #{poolLatitude,jdbcType=DECIMAL},
+      pool_address = #{poolAddress,jdbcType=VARCHAR},
+      pool_photos = #{poolPhotos,jdbcType=VARCHAR},
+      pool_buildtime = #{poolBuildtime,jdbcType=TIMESTAMP},
+      pool_sim = #{poolSim,jdbcType=VARCHAR},
+      pool_sim_operator = #{poolSimOperator,jdbcType=VARCHAR},
+      pool_creation_time = #{poolCreationTime,jdbcType=TIMESTAMP},
+      pool_update_time = #{poolUpdateTime,jdbcType=TIMESTAMP},
+      pool_remark = #{poolRemark,jdbcType=VARCHAR},
+      pool_comm1 = #{poolComm1,jdbcType=VARCHAR},
+      pool_comm2 = #{poolComm2,jdbcType=VARCHAR},
+      pool_comm3 = #{poolComm3,jdbcType=VARCHAR},
+      pool_comm4 = #{poolComm4,jdbcType=VARCHAR},
+      pool_comm5 = #{poolComm5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

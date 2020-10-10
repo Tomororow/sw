@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyjz.sysmanage.dao.CalCanalSluiceMapper">
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.CalCanalSluice">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="canal_id" jdbcType="VARCHAR" property="canalId" />
+    <result column="sluice_code" jdbcType="VARCHAR" property="sluiceCode" />
+    
+    <result column="sluice_photo" jdbcType="VARCHAR" property="sluicePhoto" />
+    <result column="sluice_photo_no" jdbcType="VARCHAR" property="sluicePhotoNo" />
+    <result column="sluice_type" jdbcType="VARCHAR" property="sluiceType" />
+    <result column="sluice_longitude" jdbcType="DECIMAL" property="sluiceLongitude" />
+    <result column="sluice_latitude" jdbcType="DECIMAL" property="sluiceLatitude" />
+    <result column="sluice_height" jdbcType="DECIMAL" property="sluiceHeight" />
+    <result column="sluice_mian_function" jdbcType="VARCHAR" property="sluiceMianFunction" />
+    <result column="open_close_form" jdbcType="VARCHAR" property="openCloseForm" />
+    <result column="hole_number" jdbcType="INTEGER" property="holeNumber" />
+    <result column="open_close_number" jdbcType="INTEGER" property="openCloseNumber" />
+    <result column="flashboard_number" jdbcType="INTEGER" property="flashboardNumber" />
+    <result column="lead_screw_number" jdbcType="INTEGER" property="leadScrewNumber" />
+    <result column="machine_cap_number" jdbcType="INTEGER" property="machineCapNumber" />
+    <result column="machine_base_number" jdbcType="INTEGER" property="machineBaseNumber" />
+    <result column="copper_sheathing_number" jdbcType="INTEGER" property="copperSheathingNumber" />
+    <result column="fix_screw_number" jdbcType="INTEGER" property="fixScrewNumber" />
+    
+    <result column="sluice_repair_time" property="sluiceRepairTime" jdbcType="TIMESTAMP" />
+    <result column="sluice_build_time" property="sluiceBuildTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    
+    <result column="sluice_perfect_type" jdbcType="VARCHAR" property="sluicePerfectType" />
+    <result column="ccs_remark" jdbcType="VARCHAR" property="ccsRemark" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List">
+    id, canal_id,sluice_code ,sluice_photo, sluice_photo_no, sluice_type, sluice_longitude, sluice_latitude, 
+    sluice_height, sluice_mian_function, open_close_form, hole_number, open_close_number, 
+    flashboard_number, lead_screw_number, machine_cap_number, machine_base_number, copper_sheathing_number, 
+    fix_screw_number,sluice_repair_time ,sluice_build_time,create_time,sluice_perfect_type, ccs_remark
+  </sql>
+ 
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_sluice
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectCalCanalSluiceByCanalId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cal_canal_sluice
+    where canal_id = #{canalId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from cal_canal_sluice
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.CalCanalSluice">
+    insert into cal_canal_sluice (id, canal_id,sluice_code,sluice_photo, 
+      sluice_photo_no, sluice_type, sluice_longitude, 
+      sluice_latitude, sluice_height, sluice_mian_function, 
+      open_close_form, hole_number, open_close_number, 
+      flashboard_number, lead_screw_number, machine_cap_number, 
+      machine_base_number, copper_sheathing_number, 
+      fix_screw_number,sluice_repair_time ,sluice_build_time,create_time,sluice_perfect_type, ccs_remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{canalId,jdbcType=VARCHAR},#{sluiceCode,jdbcType=VARCHAR} ,#{sluicePhoto,jdbcType=VARCHAR}, 
+      #{sluicePhotoNo,jdbcType=VARCHAR}, #{sluiceType,jdbcType=VARCHAR}, #{sluiceLongitude,jdbcType=DECIMAL}, 
+      #{sluiceLatitude,jdbcType=DECIMAL}, #{sluiceHeight,jdbcType=DECIMAL}, #{sluiceMianFunction,jdbcType=VARCHAR}, 
+      #{openCloseForm,jdbcType=VARCHAR}, #{holeNumber,jdbcType=INTEGER}, #{openCloseNumber,jdbcType=INTEGER}, 
+      #{flashboardNumber,jdbcType=INTEGER}, #{leadScrewNumber,jdbcType=INTEGER}, #{machineCapNumber,jdbcType=INTEGER}, 
+      #{machineBaseNumber,jdbcType=INTEGER}, #{copperSheathingNumber,jdbcType=INTEGER}, 
+      #{fixScrewNumber,jdbcType=INTEGER},#{sluiceRepairTime,jdbcType=TIMESTAMP} ,#{sluiceBuildTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP},#{sluicePerfectType,jdbcType=VARCHAR}, #{ccsRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  
+  
+  
+  
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.CalCanalSluice">
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+  
+  
+    insert into cal_canal_sluice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="canalId != null">
+        canal_id,
+      </if>
+      
+      <if test="sluiceCode != null">
+        sluice_code,
+      </if>
+      <if test="sluicePhoto != null">
+        sluice_photo,
+      </if>
+      <if test="sluicePhotoNo != null">
+        sluice_photo_no,
+      </if>
+      <if test="sluiceType != null">
+        sluice_type,
+      </if>
+      <if test="sluiceLongitude != null">
+        sluice_longitude,
+      </if>
+      <if test="sluiceLatitude != null">
+        sluice_latitude,
+      </if>
+      <if test="sluiceHeight != null">
+        sluice_height,
+      </if>
+      <if test="sluiceMianFunction != null">
+        sluice_mian_function,
+      </if>
+      <if test="openCloseForm != null">
+        open_close_form,
+      </if>
+      <if test="holeNumber != null">
+        hole_number,
+      </if>
+      <if test="openCloseNumber != null">
+        open_close_number,
+      </if>
+      <if test="flashboardNumber != null">
+        flashboard_number,
+      </if>
+      <if test="leadScrewNumber != null">
+        lead_screw_number,
+      </if>
+      <if test="machineCapNumber != null">
+        machine_cap_number,
+      </if>
+      <if test="machineBaseNumber != null">
+        machine_base_number,
+      </if>
+      <if test="copperSheathingNumber != null">
+        copper_sheathing_number,
+      </if>
+      <if test="fixScrewNumber != null">
+        fix_screw_number,
+      </if>
+      
+      <if test="sluiceRepairTime != null">
+        sluice_repair_time,
+      </if>
+      
+      <if test="sluiceBuildTime != null">
+        sluice_build_time,
+      </if>
+      
+      <if test="createTime != null">
+        create_time,
+      </if>
+       
+      <if test="sluicePerfectType != null">
+        sluice_perfect_type,
+      </if>
+      <if test="ccsRemark != null">
+        ccs_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="canalId != null">
+        #{canalId,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceCode != null">
+        #{sluiceCode,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="sluicePhoto != null">
+        #{sluicePhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="sluicePhotoNo != null">
+        #{sluicePhotoNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceType != null">
+        #{sluiceType,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceLongitude != null">
+        #{sluiceLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceLatitude != null">
+        #{sluiceLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight != null">
+        #{sluiceHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceMianFunction != null">
+        #{sluiceMianFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="openCloseForm != null">
+        #{openCloseForm,jdbcType=VARCHAR},
+      </if>
+      <if test="holeNumber != null">
+        #{holeNumber,jdbcType=INTEGER},
+      </if>
+      <if test="openCloseNumber != null">
+        #{openCloseNumber,jdbcType=INTEGER},
+      </if>
+      <if test="flashboardNumber != null">
+        #{flashboardNumber,jdbcType=INTEGER},
+      </if>
+      <if test="leadScrewNumber != null">
+        #{leadScrewNumber,jdbcType=INTEGER},
+      </if>
+      <if test="machineCapNumber != null">
+        #{machineCapNumber,jdbcType=INTEGER},
+      </if>
+      <if test="machineBaseNumber != null">
+        #{machineBaseNumber,jdbcType=INTEGER},
+      </if>
+      <if test="copperSheathingNumber != null">
+        #{copperSheathingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="fixScrewNumber != null">
+        #{fixScrewNumber,jdbcType=INTEGER},
+      </if>
+      
+      <if test="sluiceRepairTime != null">
+        #{sluiceRepairTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sluiceBuildTime != null">
+        #{sluiceBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      
+      <if test="sluicePerfectType != null">
+        #{sluicePerfectType,jdbcType=VARCHAR},
+      </if>
+      <if test="ccsRemark != null">
+        #{ccsRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+ 
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.CalCanalSluice">
+  	
+    update cal_canal_sluice
+    <set>
+      <if test="canalId != null">
+        canal_id = #{canalId,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceCode != null">
+        sluice_code = #{sluiceCode,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="sluicePhoto != null">
+        sluice_photo = #{sluicePhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="sluicePhotoNo != null">
+        sluice_photo_no = #{sluicePhotoNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceType != null">
+        sluice_type = #{sluiceType,jdbcType=VARCHAR},
+      </if>
+      <if test="sluiceLongitude != null">
+        sluice_longitude = #{sluiceLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceLatitude != null">
+        sluice_latitude = #{sluiceLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceHeight != null">
+        sluice_height = #{sluiceHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="sluiceMianFunction != null">
+        sluice_mian_function = #{sluiceMianFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="openCloseForm != null">
+        open_close_form = #{openCloseForm,jdbcType=VARCHAR},
+      </if>
+      <if test="holeNumber != null">
+        hole_number = #{holeNumber,jdbcType=INTEGER},
+      </if>
+      <if test="openCloseNumber != null">
+        open_close_number = #{openCloseNumber,jdbcType=INTEGER},
+      </if>
+      <if test="flashboardNumber != null">
+        flashboard_number = #{flashboardNumber,jdbcType=INTEGER},
+      </if>
+      <if test="leadScrewNumber != null">
+        lead_screw_number = #{leadScrewNumber,jdbcType=INTEGER},
+      </if>
+      <if test="machineCapNumber != null">
+        machine_cap_number = #{machineCapNumber,jdbcType=INTEGER},
+      </if>
+      <if test="machineBaseNumber != null">
+        machine_base_number = #{machineBaseNumber,jdbcType=INTEGER},
+      </if>
+      <if test="copperSheathingNumber != null">
+        copper_sheathing_number = #{copperSheathingNumber,jdbcType=INTEGER},
+      </if>
+      <if test="fixScrewNumber != null">
+        fix_screw_number = #{fixScrewNumber,jdbcType=INTEGER},
+      </if>
+      
+      <if test="sluiceRepairTime != null">
+        sluice_repair_time = #{sluiceRepairTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sluiceBuildTime != null">
+        sluice_build_time = #{sluiceBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      
+      <if test="sluicePerfectType != null">
+        sluice_perfect_type = #{sluicePerfectType,jdbcType=VARCHAR},
+      </if>
+      <if test="ccsRemark != null">
+        ccs_remark = #{ccsRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.CalCanalSluice">
+    update cal_canal_sluice
+    set canal_id = #{canalId,jdbcType=VARCHAR},
+      sluice_photo = #{sluicePhoto,jdbcType=VARCHAR},
+      sluice_photo_no = #{sluicePhotoNo,jdbcType=VARCHAR},
+      sluice_type = #{sluiceType,jdbcType=VARCHAR},
+      sluice_longitude = #{sluiceLongitude,jdbcType=DECIMAL},
+      sluice_latitude = #{sluiceLatitude,jdbcType=DECIMAL},
+      sluice_height = #{sluiceHeight,jdbcType=DECIMAL},
+      sluice_mian_function = #{sluiceMianFunction,jdbcType=VARCHAR},
+      open_close_form = #{openCloseForm,jdbcType=VARCHAR},
+      hole_number = #{holeNumber,jdbcType=INTEGER},
+      open_close_number = #{openCloseNumber,jdbcType=INTEGER},
+      flashboard_number = #{flashboardNumber,jdbcType=INTEGER},
+      lead_screw_number = #{leadScrewNumber,jdbcType=INTEGER},
+      machine_cap_number = #{machineCapNumber,jdbcType=INTEGER},
+      machine_base_number = #{machineBaseNumber,jdbcType=INTEGER},
+      copper_sheathing_number = #{copperSheathingNumber,jdbcType=INTEGER},
+      fix_screw_number = #{fixScrewNumber,jdbcType=INTEGER},
+      sluice_perfect_type = #{sluicePerfectType,jdbcType=VARCHAR},
+      ccs_remark = #{ccsRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

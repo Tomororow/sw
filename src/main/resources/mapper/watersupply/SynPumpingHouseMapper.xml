@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.watersupply.dao.SynPumpingHouseMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.watersupply.entity.SynPumpingHouse" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="waterworks_id" property="waterworksId" jdbcType="VARCHAR" />
+    <result column="equipment_id" property="equipmentId" jdbcType="VARCHAR" />
+    <result column="pumping_name" property="pumpingName" jdbcType="VARCHAR" />
+    <result column="pumping_num" property="pumpingNum" jdbcType="VARCHAR" />
+    <result column="pumping_grade" property="pumpingGrade" jdbcType="VARCHAR" />
+    <result column="pumping_photo" property="pumpingPhoto" jdbcType="VARCHAR" />
+    <result column="pumping_sim" property="pumpingSim" jdbcType="VARCHAR" />
+    <result column="pumping_sim_operator" property="pumpingSimOperator" jdbcType="VARCHAR" />
+    <result column="pumping_longitude" property="pumpingLongitude" jdbcType="DECIMAL" />
+    <result column="pumping_latitude" property="pumpingLatitude" jdbcType="DECIMAL" />
+    <result column="pumping_creation_time" property="pumpingCreationTime" jdbcType="TIMESTAMP" />
+    <result column="pumping_update_time" property="pumpingUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="pumping_remark" property="pumpingRemark" jdbcType="VARCHAR" />
+    <result column="pumping_comm1" property="pumpingComm1" jdbcType="VARCHAR" />
+    <result column="pumping_comm2" property="pumpingComm2" jdbcType="VARCHAR" />
+    <result column="pumping_comm3" property="pumpingComm3" jdbcType="VARCHAR" />
+    <result column="pumping_comm4" property="pumpingComm4" jdbcType="VARCHAR" />
+    <result column="pumping_comm5" property="pumpingComm5" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List" >
+    id, waterworks_id, equipment_id, pumping_name, pumping_num, pumping_grade, pumping_photo, 
+    pumping_sim, pumping_sim_operator, pumping_longitude, pumping_latitude, pumping_creation_time, 
+    pumping_update_time, pumping_remark, pumping_comm1, pumping_comm2, pumping_comm3, 
+    pumping_comm4, pumping_comm5
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from syn_pumping_house
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from syn_pumping_house
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.watersupply.entity.SynPumpingHouse" >
+    insert into syn_pumping_house (id, waterworks_id, equipment_id, 
+      pumping_name, pumping_num, pumping_grade, 
+      pumping_photo, pumping_sim, pumping_sim_operator, 
+      pumping_longitude, pumping_latitude, pumping_creation_time, 
+      pumping_update_time, pumping_remark, pumping_comm1, 
+      pumping_comm2, pumping_comm3, pumping_comm4, 
+      pumping_comm5)
+    values (#{id,jdbcType=VARCHAR}, #{waterworksId,jdbcType=VARCHAR}, #{equipmentId,jdbcType=VARCHAR}, 
+      #{pumpingName,jdbcType=VARCHAR}, #{pumpingNum,jdbcType=VARCHAR}, #{pumpingGrade,jdbcType=VARCHAR}, 
+      #{pumpingPhoto,jdbcType=VARCHAR}, #{pumpingSim,jdbcType=VARCHAR}, #{pumpingSimOperator,jdbcType=VARCHAR}, 
+      #{pumpingLongitude,jdbcType=DECIMAL}, #{pumpingLatitude,jdbcType=DECIMAL}, #{pumpingCreationTime,jdbcType=TIMESTAMP}, 
+      #{pumpingUpdateTime,jdbcType=TIMESTAMP}, #{pumpingRemark,jdbcType=VARCHAR}, #{pumpingComm1,jdbcType=VARCHAR}, 
+      #{pumpingComm2,jdbcType=VARCHAR}, #{pumpingComm3,jdbcType=VARCHAR}, #{pumpingComm4,jdbcType=VARCHAR}, 
+      #{pumpingComm5,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.watersupply.entity.SynPumpingHouse" >
+    insert into syn_pumping_house
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="waterworksId != null" >
+        waterworks_id,
+      </if>
+      <if test="equipmentId != null" >
+        equipment_id,
+      </if>
+      <if test="pumpingName != null" >
+        pumping_name,
+      </if>
+      <if test="pumpingNum != null" >
+        pumping_num,
+      </if>
+      <if test="pumpingGrade != null" >
+        pumping_grade,
+      </if>
+      <if test="pumpingPhoto != null" >
+        pumping_photo,
+      </if>
+      <if test="pumpingSim != null" >
+        pumping_sim,
+      </if>
+      <if test="pumpingSimOperator != null" >
+        pumping_sim_operator,
+      </if>
+      <if test="pumpingLongitude != null" >
+        pumping_longitude,
+      </if>
+      <if test="pumpingLatitude != null" >
+        pumping_latitude,
+      </if>
+      <if test="pumpingCreationTime != null" >
+        pumping_creation_time,
+      </if>
+      <if test="pumpingUpdateTime != null" >
+        pumping_update_time,
+      </if>
+      <if test="pumpingRemark != null" >
+        pumping_remark,
+      </if>
+      <if test="pumpingComm1 != null" >
+        pumping_comm1,
+      </if>
+      <if test="pumpingComm2 != null" >
+        pumping_comm2,
+      </if>
+      <if test="pumpingComm3 != null" >
+        pumping_comm3,
+      </if>
+      <if test="pumpingComm4 != null" >
+        pumping_comm4,
+      </if>
+      <if test="pumpingComm5 != null" >
+        pumping_comm5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="waterworksId != null" >
+        #{waterworksId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentId != null" >
+        #{equipmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingName != null" >
+        #{pumpingName,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingNum != null" >
+        #{pumpingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingGrade != null" >
+        #{pumpingGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingPhoto != null" >
+        #{pumpingPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingSim != null" >
+        #{pumpingSim,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingSimOperator != null" >
+        #{pumpingSimOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingLongitude != null" >
+        #{pumpingLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="pumpingLatitude != null" >
+        #{pumpingLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="pumpingCreationTime != null" >
+        #{pumpingCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pumpingUpdateTime != null" >
+        #{pumpingUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pumpingRemark != null" >
+        #{pumpingRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingComm1 != null" >
+        #{pumpingComm1,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingComm2 != null" >
+        #{pumpingComm2,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingComm3 != null" >
+        #{pumpingComm3,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingComm4 != null" >
+        #{pumpingComm4,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingComm5 != null" >
+        #{pumpingComm5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.watersupply.entity.SynPumpingHouse" >
+    update syn_pumping_house
+    <set >
+      <if test="waterworksId != null" >
+        waterworks_id = #{waterworksId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentId != null" >
+        equipment_id = #{equipmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingName != null" >
+        pumping_name = #{pumpingName,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingNum != null" >
+        pumping_num = #{pumpingNum,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingGrade != null" >
+        pumping_grade = #{pumpingGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingPhoto != null" >
+        pumping_photo = #{pumpingPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingSim != null" >
+        pumping_sim = #{pumpingSim,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingSimOperator != null" >
+        pumping_sim_operator = #{pumpingSimOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingLongitude != null" >
+        pumping_longitude = #{pumpingLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="pumpingLatitude != null" >
+        pumping_latitude = #{pumpingLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="pumpingCreationTime != null" >
+        pumping_creation_time = #{pumpingCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pumpingUpdateTime != null" >
+        pumping_update_time = #{pumpingUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pumpingRemark != null" >
+        pumping_remark = #{pumpingRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingComm1 != null" >
+        pumping_comm1 = #{pumpingComm1,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingComm2 != null" >
+        pumping_comm2 = #{pumpingComm2,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingComm3 != null" >
+        pumping_comm3 = #{pumpingComm3,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingComm4 != null" >
+        pumping_comm4 = #{pumpingComm4,jdbcType=VARCHAR},
+      </if>
+      <if test="pumpingComm5 != null" >
+        pumping_comm5 = #{pumpingComm5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.watersupply.entity.SynPumpingHouse" >
+    update syn_pumping_house
+    set waterworks_id = #{waterworksId,jdbcType=VARCHAR},
+      equipment_id = #{equipmentId,jdbcType=VARCHAR},
+      pumping_name = #{pumpingName,jdbcType=VARCHAR},
+      pumping_num = #{pumpingNum,jdbcType=VARCHAR},
+      pumping_grade = #{pumpingGrade,jdbcType=VARCHAR},
+      pumping_photo = #{pumpingPhoto,jdbcType=VARCHAR},
+      pumping_sim = #{pumpingSim,jdbcType=VARCHAR},
+      pumping_sim_operator = #{pumpingSimOperator,jdbcType=VARCHAR},
+      pumping_longitude = #{pumpingLongitude,jdbcType=DECIMAL},
+      pumping_latitude = #{pumpingLatitude,jdbcType=DECIMAL},
+      pumping_creation_time = #{pumpingCreationTime,jdbcType=TIMESTAMP},
+      pumping_update_time = #{pumpingUpdateTime,jdbcType=TIMESTAMP},
+      pumping_remark = #{pumpingRemark,jdbcType=VARCHAR},
+      pumping_comm1 = #{pumpingComm1,jdbcType=VARCHAR},
+      pumping_comm2 = #{pumpingComm2,jdbcType=VARCHAR},
+      pumping_comm3 = #{pumpingComm3,jdbcType=VARCHAR},
+      pumping_comm4 = #{pumpingComm4,jdbcType=VARCHAR},
+      pumping_comm5 = #{pumpingComm5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

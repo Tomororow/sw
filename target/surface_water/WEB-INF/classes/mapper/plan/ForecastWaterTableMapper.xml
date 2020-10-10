@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.ForecastWaterTableMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.plan.entity.ForecastWaterTable" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="forecast_id" property="forecastId" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="month" property="month" jdbcType="INTEGER" />
+    <result column="early_ten" property="earlyTen" jdbcType="DECIMAL" />
+    <result column="early_ten_year" property="earlyTenYear" jdbcType="INTEGER" />
+    <result column="middle_ten" property="middleTen" jdbcType="DECIMAL" />
+    <result column="middle_ten_year" property="middleTenYear" jdbcType="INTEGER" />
+    <result column="last_ten" property="lastTen" jdbcType="DECIMAL" />
+    <result column="last_ten_year" property="lastTenYear" jdbcType="INTEGER" />
+    <result column="frequency" property="frequency" jdbcType="DECIMAL" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    id, forecast_id, year, month, early_ten, early_ten_year, middle_ten, middle_ten_year, 
+    last_ten, last_ten_year, frequency, remarks
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from forecast_water_table
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findForecastWaterTableByForecastIdAndMonth" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from forecast_water_table
+    where forecast_id = #{forecastId,jdbcType=VARCHAR}
+    and month = #{month,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findForecastWaterTableByForecastIdAndYearAndMonth" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from forecast_water_table
+    where forecast_id = #{forecastId,jdbcType=VARCHAR}
+    and year = #{year,jdbcType=INTEGER}
+    and month = #{month,jdbcType=INTEGER}
+  </select>
+  
+   <select id="findForecastWaterTableByForecastId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from forecast_water_table
+    where forecast_id = #{forecastId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from forecast_water_table
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.plan.entity.ForecastWaterTable" >
+    insert into forecast_water_table (id, forecast_id, year, 
+      month, early_ten, early_ten_year, 
+      middle_ten, middle_ten_year, last_ten, 
+      last_ten_year, frequency, remarks
+      )
+    values (#{id,jdbcType=VARCHAR}, #{forecastId,jdbcType=VARCHAR}, #{year,jdbcType=INTEGER}, 
+      #{month,jdbcType=INTEGER}, #{earlyTen,jdbcType=DECIMAL}, #{earlyTenYear,jdbcType=INTEGER}, 
+      #{middleTen,jdbcType=DECIMAL}, #{middleTenYear,jdbcType=INTEGER}, #{lastTen,jdbcType=DECIMAL}, 
+      #{lastTenYear,jdbcType=INTEGER}, #{frequency,jdbcType=DECIMAL}, #{remarks,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.plan.entity.ForecastWaterTable" >
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+    insert into forecast_water_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="forecastId != null" >
+        forecast_id,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="earlyTen != null" >
+        early_ten,
+      </if>
+      <if test="earlyTenYear != null" >
+        early_ten_year,
+      </if>
+      <if test="middleTen != null" >
+        middle_ten,
+      </if>
+      <if test="middleTenYear != null" >
+        middle_ten_year,
+      </if>
+      <if test="lastTen != null" >
+        last_ten,
+      </if>
+      <if test="lastTenYear != null" >
+        last_ten_year,
+      </if>
+      <if test="frequency != null" >
+        frequency,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="forecastId != null" >
+        #{forecastId,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null" >
+        #{month,jdbcType=INTEGER},
+      </if>
+      <if test="earlyTen != null" >
+        #{earlyTen,jdbcType=DECIMAL},
+      </if>
+      <if test="earlyTenYear != null" >
+        #{earlyTenYear,jdbcType=INTEGER},
+      </if>
+      <if test="middleTen != null" >
+        #{middleTen,jdbcType=DECIMAL},
+      </if>
+      <if test="middleTenYear != null" >
+        #{middleTenYear,jdbcType=INTEGER},
+      </if>
+      <if test="lastTen != null" >
+        #{lastTen,jdbcType=DECIMAL},
+      </if>
+      <if test="lastTenYear != null" >
+        #{lastTenYear,jdbcType=INTEGER},
+      </if>
+      <if test="frequency != null" >
+        #{frequency,jdbcType=DECIMAL},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.ForecastWaterTable" >
+    update forecast_water_table
+    <set >
+      <if test="forecastId != null" >
+        forecast_id = #{forecastId,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null" >
+        month = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="earlyTen != null" >
+        early_ten = #{earlyTen,jdbcType=DECIMAL},
+      </if>
+      <if test="earlyTenYear != null" >
+        early_ten_year = #{earlyTenYear,jdbcType=INTEGER},
+      </if>
+      <if test="middleTen != null" >
+        middle_ten = #{middleTen,jdbcType=DECIMAL},
+      </if>
+      <if test="middleTenYear != null" >
+        middle_ten_year = #{middleTenYear,jdbcType=INTEGER},
+      </if>
+      <if test="lastTen != null" >
+        last_ten = #{lastTen,jdbcType=DECIMAL},
+      </if>
+      <if test="lastTenYear != null" >
+        last_ten_year = #{lastTenYear,jdbcType=INTEGER},
+      </if>
+      <if test="frequency != null" >
+        frequency = #{frequency,jdbcType=DECIMAL},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.plan.entity.ForecastWaterTable" >
+    update forecast_water_table
+    set forecast_id = #{forecastId,jdbcType=VARCHAR},
+      year = #{year,jdbcType=INTEGER},
+      month = #{month,jdbcType=INTEGER},
+      early_ten = #{earlyTen,jdbcType=DECIMAL},
+      early_ten_year = #{earlyTenYear,jdbcType=INTEGER},
+      middle_ten = #{middleTen,jdbcType=DECIMAL},
+      middle_ten_year = #{middleTenYear,jdbcType=INTEGER},
+      last_ten = #{lastTen,jdbcType=DECIMAL},
+      last_ten_year = #{lastTenYear,jdbcType=INTEGER},
+      frequency = #{frequency,jdbcType=DECIMAL},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

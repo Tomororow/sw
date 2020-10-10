@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.SiteMiddleCanalMapper" >
+    <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.SiteMiddleCanal" >
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="canal_code" jdbcType="VARCHAR" property="canalCode" />
+        <result column="site_water_code" jdbcType="VARCHAR" property="siteWaterCode" />
+        <result column="device_sluice_code" jdbcType="VARCHAR" property="deviceSluiceCode" />
+        <result column="device_video_code" jdbcType="VARCHAR" property="deviceVideoCode" />
+        <result column="water_survey_code" jdbcType="VARCHAR" property="waterSurveyCode" />
+        <result column="plan_code" jdbcType="VARCHAR" property="planCode" />
+        <result column="plan_new_code" jdbcType="VARCHAR" property="planNewCode" />
+        <result column="report_no" jdbcType="VARCHAR" property="reportNo" />
+        <result column="consumer_id" jdbcType="VARCHAR" property="consumerId" />
+        <result column="device_reservoir_code" jdbcType="VARCHAR" property="deviceReservoirCode" />
+        <result column="meteor_survey_code" jdbcType="VARCHAR" property="meteorSurveyCode" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="standby1" jdbcType="VARCHAR" property="standby1" />
+        <result column="standby2" jdbcType="VARCHAR" property="standby2" />
+        <result column="standby3" jdbcType="VARCHAR" property="standby3" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, canal_code, site_water_code, device_sluice_code, device_video_code, water_survey_code,
+    plan_code, plan_new_code, report_no, consumer_id, device_reservoir_code, meteor_survey_code, remark, standby1, standby2, standby3
+    </sql>
+
+    <select id="findSiteWaterCodeByCanalCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from site_middle_canal
+        where canal_code = #{canalCode,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据canalCode查询某个站点编码为空是否存在数据-->
+    <select id="selectCanalInfoByCodeIsNull" resultMap="BaseResultMap" parameterType="java.lang.String" statementType="STATEMENT">
+        select
+        <include refid="Base_Column_List"/>
+        from site_middle_canal
+        where canal_code = ${canalCode}
+        and (${columnName} is null OR ${columnName} = '')
+    </select>
+
+    <!--查询该code数据-->
+    <select id="selectMiddleCanalInfoByCode" resultMap="BaseResultMap" parameterType="java.lang.String" statementType="STATEMENT">
+        select
+        <include refid="Base_Column_List"/>
+        from site_middle_canal
+        where ${columnName} = ${code}
+    </select>
+
+<!--    <insert id="insert" parameterType="com.zyjz.sysmanage.entity.SiteMiddleCanal">
+        insert into site_middle_canal (id, canal_code, site_water_code,
+          device_sluice_code, device_video_code, water_survey_code,
+          plan_code, plan_new_code, report_no,
+          consumer_id, device_reservoir_code, meteor_survey_code, remark, standby1,
+          standby2, standby3)
+        values (#{id,jdbcType=INTEGER}, #{canalCode,jdbcType=VARCHAR}, #{siteWaterCode,jdbcType=VARCHAR},
+          #{deviceSluiceCode,jdbcType=VARCHAR}, #{deviceVideoCode,jdbcType=VARCHAR}, #{administrativeCoding,jdbcType=VARCHAR},
+          #{planCode,jdbcType=VARCHAR}, #{planNewCode,jdbcType=VARCHAR}, #{reportNo,jdbcType=VARCHAR},
+          #{consumerId,jdbcType=VARCHAR}, #{deviceReservoirCode,jdbcType=VARCHAR},{meteorSurveyCode,jdbcType=VARCHAR},
+           #{remark,jdbcType=VARCHAR}, #{standby1,jdbcType=VARCHAR},
+          #{standby2,jdbcType=VARCHAR}, #{standby3,jdbcType=VARCHAR})
+    </insert>-->
+
+    <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.SiteMiddleCanal">
+        insert into site_middle_canal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="canalCode != null">
+                canal_code,
+            </if>
+            <if test="siteWaterCode != null">
+                site_water_code,
+            </if>
+            <if test="deviceSluiceCode != null">
+                device_sluice_code,
+            </if>
+            <if test="deviceVideoCode != null">
+                device_video_code,
+            </if>
+            <if test="waterSurveyCode != null">
+                water_survey_code,
+            </if>
+            <if test="planCode != null">
+                plan_code,
+            </if>
+            <if test="planNewCode != null">
+                plan_new_code,
+            </if>
+            <if test="reportNo != null">
+                report_no,
+            </if>
+            <if test="consumerId != null">
+                consumer_id,
+            </if>
+            <if test="deviceReservoirCode != null">
+                device_reservoir_code,
+            </if>
+            <if test="meteorSurveyCode != null">
+                meteor_survey_code,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="standby1 != null">
+                standby1,
+            </if>
+            <if test="standby2 != null">
+                standby2,
+            </if>
+            <if test="standby3 != null">
+                standby3,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="canalCode != null">
+                #{canalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="siteWaterCode != null">
+                #{siteWaterCode,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceSluiceCode != null">
+                #{deviceSluiceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceVideoCode != null">
+                #{deviceVideoCode,jdbcType=VARCHAR},
+            </if>
+            <if test="waterSurveyCode != null">
+                #{waterSurveyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="planCode != null">
+                #{planCode,jdbcType=VARCHAR},
+            </if>
+            <if test="planNewCode != null">
+                #{planNewCode,jdbcType=VARCHAR},
+            </if>
+            <if test="reportNo != null">
+                #{reportNo,jdbcType=VARCHAR},
+            </if>
+            <if test="consumerId != null">
+                #{consumerId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceReservoirCode != null">
+                #{deviceReservoirCode,jdbcType=VARCHAR},
+            </if>
+            <if test="meteorSurveyCode != null">
+                #{meteorSurveyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="standby1 != null">
+                #{standby1,jdbcType=VARCHAR},
+            </if>
+            <if test="standby2 != null">
+                #{standby2,jdbcType=VARCHAR},
+            </if>
+            <if test="standby3 != null">
+                #{standby3,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.SiteMiddleCanal">
+        update site_middle_canal
+        <set>
+            <if test="canalCode != null">
+                canal_code = #{canalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="siteWaterCode != null">
+                site_water_code = #{siteWaterCode,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceSluiceCode != null">
+                device_sluice_code = #{deviceSluiceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceVideoCode != null">
+                device_video_code = #{deviceVideoCode,jdbcType=VARCHAR},
+            </if>
+            <if test="waterSurveyCode != null">
+                water_survey_code = #{waterSurveyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="planCode != null">
+                plan_code = #{planCode,jdbcType=VARCHAR},
+            </if>
+            <if test="planNewCode != null">
+                plan_new_code = #{planNewCode,jdbcType=VARCHAR},
+            </if>
+            <if test="reportNo != null">
+                report_no = #{reportNo,jdbcType=VARCHAR},
+            </if>
+            <if test="consumerId != null">
+                consumer_id = #{consumerId,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceReservoirCode != null">
+                device_reservoir_code = #{deviceReservoirCode,jdbcType=VARCHAR},
+            </if>
+            <if test="meteorSurveyCode != null">
+                meteor_survey_code = #{meteorSurveyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="standby1 != null">
+                standby1 = #{standby1,jdbcType=VARCHAR},
+            </if>
+            <if test="standby2 != null">
+                standby2 = #{standby2,jdbcType=VARCHAR},
+            </if>
+            <if test="standby3 != null">
+                standby3 = #{standby3,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+<!--    <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.SiteMiddleCanal">
+        update site_middle_canal
+        set canal_code = #{canalCode,jdbcType=VARCHAR},
+          site_water_code = #{siteWaterCode,jdbcType=VARCHAR},
+          device_sluice_code = #{deviceSluiceCode,jdbcType=VARCHAR},
+          device_video_code = #{deviceVideoCode,jdbcType=VARCHAR},
+          water_survey_code = #{waterSurveyCode,jdbcType=VARCHAR},
+          plan_code = #{planCode,jdbcType=VARCHAR},
+          plan_new_code = #{planNewCode,jdbcType=VARCHAR},
+          report_no = #{reportNo,jdbcType=VARCHAR},
+          consumer_id = #{consumerId,jdbcType=VARCHAR},
+          device_reservoir_code = #{deviceReservoirCode,jdbcType=VARCHAR},
+          meteor_survey_code = #{meteorSurveyCode,jdbcType=VARCHAR},
+          remark = #{remark,jdbcType=VARCHAR},
+          standby1 = #{standby1,jdbcType=VARCHAR},
+          standby2 = #{standby2,jdbcType=VARCHAR},
+          standby3 = #{standby3,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>-->
+</mapper>

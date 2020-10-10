@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.site.dao.SiteMonthFlowMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.site.entity.SiteMonthFlow" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="WATER_CODE" property="waterCode" jdbcType="VARCHAR" />
+    <result column="WATER_NAME" property="waterName" jdbcType="VARCHAR" />
+    <result column="MONTH_FLOW" property="monthFlow" jdbcType="DECIMAL" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="IN_YEAR" property="inYear" jdbcType="INTEGER" />
+    <result column="IN_MONTH" property="inMonth" jdbcType="INTEGER" />
+    <result column="DEVICE_TYPE" property="deviceType" jdbcType="VARCHAR" />
+    <result column="TEMP1" property="temp1" jdbcType="VARCHAR" />
+    <result column="TEMP2" property="temp2" jdbcType="VARCHAR" />
+    <result column="TEMP3" property="temp3" jdbcType="VARCHAR" />
+    <result column="TEMP4" property="temp4" jdbcType="VARCHAR" />
+    <result column="yearSumFlow" property="yearSumFlow" jdbcType="DECIMAL" />
+    <result column="totalFlowPerMonth" property="totalFlowPerMonth" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, WATER_CODE, WATER_NAME, MONTH_FLOW, CREATE_TIME, IN_YEAR, IN_MONTH, DEVICE_TYPE,
+    TEMP1, TEMP2, TEMP3, TEMP4
+  </sql>
+
+  <select id="selectSMFWithCodeAndTime" parameterType="java.lang.String" resultType="java.lang.Integer" >
+    select count(*) from site_month_flow
+    where WATER_CODE = #{code,jdbcType=VARCHAR} and DATE_FORMAT(CREATE_TIME,'%Y-%m') = #{time}
+  </select>
+
+   <select id="findSiteMonthFlowList" resultMap="BaseResultMap" >
+    select
+    ID, WATER_CODE, WATER_NAME, MONTH_FLOW, CREATE_TIME,  ROUND(SUM(MONTH_FLOW)/#{number},3) as avgMonthFlow, DEVICE_TYPE
+    from site_month_flow
+    where DATE_FORMAT(SMF_CREATE_TIME,'%Y-%m') = #{time} GROUP BY WATER_CODE
+  </select>
+
+  <!--查询当月是否有数据信息-->
+  <select id="selectInfoByCodeAndTime" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from site_month_flow
+    where WATER_CODE = #{waterCode}
+    and IN_YEAR = #{year}
+    and IN_MONTH = #{month}
+    and DEVICE_TYPE = #{deviceType}
+  </select>
+
+  <!--统计年总流量-->
+  <select id="selectCountByYearTime" parameterType="map" resultMap="BaseResultMap">
+    select
+    ID, WATER_CODE, WATER_NAME, MONTH_FLOW, CREATE_TIME, IN_YEAR, IN_MONTH, DEVICE_TYPE,
+    TEMP1, TEMP2, TEMP3, TEMP4,SUM(MONTH_FLOW) as yearSumFlow
+    from site_month_flow
+    where IN_YEAR = #{year}
+    GROUP BY WATER_CODE,DEVICE_TYPE
+  </select>
+
+  <!--年引水量查询按月分组-->
+  <select id="selectCountYearFlowPerMonth" parameterType="map" resultMap="BaseResultMap">
+    SELECT smf.*,SUM(MONTH_FLOW) as totalFlowPerMonth
+    from site_month_flow smf
+    LEFT JOIN site_middle_canal smc on smf.WATER_CODE = smc.site_water_code
+    where smc.canal_code = #{canalCode}
+    and smf.IN_YEAR = #{year}
+    GROUP BY IN_MONTH
+  </select>
+
+  <!--年引水量查询按设备编码分组-->
+  <select id="selectCountYearFlowGroupByWaterCode" parameterType="map" resultMap="BaseResultMap">
+    SELECT smf.*,SUM(MONTH_FLOW) as yearSumFlow
+    from site_month_flow smf
+    LEFT JOIN site_middle_canal smc on smf.WATER_CODE = smc.site_water_code
+    where smc.canal_code = #{canalCode}
+    and smf.IN_YEAR = #{year}
+    GROUP BY WATER_CODE
+  </select>
+
+  <!--月引水量查询-->
+  <select id="selectSiteMonthFlowListByCanalCode" resultMap="BaseResultMap" >
+    select smf.*
+    from site_month_flow smf
+    LEFT JOIN site_middle_canal smc on smf.WATER_CODE = smc.site_water_code
+    where smc.canal_code = #{canalCode}
+    and smf.IN_YEAR = #{year}
+    and smf.IN_MONTH = #{month}
+  </select>
+
+  <!--报表分析年详细查询-->
+  <select id="selectReportDetailData" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from site_month_flow
+    where WATER_CODE = #{waterCode}
+    and IN_YEAR between #{year} and #{nextYear}
+    and DEVICE_TYPE = #{deviceType}
+    order by IN_MONTH desc
+  </select>
+
+  <!--<insert id="insert" parameterType="com.zyjz.wxInterface.user.model.SiteMonthFlow" >
+    insert into site_month_flow (ID, SMF_WATER_CODE, SMF_WATER__NAME, 
+      MONTH_FLOW, SMF_CREATE_TIME, SMF_TYPE, 
+      TEMP1, TEMP2, TEMP3, 
+      TEMP4)
+    values (#{id,jdbcType=INTEGER}, #{smfWaterCode,jdbcType=VARCHAR}, #{smfWaterName,jdbcType=VARCHAR}, 
+      #{monthFlow,jdbcType=DECIMAL}, #{smfCreateTime,jdbcType=TIMESTAMP}, #{smfType,jdbcType=VARCHAR}, 
+      #{temp1,jdbcType=VARCHAR}, #{temp2,jdbcType=VARCHAR}, #{temp3,jdbcType=VARCHAR}, 
+      #{temp4,jdbcType=VARCHAR})
+  </insert>-->
+  <insert id="insertSMFWithCodeAndTime" parameterType="com.zyjz.site.entity.SiteMonthFlow" >
+    insert into site_month_flow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="waterCode != null" >
+        WATER_CODE,
+      </if>
+      <if test="waterName != null" >
+        WATER_NAME,
+      </if>
+      <if test="monthFlow != null" >
+        MONTH_FLOW,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="inYear != null" >
+        IN_YEAR,
+      </if>
+      <if test="inMonth != null" >
+        IN_MONTH,
+      </if>
+      <if test="deviceType != null" >
+        DEVICE_TYPE,
+      </if>
+      <if test="temp1 != null" >
+        TEMP1,
+      </if>
+      <if test="temp2 != null" >
+        TEMP2,
+      </if>
+      <if test="temp3 != null" >
+        TEMP3,
+      </if>
+      <if test="temp4 != null" >
+        TEMP4,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="waterCode != null" >
+        #{waterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterName != null" >
+        #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="monthFlow != null" >
+        #{monthFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inYear != null" >
+        #{inYear,jdbcType=INTEGER},
+      </if>
+      <if test="inMonth != null" >
+        #{inMonth,jdbcType=INTEGER},
+      </if>
+      <if test="deviceType != null" >
+        #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="temp1 != null" >
+        #{temp1,jdbcType=VARCHAR},
+      </if>
+      <if test="temp2 != null" >
+        #{temp2,jdbcType=VARCHAR},
+      </if>
+      <if test="temp3 != null" >
+        #{temp3,jdbcType=VARCHAR},
+      </if>
+      <if test="temp4 != null" >
+        #{temp4,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateSMFWithCodeAndTime" parameterType="com.zyjz.site.entity.SiteMonthFlow" >
+    update site_month_flow
+    <set >
+      <if test="waterCode != null" >
+        WATER_CODE = #{waterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterName != null" >
+        WATER__NAME = #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="monthFlow != null" >
+        MONTH_FLOW = #{monthFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inYear != null" >
+        IN_YEAR = #{inYear,jdbcType=INTEGER},
+      </if>
+      <if test="inMonth != null" >
+        IN_MONTH = #{inMonth,jdbcType=INTEGER},
+      </if>
+      <if test="deviceType != null" >
+        DEVICE_TYPE = #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="temp1 != null" >
+        TEMP1 = #{temp1,jdbcType=VARCHAR},
+      </if>
+      <if test="temp2 != null" >
+        TEMP2 = #{temp2,jdbcType=VARCHAR},
+      </if>
+      <if test="temp3 != null" >
+        TEMP3 = #{temp3,jdbcType=VARCHAR},
+      </if>
+      <if test="temp4 != null" >
+        TEMP4 = #{temp4,jdbcType=VARCHAR},
+      </if>
+    </set>
+      where SMF_WATER_CODE = #{smfWaterCode,jdbcType=VARCHAR}
+      and DATE_FORMAT(SMF_CREATE_TIME,'%Y-%m') = DATE_FORMAT(#{smfCreateTime,jdbcType=TIMESTAMP},'%Y-%m')
+  </update>
+
+  <insert id="insert" parameterType="com.zyjz.site.entity.SiteMonthFlow" >
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    insert into site_month_flow (ID, WATER_CODE, WATER_NAME,
+    MONTH_FLOW, CREATE_TIME, IN_YEAR,
+    IN_MONTH, DEVICE_TYPE, TEMP1,
+    TEMP2, TEMP3, TEMP4
+    )
+    values (#{id,jdbcType=INTEGER}, #{waterCode,jdbcType=VARCHAR}, #{waterName,jdbcType=VARCHAR},
+    #{monthFlow,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{inYear,jdbcType=INTEGER},
+    #{inMonth,jdbcType=INTEGER}, #{deviceType,jdbcType=VARCHAR}, #{temp1,jdbcType=VARCHAR},
+    #{temp2,jdbcType=VARCHAR}, #{temp3,jdbcType=VARCHAR}, #{temp4,jdbcType=VARCHAR}
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.zyjz.site.entity.SiteMonthFlow" >
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    insert into site_month_flow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="waterCode != null" >
+        WATER_CODE,
+      </if>
+      <if test="waterName != null" >
+        WATER_NAME,
+      </if>
+      <if test="monthFlow != null" >
+        MONTH_FLOW,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="inYear != null" >
+        IN_YEAR,
+      </if>
+      <if test="inMonth != null" >
+        IN_MONTH,
+      </if>
+      <if test="deviceType != null" >
+        DEVICE_TYPE,
+      </if>
+      <if test="temp1 != null" >
+        TEMP1,
+      </if>
+      <if test="temp2 != null" >
+        TEMP2,
+      </if>
+      <if test="temp3 != null" >
+        TEMP3,
+      </if>
+      <if test="temp4 != null" >
+        TEMP4,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="waterCode != null" >
+        #{waterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterName != null" >
+        #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="monthFlow != null" >
+        #{monthFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inYear != null" >
+        #{inYear,jdbcType=INTEGER},
+      </if>
+      <if test="inMonth != null" >
+        #{inMonth,jdbcType=INTEGER},
+      </if>
+      <if test="deviceType != null" >
+        #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="temp1 != null" >
+        #{temp1,jdbcType=VARCHAR},
+      </if>
+      <if test="temp2 != null" >
+        #{temp2,jdbcType=VARCHAR},
+      </if>
+      <if test="temp3 != null" >
+        #{temp3,jdbcType=VARCHAR},
+      </if>
+      <if test="temp4 != null" >
+        #{temp4,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.site.entity.SiteMonthFlow" >
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    update site_month_flow
+    <set >
+      <if test="waterCode != null" >
+        WATER_CODE = #{waterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterName != null" >
+        WATER_NAME = #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="monthFlow != null" >
+        MONTH_FLOW = #{monthFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inYear != null" >
+        IN_YEAR = #{inYear,jdbcType=INTEGER},
+      </if>
+      <if test="inMonth != null" >
+        IN_MONTH = #{inMonth,jdbcType=INTEGER},
+      </if>
+      <if test="deviceType != null" >
+        DEVICE_TYPE = #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="temp1 != null" >
+        TEMP1 = #{temp1,jdbcType=VARCHAR},
+      </if>
+      <if test="temp2 != null" >
+        TEMP2 = #{temp2,jdbcType=VARCHAR},
+      </if>
+      <if test="temp3 != null" >
+        TEMP3 = #{temp3,jdbcType=VARCHAR},
+      </if>
+      <if test="temp4 != null" >
+        TEMP4 = #{temp4,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.site.entity.SiteMonthFlow" >
+    <!--
+      WARNING - @mbggenerated
+      This element is automatically generated by MyBatis Generator, do not modify.
+    -->
+    update site_month_flow
+    set WATER_CODE = #{waterCode,jdbcType=VARCHAR},
+    WATER_NAME = #{waterName,jdbcType=VARCHAR},
+    MONTH_FLOW = #{monthFlow,jdbcType=DECIMAL},
+    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+    IN_YEAR = #{inYear,jdbcType=INTEGER},
+    IN_MONTH = #{inMonth,jdbcType=INTEGER},
+    DEVICE_TYPE = #{deviceType,jdbcType=VARCHAR},
+    TEMP1 = #{temp1,jdbcType=VARCHAR},
+    TEMP2 = #{temp2,jdbcType=VARCHAR},
+    TEMP3 = #{temp3,jdbcType=VARCHAR},
+    TEMP4 = #{temp4,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

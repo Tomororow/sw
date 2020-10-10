@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.site.dao.SiteWaterDynamicInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.site.entity.SiteWaterDynamicInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="devicewater_code" property="devicewaterCode" jdbcType="VARCHAR" />
+    <result column="swdi_collect_time" property="swdiCollectTime" jdbcType="TIMESTAMP" />
+    <result column="swdi_net_state" property="swdiNetState" jdbcType="INTEGER" />
+    <result column="water_level" property="waterLevel" jdbcType="DECIMAL" />
+    <result column="instant_speed" property="instantSpeed" jdbcType="DECIMAL" />
+    <result column="instant_flow" property="instantFlow" jdbcType="DECIMAL" />
+    <result column="swdi_create_time" property="swdiCreateTime" jdbcType="TIMESTAMP" />
+    <result column="intranet_ip" property="intranetIp" jdbcType="VARCHAR" />
+    <result column="outernet_ip" property="outernetIp" jdbcType="VARCHAR" />
+    <result column="test_height" property="testHeight" jdbcType="DECIMAL" />
+    <result column="swi_type" property="swiType" jdbcType="VARCHAR" />
+    <result column="site_water_id" property="siteWaterId" jdbcType="VARCHAR" />
+    <result column="totle_flow" property="totleFlow" jdbcType="VARCHAR" />
+    <result property="num" column="NUM" jdbcType="INTEGER" />
+    <result column="tren_chier1" property="trenChier1" jdbcType="VARCHAR" />
+    <result column="tren_chier2" property="trenChier2" jdbcType="VARCHAR" />
+    <result column="tren_chier3" property="trenChier3" jdbcType="VARCHAR" />
+    <result column="tren_chier4" property="trenChier4" jdbcType="VARCHAR" />
+    <result column="tren_chier5" property="trenChier5" jdbcType="VARCHAR" />
+    <result column="tren_chier6" property="trenChier6" jdbcType="VARCHAR" />
+    <result column="tren_chier7" property="trenChier7" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+
+    <result column="canclName" property="canclName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, devicewater_code, swdi_collect_time, swdi_net_state, water_level, instant_speed, 
+    instant_flow, swdi_create_time, intranet_ip, outernet_ip, test_height, swi_type,site_water_id,totle_flow,
+    tren_chier1,tren_chier2,tren_chier3,tren_chier4,tren_chier5,tren_chier6,tren_chier7,remark
+  </sql>
+  <!-- 查询实时水位 -->
+  <select id="cycleData" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	SELECT water_level,instant_flow FROM site_water_dynamic_info WHERE devicewater_code=#{devicewaterCode,jdbcType=VARCHAR} ORDER BY swdi_create_time DESC LIMIT 13
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_water_dynamic_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findCurrentDataByDevicewaterCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    
+    select 
+    <include refid="Base_Column_List" />
+    FROM   site_water_dynamic_info
+    
+    where devicewater_code=#{devicewaterCode,jdbcType=VARCHAR}
+    
+    
+    and  swdi_create_time &lt;= NOW()
+    order by swdi_create_time DESC limit 1;
+ 
+  </select>
+  
+  <select id="selectWaterCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from   site_water_dynamic_info
+  	where  devicewater_code=#{devicewaterCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findOneDayDataByDevicewaterCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select  
+    <include refid="Base_Column_List" />
+    
+    from   site_water_dynamic_info
+    
+    where devicewater_code = #{devicewaterCode} 
+    
+     and swdi_create_time between #{startDate} and #{endDate}
+ 
+  </select>
+
+	<!--   根据水位站编码查询显示当天的实时数据-->
+	<select id="selectDevicewaterCode" resultMap="BaseResultMap" parameterType="java.util.List">
+		SELECT
+		DISTINCT swdi.devicewater_code,
+			swi.device_water_name as deviceWaterName,
+			swdi.water_level,
+			swdi.instant_flow,
+			swdi.instant_speed,
+			swdi.tren_chier1,
+			swdi.tren_chier2,
+			swdi.tren_chier3,
+			swdi.tren_chier4,
+			swdi.tren_chier5,
+			swdi.tren_chier6,
+			swdi.tren_chier7,
+			swdi.totle_flow,
+			swi.swi_devicemodel_code as swiDevicemodelCode,
+			swi.tier_num as tierNum,
+			swdi.swdi_create_time,
+			jmd.TYPE
+		FROM
+			site_water_info swi
+		LEFT JOIN
+			site_water_dynamic_info swdi
+			ON swi.device_water_code =swdi.devicewater_code
+		LEFT JOIN jz_midd_device jmd
+			ON jmd.DEVIVE_ID =swi.device_water_code
+		WHERE swi.device_water_code in
+		 <foreach collection="list" index="index" item="devicewaterCode" open="(" separator="," close=")">  
+			#{devicewaterCode} 
+		</foreach>
+		<!-- and 
+		swi.device_water_code in (SELECT devicewater_code from site_water_dynamic_info GROUP BY devicewater_code HAVING COUNT(*) > 1 ) -->
+		AND
+			TO_DAYS(swdi.swdi_create_time) = TO_DAYS(NOW())
+		ORDER BY swdi.swdi_create_time DESC 
+	</select>
+	
+	<select id="selectCodeLength" resultType="java.lang.Integer" parameterType="java.util.List">
+		SELECT
+			count(*)
+		FROM
+			site_water_info swi
+		LEFT JOIN
+			site_water_dynamic_info swdi
+			ON swi.device_water_code =swdi.devicewater_code
+		LEFT JOIN jz_midd_device jmd
+			ON jmd.DEVIVE_ID =swi.device_water_code
+		WHERE swi.device_water_code in
+		 <foreach collection="list" index="index" item="devicewaterCode" open="(" separator="," close=")">  
+			#{devicewaterCode} 
+		</foreach>
+		ORDER BY swdi.swdi_create_time DESC 
+	</select>
+
+	<select id="selectDateLength" resultType ="java.lang.Integer" parameterType="map">
+        select
+        count(*)
+        from site_water_dynamic_info
+        where devicewater_code =#{devicewaterCode}
+        <if test="startTime != null and endTime!=null">
+            and swdi_create_time between #{startTime} and #{endTime}
+        </if>
+	</select>
+<!--   根据时间日期查询 历史数据查询-->
+    <select id="selectDate"  resultMap="BaseResultMap" parameterType="map">
+        select devicewater_code,water_level,instant_flow,instant_speed,totle_flow,swdi_create_time,swi_type
+        from site_water_dynamic_info
+        where devicewater_code = #{devicewaterCode}
+        <if test="startTime != null and endTime!=null">
+            and swdi_create_time between #{startTime} and #{endTime}
+        </if>
+        order by swdi_create_time desc /*limit 0,15*/
+    </select>
+	<!--计算日累积流量-->
+	<select id="setCumulative" resultMap="BaseResultMap" parameterType="java.util.List">
+		SELECT SUM(instant_flow) FROM site_water_dynamic_info WHERE
+		 swdi_create_time BETWEEN #{startTime} and #{endTime} AND devicewater_code ={devicewaterCode,jdbcType=VARCHAR}
+	</select>
+	
+	<!--计算日均流量-->
+<!--    <select id="selectDataAYFlow"  resultMap="BaseResultMap" parameterType="map">
+        SELECT DATE_FORMAT(d.swdi_create_time,'%Y-%m-%d') as createTime ,ROUND(SUM(d.instant_flow)/#{hours},3) as avgFlow,ROUND(SUM(d.instant_flow),3) AS sumFlow,i.swi_canal_code as canclCode, i.device_water_name as canclName,(CASE WHEN j.TYPE= 0 THEN '离线' WHEN j.TYPE= 1 THEN '在线' END ) AS deviceState
+        FROM (site_water_dynamic_info d LEFT JOIN site_water_info i ON d.devicewater_code = i.device_water_code) LEFT JOIN jz_midd_device j ON j.DEVIVE_ID = i.device_water_code
+        WHERE swdi_create_time BETWEEN #{startTime} and #{endTime} AND devicewater_code IN
+        <foreach collection="Objectlist" index="index" item="devicewaterCode" open="(" separator="," close=")">
+            #{devicewaterCode}
+        </foreach>
+        GROUP BY i.device_water_name
+        ORDER BY d.swdi_create_time DESC
+    </select>-->
+
+    <!--计算日均流量修正Sql-->
+    <select id="selectDataAYFlow"  resultMap="BaseResultMap" parameterType="map">
+        SELECT DATE_FORMAT(d.swdi_create_time,'%Y-%m-%d') as createTime ,ROUND(SUM(d.instant_flow)/#{hours},3) as avgFlow,ROUND(SUM(d.instant_flow),3) AS sumFlow,
+        i.swi_canal_code as canclCode, i.device_water_name as canclName,
+        (CASE WHEN j.TYPE= 0 THEN '离线' WHEN j.TYPE= 1 THEN '在线' END ) AS deviceState,d.devicewater_code
+        FROM (site_water_dynamic_info d LEFT JOIN site_water_info i ON d.devicewater_code = i.device_water_code) LEFT JOIN jz_midd_device j ON j.DEVIVE_ID = i.device_water_code
+        WHERE
+        DATE_FORMAT(d.swdi_create_time,'%Y-%m-%d')=#{dateTiemOfDay}
+        GROUP BY i.device_water_name
+    </select>
+
+	<!--计算月均流量-->
+	<select id="selectDataMonFlow"  resultMap="BaseResultMap" parameterType="map">
+		SELECT DATE_FORMAT(d.swdi_create_time,'%Y-%m-%d') as createTime ,ROUND(SUM(d.instant_flow)/#{hours},3) as avgFlow,ROUND(SUM(d.instant_flow),3) AS sumFlow,i.swi_canal_code as canclCode, i.device_water_name as canclName,(CASE WHEN j.TYPE= 0 THEN '离线' WHEN j.TYPE= 1 THEN '在线' END ) AS deviceState
+		FROM (site_water_dynamic_info d LEFT JOIN site_water_info i ON d.devicewater_code = i.device_water_code) LEFT JOIN jz_midd_device j ON j.DEVIVE_ID = i.device_water_code
+		WHERE swdi_create_time BETWEEN #{startTime} and #{endTime} AND devicewater_code IN
+		<foreach collection="Objectlist" index="index" item="devicewaterCode" open="(" separator="," close=")">  
+		        #{devicewaterCode} 
+		</foreach>
+		GROUP BY i.device_water_name
+		ORDER BY d.swdi_create_time DESC
+	</select>
+	
+	<!--计算年均流量-->
+	<select id="selectDataYarFlow"  resultMap="BaseResultMap" parameterType="map">
+        SELECT  DATE_FORMAT(d.swdi_create_time,'%Y-%m-%d') as createTime ,ROUND(SUM(d.instant_flow)/#{hours},3) as avgFlow,ROUND(SUM(d.instant_flow),3) AS sumFlow,i.swi_canal_code as canclCode, i.device_water_name as canclName,(CASE WHEN j.TYPE= 0 THEN '离线' WHEN j.TYPE= 1 THEN '在线' END ) AS deviceState
+		FROM (site_water_dynamic_info d LEFT JOIN site_water_info i ON d.devicewater_code = i.device_water_code) LEFT JOIN jz_midd_device j ON j.DEVIVE_ID = i.device_water_code
+		WHERE swdi_create_time BETWEEN #{startTime} and #{endTime} AND devicewater_code IN
+		<foreach collection="Objectlist" index="index" item="devicewaterCode" open="(" separator="," close=")">  
+		        #{devicewaterCode} 
+		</foreach>
+		GROUP BY i.device_water_name
+		ORDER BY d.swdi_create_time DESC
+	</select>
+
+    <!--查询历史数据 ！-->
+   <select id="findHistoryDynamicInfoList"  resultMap="BaseResultMap" parameterType="java.util.List">
+        SELECT DISTINCT(swdi.swdi_create_time),
+        swdi.water_level, swdi.instant_flow,swdi.test_height,jmd.type as swi_type
+        FROM  site_water_dynamic_info swdi LEFT JOIN jz_midd_device jmd
+		ON swdi.devicewater_code = jmd.devive_id
+        where devicewater_code = #{devicewaterCode}
+        AND swdi.swdi_create_time BETWEEN #{afterDate} and #{currentDate}
+        ORDER BY swdi.swdi_create_time
+    </select>
+	
+	
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from site_water_dynamic_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.site.entity.SiteWaterDynamicInfo" >
+    insert into site_water_dynamic_info (id, devicewater_code, swdi_collect_time, 
+      swdi_net_state, water_level, instant_speed, 
+      instant_flow, swdi_create_time, intranet_ip, 
+      outernet_ip, test_height, swi_type,site_water_id,totle_flow
+      )
+    values (#{id,jdbcType=VARCHAR}, #{devicewaterCode,jdbcType=VARCHAR}, #{swdiCollectTime,jdbcType=TIMESTAMP}, 
+      #{swdiNetState,jdbcType=INTEGER}, #{waterLevel,jdbcType=DECIMAL}, #{instantSpeed,jdbcType=DECIMAL}, 
+      #{instantFlow,jdbcType=DECIMAL}, #{swdiCreateTime,jdbcType=TIMESTAMP}, #{intranetIp,jdbcType=VARCHAR}, 
+      #{outernetIp,jdbcType=VARCHAR}, #{testHeight,jdbcType=DECIMAL}, #{swiType,jdbcType=VARCHAR},#{siteWaterId,jdbcType=VARCHAR},
+      #{totleFlow,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.site.entity.SiteWaterDynamicInfo" >
+  
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+    insert into site_water_dynamic_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="devicewaterCode != null" >
+        devicewater_code,
+      </if>
+      <if test="swdiCollectTime != null" >
+        swdi_collect_time,
+      </if>
+      <if test="swdiNetState != null" >
+        swdi_net_state,
+      </if>
+      <if test="waterLevel != null" >
+        water_level,
+      </if>
+      <if test="instantSpeed != null" >
+        instant_speed,
+      </if>
+      <if test="instantFlow != null" >
+        instant_flow,
+      </if>
+      <if test="swdiCreateTime != null" >
+        swdi_create_time,
+      </if>
+       <if test="intranetIp != null" >
+        intranet_ip,
+      </if>
+      <if test="outernetIp != null" >
+        outernet_ip,
+      </if>
+      <if test="testHeight != null" >
+        test_height,
+      </if>
+      <if test="swiType != null" >
+        swi_type,
+      </if>
+       <if test="siteWaterId != null" >
+        site_water_id,
+      </if>
+       <if test="totleFlow != null" >
+        totle_flow,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="devicewaterCode != null" >
+        #{devicewaterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="swdiCollectTime != null" >
+        #{swdiCollectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swdiNetState != null" >
+        #{swdiNetState,jdbcType=INTEGER},
+      </if>
+      <if test="waterLevel != null" >
+        #{waterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="instantSpeed != null" >
+        #{instantSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="instantFlow != null" >
+        #{instantFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="swdiCreateTime != null" >
+        #{swdiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="intranetIp != null" >
+        #{intranetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="outernetIp != null" >
+        #{outernetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="testHeight != null" >
+        #{testHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="swiType != null" >
+        #{swiType,jdbcType=VARCHAR},
+      </if>
+      <if test="siteWaterId != null" >
+      #{siteWaterId,jdbcType=VARCHAR},
+      </if>
+      <if test="totleFlow!=null">
+      #{totleFlow,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  
+ 
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.site.entity.SiteWaterDynamicInfo" >
+    update site_water_dynamic_info
+    <set >
+      <if test="devicewaterCode != null" >
+        devicewater_code = #{devicewaterCode,jdbcType=VARCHAR},
+      </if>
+      <if test="swdiCollectTime != null" >
+        swdi_collect_time = #{swdiCollectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="swdiNetState != null" >
+        swdi_net_state = #{swdiNetState,jdbcType=INTEGER},
+      </if>
+      <if test="waterLevel != null" >
+        water_level = #{waterLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="instantSpeed != null" >
+        instant_speed = #{instantSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="instantFlow != null" >
+        instant_flow = #{instantFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="swdiCreateTime != null" >
+        swdi_create_time = #{swdiCreateTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="intranetIp != null" >
+        intranet_ip = #{intranetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="outernetIp != null" >
+        outernet_ip = #{outernetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="testHeight != null" >
+        test_height = #{testHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="swiType != null" >
+        swi_type = #{swiType,jdbcType=VARCHAR},
+      </if>
+       <if test="siteWaterId != null" >
+        site_water_id = #{siteWaterId,jdbcType=VARCHAR},
+      </if>
+      <if test="totleFlow != null" >
+        totle_flow = #{totleFlow,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.site.entity.SiteWaterDynamicInfo" >
+    update site_water_dynamic_info
+    set devicewater_code = #{devicewaterCode,jdbcType=VARCHAR},
+      swdi_collect_time = #{swdiCollectTime,jdbcType=TIMESTAMP},
+      swdi_net_state = #{swdiNetState,jdbcType=INTEGER},
+      water_level = #{waterLevel,jdbcType=DECIMAL},
+      instant_speed = #{instantSpeed,jdbcType=DECIMAL},
+      instant_flow = #{instantFlow,jdbcType=DECIMAL},
+      swdi_create_time = #{swdiCreateTime,jdbcType=TIMESTAMP},
+       intranet_ip = #{intranetIp,jdbcType=VARCHAR},
+      outernet_ip = #{outernetIp,jdbcType=VARCHAR},
+      test_height = #{testHeight,jdbcType=DECIMAL},
+      swi_type = #{swiType,jdbcType=VARCHAR},
+      site_water_id = #{siteWaterId,jdbcType=VARCHAR},
+      totle_flow = #{totleFlow,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <!--日流量累计查询定时任务-->
+    <select id="exportSiteOfDayFlow" resultMap="BaseResultMap">
+        SELECT swdi.devicewater_code,ROUND(SUM(swdi.instant_flow),3) AS sumFlow, swi.device_water_name as canclName ,
+        (CASE WHEN jmd.TYPE= 0 THEN '离线' WHEN jmd.TYPE= 1 THEN '在线' END ) AS deviceState, swdi.swi_type,
+        DATE_FORMAT(swdi.swdi_create_time,'%Y-%m-%d') as createTime
+        from site_water_dynamic_info swdi
+        LEFT JOIN site_water_info swi  on swdi.devicewater_code = swi.device_water_code
+        LEFT JOIN jz_midd_device jmd ON jmd.DEVIVE_ID = swi.device_water_code
+        where swdi.swdi_create_time BETWEEN CONCAT(CURDATE(),' 00:00:00') AND CONCAT(CURDATE(),' 23:59:59')
+        GROUP BY swdi.devicewater_code
+    </select>
+
+    <!--月流量累计查询定时任务-->
+    <select id="exportSiteOfMonthFlow" resultMap="BaseResultMap">
+        SELECT swdi.devicewater_code,ROUND(SUM(swdi.instant_flow),3) AS sumFlow, swi.device_water_name as canclName ,
+        (CASE WHEN jmd.TYPE= 0 THEN '离线' WHEN jmd.TYPE= 1 THEN '在线' END ) AS deviceState, swdi.swi_type,
+        DATE_FORMAT(swdi.swdi_create_time,'%Y-%m-%d') as createTime
+        from site_water_dynamic_info swdi
+        LEFT JOIN site_water_info swi  on swdi.devicewater_code = swi.device_water_code
+        LEFT JOIN jz_midd_device jmd ON jmd.DEVIVE_ID = swi.device_water_code
+        where DATE_FORMAT(swdi.swdi_create_time,'%Y-%m') = DATE_FORMAT( CURDATE() , '%Y-%m' )
+        GROUP BY swdi.devicewater_code
+    </select>
+
+    <!--年流量累计查询定时任务-->
+    <select id="exportSiteOfYearFlow" resultMap="BaseResultMap">
+        SELECT swdi.devicewater_code,ROUND(SUM(swdi.instant_flow),3) AS sumFlow, swi.device_water_name as canclName ,
+        (CASE WHEN jmd.TYPE= 0 THEN '离线' WHEN jmd.TYPE= 1 THEN '在线' END ) AS deviceState, swdi.swi_type,
+        DATE_FORMAT(swdi.swdi_create_time,'%Y-%m-%d') as createTime
+        from site_water_dynamic_info swdi
+        LEFT JOIN site_water_info swi  on swdi.devicewater_code = swi.device_water_code
+        LEFT JOIN jz_midd_device jmd ON jmd.DEVIVE_ID = swi.device_water_code
+        where YEAR(swdi.swdi_create_time) = YEAR(NOW())
+        GROUP BY swdi.devicewater_code
+    </select>
+
+    <!--20200826-->
+    <!--查询当前小时流量和水位-->
+    <select id="selectNowDynamicInfo" resultMap="BaseResultMap">
+		SELECT swdi.devicewater_code,swdi.totle_flow,swdi.water_level,swdi.instant_speed,swdi.instant_flow, swi.device_water_name as canclName , swdi.swi_type,swdi.swdi_create_time,swdi.site_water_id
+        from (SELECT * from site_water_dynamic_info where  swdi_create_time BETWEEN CONCAT(CURDATE(),' 00:00:00') AND CONCAT(CURDATE(),' 23:59:59') ORDER BY swdi_create_time DESC limit 100)  swdi
+        LEFT JOIN site_water_info swi  on swdi.devicewater_code = swi.device_water_code
+        GROUP BY swdi.devicewater_code
+    </select>
+
+    <!--查询前5分钟流量和水位-->
+    <select id="selectPreFiveMinDynamicInfo" resultMap="BaseResultMap">
+        SELECT swdi.devicewater_code,swdi.totle_flow,swdi.water_level,swdi.instant_speed,swdi.instant_flow, swi.device_water_name as canclName , swdi.swi_type,swdi.swdi_create_time,swdi.site_water_id
+        from (SELECT * from site_water_dynamic_info where swdi_create_time &lt; DATE_ADD(now(),interval -5 MINUTE) ORDER BY swdi_create_time DESC limit 100)  swdi
+        LEFT JOIN site_water_info swi  on swdi.devicewater_code = swi.device_water_code
+        GROUP BY swdi.devicewater_code
+    </select>
+
+    <!--查询当前1小时流量和水位-->
+    <select id="selectPreHourDynamicInfo" resultMap="BaseResultMap">
+		SELECT swdi.devicewater_code,swdi.totle_flow,swdi.water_level,swdi.instant_speed,swdi.instant_flow, swi.device_water_name as canclName , swdi.swi_type,swdi.swdi_create_time,swdi.site_water_id
+        from (SELECT * from site_water_dynamic_info where  swdi_create_time BETWEEN DATE_ADD(now(),interval -2 hour) and  DATE_ADD(now(),interval -1 hour) ORDER BY swdi_create_time DESC limit 100)  swdi
+        LEFT JOIN site_water_info swi  on swdi.devicewater_code = swi.device_water_code
+        GROUP BY swdi.devicewater_code
+    </select>
+
+    <!--查询当前1天流量和水位-->
+    <select id="selectPreDayDynamicInfo" resultMap="BaseResultMap">
+		SELECT swdi.devicewater_code,swdi.totle_flow,swdi.water_level,swdi.instant_speed,swdi.instant_flow, swi.device_water_name as canclName , swdi.swi_type,swdi.swdi_create_time,swdi.site_water_id
+        from
+		(SELECT * from site_water_dynamic_info where swdi_create_time BETWEEN CONCAT(date_sub(CURDATE(),interval 1 day),' 00:00:00') AND CONCAT(date_sub(CURDATE(),interval 1 day),' 23:59:59') ORDER BY swdi_create_time DESC limit 100)  swdi
+        LEFT JOIN site_water_info swi  on swdi.devicewater_code = swi.device_water_code
+        GROUP BY swdi.devicewater_code
+    </select>
+
+    <!--查询前2天流量和水位-->
+    <select id="selectPreTwoDayDynamicInfo" resultMap="BaseResultMap">
+		SELECT swdi.devicewater_code,swdi.totle_flow,swdi.water_level,swdi.instant_speed,swdi.instant_flow, swi.device_water_name as canclName , swdi.swi_type,swdi.swdi_create_time,swdi.site_water_id
+        from
+		(SELECT * from site_water_dynamic_info where swdi_create_time BETWEEN CONCAT(date_sub(CURDATE(),interval 2 day),' 00:00:00') AND CONCAT(date_sub(CURDATE(),interval 2 day),' 23:59:59') ORDER BY swdi_create_time DESC limit 100)  swdi
+        LEFT JOIN site_water_info swi  on swdi.devicewater_code = swi.device_water_code
+        GROUP BY swdi.devicewater_code
+    </select>
+
+    <!--bigData-->
+    <!--查询当前日期水位站水文信息-->
+    <select id="selectDailyDynamicInfo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM (SELECT * from site_water_dynamic_info  ORDER BY swdi_create_time DESC limit 100)  swdi
+        where swdi.swdi_create_time BETWEEN CONCAT(CURDATE(),' 00:00:00') AND CONCAT(CURDATE(),' 23:59:59')
+        GROUP BY swdi.devicewater_code
+    </select>
+</mapper>

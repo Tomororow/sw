@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.user.dao.SysRoleMapper">
+	<resultMap id="BaseResultMap" type="com.zyjz.user.entity.SysRole">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="role_code" property="roleCode" jdbcType="INTEGER" />
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		<result column="sr_create_time" property="srCreateTime" jdbcType="TIMESTAMP" />
+		<result column="sr_edit_time" property="srEditTime" jdbcType="TIMESTAMP" />
+		<result column="sr_remark" property="srRemark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, role_code, role_name, sr_create_time, sr_edit_time, sr_remark
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAllRole" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from sys_role
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.zyjz.user.entity.SysRole">
+		insert into sys_role (id, role_code, role_name,
+		sr_create_time, sr_edit_time, sr_remark)
+		values (#{id,jdbcType=VARCHAR}, #{roleCode,jdbcType=INTEGER},
+		#{roleName,jdbcType=VARCHAR},
+		#{srCreateTime,jdbcType=TIMESTAMP}, #{srEditTime,jdbcType=TIMESTAMP}, #{srRemark,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.zyjz.user.entity.SysRole">
+		<selectKey keyColumn="id" keyProperty="id" order="BEFORE"
+			resultType="java.lang.String">
+			SELECT UUID()
+		</selectKey>
+		insert into sys_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="roleCode != null">
+				role_code,
+			</if>
+			<if test="roleName != null">
+				role_name,
+			</if>
+			<if test="srCreateTime != null">
+				sr_create_time,
+			</if>
+			<if test="srEditTime != null">
+				sr_edit_time,
+			</if>
+			<if test="srRemark != null">
+				sr_remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="roleCode != null">
+				#{roleCode,jdbcType=INTEGER},
+			</if>
+			<if test="roleName != null">
+				#{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="srCreateTime != null">
+				#{srCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="srEditTime != null">
+				#{srEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="srRemark != null">
+				#{srRemark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.zyjz.user.entity.SysRole">
+		update sys_role
+		<set>
+			<if test="roleCode != null">
+				role_code = #{roleCode,jdbcType=INTEGER},
+			</if>
+			<if test="roleName != null">
+				role_name = #{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="srCreateTime != null">
+				sr_create_time = #{srCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="srEditTime != null">
+				sr_edit_time = #{srEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="srRemark != null">
+				sr_remark = #{srRemark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="com.zyjz.user.entity.SysRole">
+		update sys_role
+		set role_code = #{roleCode,jdbcType=INTEGER},
+		role_name = #{roleName,jdbcType=VARCHAR},
+		sr_create_time = #{srCreateTime,jdbcType=TIMESTAMP},
+		sr_edit_time = #{srEditTime,jdbcType=TIMESTAMP},
+		sr_remark = #{srRemark,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

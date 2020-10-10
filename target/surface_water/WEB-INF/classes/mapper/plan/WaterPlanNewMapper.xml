@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.WaterPlanNewMapper" >
+	<resultMap id="BaseResultMap" type="com.zyjz.plan.entity.WaterPlanNew" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="canal_code" property="canalCode" jdbcType="VARCHAR" />
+    <result column="start_year" property="startYear" jdbcType="INTEGER" />
+    <result column="end_year" property="endYear" jdbcType="INTEGER" />
+    <result column="watering_name" property="wateringName" jdbcType="VARCHAR" />
+    <result column="turn" property="turn" jdbcType="INTEGER" />
+    <result column="total_days" property="totalDays" jdbcType="INTEGER" />
+    <result column="start_month" property="startMonth" jdbcType="INTEGER" />
+    <result column="start_day" property="startDay" jdbcType="INTEGER" />
+    <result column="end_month" property="endMonth" jdbcType="INTEGER" />
+    <result column="end_day" property="endDay" jdbcType="INTEGER" />
+    <result column="start_day_time" property="startDayTime" jdbcType="TIMESTAMP" />
+    <result column="end_day_time" property="endDayTime" jdbcType="TIMESTAMP" />
+    <result column="river_come_water" property="riverComeWater" jdbcType="DECIMAL" />
+    <result column="last_turn_capacity" property="lastTurnCapacity" jdbcType="DECIMAL" />
+    <result column="canal_decision_area" property="canalDecisionArea" jdbcType="DECIMAL" />
+    <result column="matching" property="matching" jdbcType="DECIMAL" />
+    <result column="reality_area" property="realityArea" jdbcType="DECIMAL" />
+    <result column="water_distribution_quota" property="waterDistributionQuota" jdbcType="DECIMAL" />
+    <result column="water_auota_id" property="waterAuotaId" jdbcType="VARCHAR" />
+    <result column="waterduty" property="waterduty" jdbcType="DECIMAL" />
+    <result column="soil_water_net_amount" property="soilWaterNetAmount" jdbcType="DECIMAL" />
+    <result column="soil_water_net_amount_ratio" property="soilWaterNetAmountRatio" jdbcType="DECIMAL" />
+    <result column="soil_water_all_amount" property="soilWaterAllAmount" jdbcType="DECIMAL" />
+    <result column="need_reservoir_water_amount" property="needReservoirWaterAmount" jdbcType="DECIMAL" />
+    <result column="life_water_amount" property="lifeWaterAmount" jdbcType="DECIMAL" />
+    <result column="machine_water_amount" property="machineWaterAmount" jdbcType="DECIMAL" />
+    <result column="forest_water_amount" property="forestWaterAmount" jdbcType="DECIMAL" />
+    <result column="other_water_amount" property="otherWaterAmount" jdbcType="DECIMAL" />
+    <result column="own_turn_capacity" property="ownTurnCapacity" jdbcType="DECIMAL" />
+    <result column="create_people" property="createPeople" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="comm1" property="comm1" jdbcType="VARCHAR" />
+    <result column="comm2" property="comm2" jdbcType="VARCHAR" />
+    <result column="comm3" property="comm3" jdbcType="VARCHAR" />
+    <result column="comm4" property="comm4" jdbcType="VARCHAR" />
+    <result column="comm5" property="comm5" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+   id, canal_code, start_year, end_year, watering_name, turn, total_days, start_month, 
+    start_day, end_month, end_day, start_day_time, end_day_time, river_come_water, last_turn_capacity, 
+    canal_decision_area, matching, reality_area, water_distribution_quota, water_auota_id, 
+    waterduty, soil_water_net_amount, soil_water_net_amount_ratio, soil_water_all_amount, 
+    need_reservoir_water_amount, life_water_amount, machine_water_amount, forest_water_amount, 
+    other_water_amount, own_turn_capacity, create_people, create_time, update_time, remark, 
+    comm1, comm2, comm3, comm4, comm5
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from water_plan_new
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findWaterPlanNewByCanalCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from water_plan_new
+    where canal_code = #{canalCode,jdbcType=VARCHAR}
+    group by start_year
+    order by start_year desc
+  </select>
+  
+  <select id="findWaterPlanNewByCanalCodeJoin" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select distinct
+    a.id, a.canal_code, a.start_year, a.end_year, a.watering_name, a.turn, a.total_days, a.start_month, 
+    a.start_day, a.end_month, a.end_day, a.start_day_time, a.end_day_time, a.river_come_water, a.last_turn_capacity, 
+    a.canal_decision_area, a.matching, a.reality_area, a.water_distribution_quota, a.water_auota_id, 
+    a.waterduty, a.soil_water_net_amount, a.soil_water_net_amount_ratio, a.soil_water_all_amount, 
+    a.need_reservoir_water_amount, a.life_water_amount, a.machine_water_amount, a.forest_water_amount, 
+    a.other_water_amount, a.own_turn_capacity, a.create_people, a.create_time, a.update_time, a.remark, 
+    a.comm1, a.comm2, a.comm3, a.comm4, a.comm5
+    from water_plan_new a
+    inner join site_middle_canal b
+    on a.water_auota_id = b.plan_new_code
+    where b.canal_code = #{canalCode,jdbcType=VARCHAR}
+    order by start_year desc
+  </select>
+  
+  <select id="findWaterPlanNewsByCanalCodeAndStartYear" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from water_plan_new
+    where canal_code = #{canalCode,jdbcType=VARCHAR}
+    and start_year = #{startYear,jdbcType=INTEGER}
+   <!--  order by start_month asc -->
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from water_plan_new
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.zyjz.plan.entity.WaterPlanNew" >
+     insert into water_plan_new (id, canal_code, start_year, 
+      end_year, watering_name, turn, 
+      total_days, start_month, start_day, 
+      end_month, end_day, start_day_time, 
+      end_day_time, river_come_water, last_turn_capacity, 
+      canal_decision_area, matching, reality_area, 
+      water_distribution_quota, water_auota_id, waterduty, 
+      soil_water_net_amount, soil_water_net_amount_ratio, 
+      soil_water_all_amount, need_reservoir_water_amount, 
+      life_water_amount, machine_water_amount, forest_water_amount, 
+      other_water_amount, own_turn_capacity, create_people, 
+      create_time, update_time, remark, 
+      comm1, comm2, comm3, 
+      comm4, comm5)
+    values (#{id,jdbcType=VARCHAR}, #{canalCode,jdbcType=VARCHAR}, #{startYear,jdbcType=INTEGER}, 
+      #{endYear,jdbcType=INTEGER}, #{wateringName,jdbcType=VARCHAR}, #{turn,jdbcType=INTEGER}, 
+      #{totalDays,jdbcType=INTEGER}, #{startMonth,jdbcType=INTEGER}, #{startDay,jdbcType=INTEGER}, 
+      #{endMonth,jdbcType=INTEGER}, #{endDay,jdbcType=INTEGER}, #{startDayTime,jdbcType=TIMESTAMP}, 
+      #{endDayTime,jdbcType=TIMESTAMP}, #{riverComeWater,jdbcType=DECIMAL}, #{lastTurnCapacity,jdbcType=DECIMAL}, 
+      #{canalDecisionArea,jdbcType=DECIMAL}, #{matching,jdbcType=DECIMAL}, #{realityArea,jdbcType=DECIMAL}, 
+      #{waterDistributionQuota,jdbcType=DECIMAL}, #{waterAuotaId,jdbcType=VARCHAR}, #{waterduty,jdbcType=DECIMAL}, 
+      #{soilWaterNetAmount,jdbcType=DECIMAL}, #{soilWaterNetAmountRatio,jdbcType=DECIMAL}, 
+      #{soilWaterAllAmount,jdbcType=DECIMAL}, #{needReservoirWaterAmount,jdbcType=DECIMAL}, 
+      #{lifeWaterAmount,jdbcType=DECIMAL}, #{machineWaterAmount,jdbcType=DECIMAL}, #{forestWaterAmount,jdbcType=DECIMAL}, 
+      #{otherWaterAmount,jdbcType=DECIMAL}, #{ownTurnCapacity,jdbcType=DECIMAL}, #{createPeople,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
+      #{comm1,jdbcType=VARCHAR}, #{comm2,jdbcType=VARCHAR}, #{comm3,jdbcType=VARCHAR}, 
+      #{comm4,jdbcType=VARCHAR}, #{comm5,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.plan.entity.WaterPlanNew" >
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  	</selectKey>
+  
+   insert into water_plan_new
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="canalCode != null" >
+        canal_code,
+      </if>
+      <if test="startYear != null" >
+        start_year,
+      </if>
+      <if test="endYear != null" >
+        end_year,
+      </if>
+      <if test="wateringName != null" >
+        watering_name,
+      </if>
+      <if test="turn != null" >
+        turn,
+      </if>
+      <if test="totalDays != null" >
+        total_days,
+      </if>
+      <if test="startMonth != null" >
+        start_month,
+      </if>
+      <if test="startDay != null" >
+        start_day,
+      </if>
+      <if test="endMonth != null" >
+        end_month,
+      </if>
+      <if test="endDay != null" >
+        end_day,
+      </if>
+      <if test="startDayTime != null" >
+        start_day_time,
+      </if>
+      <if test="endDayTime != null" >
+        end_day_time,
+      </if>
+      <if test="riverComeWater != null" >
+        river_come_water,
+      </if>
+      <if test="lastTurnCapacity != null" >
+        last_turn_capacity,
+      </if>
+      <if test="canalDecisionArea != null" >
+        canal_decision_area,
+      </if>
+      <if test="matching != null" >
+        matching,
+      </if>
+      <if test="realityArea != null" >
+        reality_area,
+      </if>
+      <if test="waterDistributionQuota != null" >
+        water_distribution_quota,
+      </if>
+      <if test="waterAuotaId != null" >
+        water_auota_id,
+      </if>
+      <if test="waterduty != null" >
+        waterduty,
+      </if>
+      <if test="soilWaterNetAmount != null" >
+        soil_water_net_amount,
+      </if>
+      <if test="soilWaterNetAmountRatio != null" >
+        soil_water_net_amount_ratio,
+      </if>
+      <if test="soilWaterAllAmount != null" >
+        soil_water_all_amount,
+      </if>
+      <if test="needReservoirWaterAmount != null" >
+        need_reservoir_water_amount,
+      </if>
+      <if test="lifeWaterAmount != null" >
+        life_water_amount,
+      </if>
+      <if test="machineWaterAmount != null" >
+        machine_water_amount,
+      </if>
+      <if test="forestWaterAmount != null" >
+        forest_water_amount,
+      </if>
+      <if test="otherWaterAmount != null" >
+        other_water_amount,
+      </if>
+      <if test="ownTurnCapacity != null" >
+        own_turn_capacity,
+      </if>
+      <if test="createPeople != null" >
+        create_people,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="comm1 != null" >
+        comm1,
+      </if>
+      <if test="comm2 != null" >
+        comm2,
+      </if>
+      <if test="comm3 != null" >
+        comm3,
+      </if>
+      <if test="comm4 != null" >
+        comm4,
+      </if>
+      <if test="comm5 != null" >
+        comm5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="canalCode != null" >
+        #{canalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="startYear != null" >
+        #{startYear,jdbcType=INTEGER},
+      </if>
+      <if test="endYear != null" >
+        #{endYear,jdbcType=INTEGER},
+      </if>
+      <if test="wateringName != null" >
+        #{wateringName,jdbcType=VARCHAR},
+      </if>
+      <if test="turn != null" >
+        #{turn,jdbcType=INTEGER},
+      </if>
+      <if test="totalDays != null" >
+        #{totalDays,jdbcType=INTEGER},
+      </if>
+      <if test="startMonth != null" >
+        #{startMonth,jdbcType=INTEGER},
+      </if>
+      <if test="startDay != null" >
+        #{startDay,jdbcType=INTEGER},
+      </if>
+      <if test="endMonth != null" >
+        #{endMonth,jdbcType=INTEGER},
+      </if>
+      <if test="endDay != null" >
+        #{endDay,jdbcType=INTEGER},
+      </if>
+      <if test="startDayTime != null" >
+        #{startDayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDayTime != null" >
+        #{endDayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="riverComeWater != null" >
+        #{riverComeWater,jdbcType=DECIMAL},
+      </if>
+      <if test="lastTurnCapacity != null" >
+        #{lastTurnCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="canalDecisionArea != null" >
+        #{canalDecisionArea,jdbcType=DECIMAL},
+      </if>
+      <if test="matching != null" >
+        #{matching,jdbcType=DECIMAL},
+      </if>
+      <if test="realityArea != null" >
+        #{realityArea,jdbcType=DECIMAL},
+      </if>
+      <if test="waterDistributionQuota != null" >
+        #{waterDistributionQuota,jdbcType=DECIMAL},
+      </if>
+      <if test="waterAuotaId != null" >
+        #{waterAuotaId,jdbcType=VARCHAR},
+      </if>
+      <if test="waterduty != null" >
+        #{waterduty,jdbcType=DECIMAL},
+      </if>
+      <if test="soilWaterNetAmount != null" >
+        #{soilWaterNetAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="soilWaterNetAmountRatio != null" >
+        #{soilWaterNetAmountRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="soilWaterAllAmount != null" >
+        #{soilWaterAllAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="needReservoirWaterAmount != null" >
+        #{needReservoirWaterAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="lifeWaterAmount != null" >
+        #{lifeWaterAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="machineWaterAmount != null" >
+        #{machineWaterAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="forestWaterAmount != null" >
+        #{forestWaterAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="otherWaterAmount != null" >
+        #{otherWaterAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="ownTurnCapacity != null" >
+        #{ownTurnCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="createPeople != null" >
+        #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="comm1 != null" >
+        #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        #{comm5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+ <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.WaterPlanNew" >
+    update water_plan_new
+    <set >
+      <if test="canalCode != null" >
+        canal_code = #{canalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="startYear != null" >
+        start_year = #{startYear,jdbcType=INTEGER},
+      </if>
+      <if test="endYear != null" >
+        end_year = #{endYear,jdbcType=INTEGER},
+      </if>
+      <if test="wateringName != null" >
+        watering_name = #{wateringName,jdbcType=VARCHAR},
+      </if>
+      <if test="turn != null" >
+        turn = #{turn,jdbcType=INTEGER},
+      </if>
+      <if test="totalDays != null" >
+        total_days = #{totalDays,jdbcType=INTEGER},
+      </if>
+      <if test="startMonth != null" >
+        start_month = #{startMonth,jdbcType=INTEGER},
+      </if>
+      <if test="startDay != null" >
+        start_day = #{startDay,jdbcType=INTEGER},
+      </if>
+      <if test="endMonth != null" >
+        end_month = #{endMonth,jdbcType=INTEGER},
+      </if>
+      <if test="endDay != null" >
+        end_day = #{endDay,jdbcType=INTEGER},
+      </if>
+      <if test="startDayTime != null" >
+        start_day_time = #{startDayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDayTime != null" >
+        end_day_time = #{endDayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="riverComeWater != null" >
+        river_come_water = #{riverComeWater,jdbcType=DECIMAL},
+      </if>
+      <if test="lastTurnCapacity != null" >
+        last_turn_capacity = #{lastTurnCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="canalDecisionArea != null" >
+        canal_decision_area = #{canalDecisionArea,jdbcType=DECIMAL},
+      </if>
+      <if test="matching != null" >
+        matching = #{matching,jdbcType=DECIMAL},
+      </if>
+      <if test="realityArea != null" >
+        reality_area = #{realityArea,jdbcType=DECIMAL},
+      </if>
+      <if test="waterDistributionQuota != null" >
+        water_distribution_quota = #{waterDistributionQuota,jdbcType=DECIMAL},
+      </if>
+      <if test="waterAuotaId != null" >
+        water_auota_id = #{waterAuotaId,jdbcType=VARCHAR},
+      </if>
+      <if test="waterduty != null" >
+        waterduty = #{waterduty,jdbcType=DECIMAL},
+      </if>
+      <if test="soilWaterNetAmount != null" >
+        soil_water_net_amount = #{soilWaterNetAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="soilWaterNetAmountRatio != null" >
+        soil_water_net_amount_ratio = #{soilWaterNetAmountRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="soilWaterAllAmount != null" >
+        soil_water_all_amount = #{soilWaterAllAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="needReservoirWaterAmount != null" >
+        need_reservoir_water_amount = #{needReservoirWaterAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="lifeWaterAmount != null" >
+        life_water_amount = #{lifeWaterAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="machineWaterAmount != null" >
+        machine_water_amount = #{machineWaterAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="forestWaterAmount != null" >
+        forest_water_amount = #{forestWaterAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="otherWaterAmount != null" >
+        other_water_amount = #{otherWaterAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="ownTurnCapacity != null" >
+        own_turn_capacity = #{ownTurnCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="createPeople != null" >
+        create_people = #{createPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="comm1 != null" >
+        comm1 = #{comm1,jdbcType=VARCHAR},
+      </if>
+      <if test="comm2 != null" >
+        comm2 = #{comm2,jdbcType=VARCHAR},
+      </if>
+      <if test="comm3 != null" >
+        comm3 = #{comm3,jdbcType=VARCHAR},
+      </if>
+      <if test="comm4 != null" >
+        comm4 = #{comm4,jdbcType=VARCHAR},
+      </if>
+      <if test="comm5 != null" >
+        comm5 = #{comm5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

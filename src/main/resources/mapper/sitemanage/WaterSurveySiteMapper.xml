@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sitemanage.dao.WaterSurveySiteMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sitemanage.entity.WaterSurveySite" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="monitor_name" property="monitorName" jdbcType="VARCHAR" />
+    <result column="coding" property="coding" jdbcType="VARCHAR" />
+    <result column="longitude_latitude" property="longitudeLatitude" jdbcType="DECIMAL" />
+    <result column="elevation" property="elevation" jdbcType="DECIMAL" />
+    <result column="administrative_coding" property="administrativeCoding" jdbcType="VARCHAR" />
+    <result column="riverway_coding" property="riverwayCoding" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="dynamic_id" property="dynamicId" jdbcType="BIGINT" />
+    <result column="water_grade" property="waterGrade" jdbcType="VARCHAR" />
+    <result column="monitor_address" property="monitorAddress" jdbcType="VARCHAR" />
+    <result column="water_image" property="waterImage" jdbcType="VARCHAR" />
+    <result column="equip_coding" property="equipCoding" jdbcType="BIGINT" />
+    <result column="sim_clip" property="simClip" jdbcType="VARCHAR" />
+    <result column="sim_clip_operator" property="simClipOperator" jdbcType="VARCHAR" />
+    <result column="build_time" property="buildTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, monitor_name, coding, longitude_latitude, elevation, administrative_coding, riverway_coding, 
+    create_time, update_time, dynamic_id, water_grade, monitor_address,water_image,equip_coding,sim_clip,sim_clip_operator,build_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from water_survey_site
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="findIdList" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  		select 
+  		<include refid="Base_Column_List" />
+  		 from water_survey_site where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="findRiverwayCoding" resultMap="BaseResultMap" parameterType="java.util.List">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from water_survey_site 
+  	where riverway_coding in
+  	 <foreach collection="list" index="index" item="riverwayCoding" open="(" separator="," close=")">  
+	        #{riverwayCoding} 
+	 </foreach>
+  </select>
+  
+  <select id="findRiverwayCodingJoin" resultMap="BaseResultMap" parameterType="java.util.List">
+    select
+	a.*
+    from water_survey_site a
+    left join site_middle_canal b
+    on a.coding = b.water_survey_code
+    where b.canal_code = #{riverwayCoding}
+  </select>
+
+  <!--   根据行政区查询 -->
+  <select id="selectArea" resultMap="BaseResultMap" parameterType="java.util.List">
+    select
+    <include refid="Base_Column_List" />
+    from water_survey_site
+    where administrative_coding in
+    <foreach collection="list" index="index" item="administrativeCoding" open="(" separator="," close=")">
+      #{administrativeCoding}
+    </foreach>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from water_survey_site
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zyjz.sitemanage.entity.WaterSurveySite" >
+    insert into water_survey_site (id, monitor_name, coding, 
+      longitude_latitude, elevation, administrative_coding, 
+      riverway_coding, create_time, update_time, 
+      dynamic_id, water_grade, monitor_address,water_image,equip_coding,sim_clip,sim_clip_operator,build_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{monitorName,jdbcType=VARCHAR}, #{coding,jdbcType=VARCHAR}, 
+      #{longitudeLatitude,jdbcType=VARCHAR}, #{elevation,jdbcType=DECIMAL}, #{administrativeCoding,jdbcType=VARCHAR}, 
+      #{riverwayCoding,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{dynamicId,jdbcType=VARCHAR}, #{waterGrade,jdbcType=VARCHAR}, #{monitorAddress,jdbcType=VARCHAR},#{waterImage,jdbcType=VARCHAR},
+      #{equipCoding,jdbcType=VARCHAR}, #{simClip,jdbcType=VARCHAR}, #{simClipOperator,jdbcType=VARCHAR},#{buildTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sitemanage.entity.WaterSurveySite" >
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  	</selectKey>
+    insert into water_survey_site
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="monitorName != null" >
+        monitor_name,
+      </if>
+      <if test="coding != null" >
+        coding,
+      </if>
+      <if test="longitudeLatitude != null" >
+        longitude_latitude,
+      </if>
+      <if test="elevation != null" >
+        elevation,
+      </if>
+      <if test="administrativeCoding != null" >
+        administrative_coding,
+      </if>
+      <if test="riverwayCoding != null" >
+        riverway_coding,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="dynamicId != null" >
+        dynamic_id,
+      </if>
+      <if test="waterGrade != null" >
+        water_grade,
+      </if>
+      <if test="monitorAddress != null" >
+        monitor_address,
+      </if>
+       <if test="waterImage != null" >
+        water_image,
+      </if>
+      <if test="equipCoding != null" >
+        equip_coding,
+      </if>
+      <if test="simClip != null" >
+        sim_clip,
+      </if>
+      <if test="simClipOperator != null" >
+        sim_clip_operator,
+      </if>
+      <if test="buildTime != null" >
+        build_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="monitorName != null" >
+        #{monitorName,jdbcType=VARCHAR},
+      </if>
+      <if test="coding != null" >
+        #{coding,jdbcType=VARCHAR},
+      </if>
+      <if test="longitudeLatitude != null" >
+        #{longitudeLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="elevation != null" >
+        #{elevation,jdbcType=DECIMAL},
+      </if>
+      <if test="administrativeCoding != null" >
+        #{administrativeCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="riverwayCoding != null" >
+        #{riverwayCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dynamicId != null" >
+        #{dynamicId,jdbcType=BIGINT},
+      </if>
+      <if test="waterGrade != null" >
+        #{waterGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="monitorAddress != null" >
+        #{monitorAddress,jdbcType=VARCHAR},
+      </if>
+       <if test="waterImage != null" >
+        #{waterImage,jdbcType=VARCHAR},
+      </if>
+       <if test="equipCoding != null" >
+       #{equipCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="simClip != null" >
+       #{simClip,jdbcType=VARCHAR},
+      </if>
+      <if test="simClipOperator != null" >
+        #{simClipOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="buildTime != null" >
+        #{buildTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update water_survey_site
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.monitorName != null" >
+        monitor_name = #{record.monitorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coding != null" >
+        coding = #{record.coding,jdbcType=VARCHAR},
+      </if>
+      <if test="record.longitudeLatitude != null" >
+        longitude_latitude = #{record.longitudeLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="record.elevation != null" >
+        elevation = #{record.elevation,jdbcType=DECIMAL},
+      </if>
+      <if test="record.administrativeCoding != null" >
+        administrative_coding = #{record.administrativeCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="record.riverwayCoding != null" >
+        riverway_coding = #{record.riverwayCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dynamicId != null" >
+        dynamic_id = #{record.dynamicId,jdbcType=BIGINT},
+      </if>
+      <if test="record.waterGrade != null" >
+        water_grade = #{record.waterGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="record.monitorAddress != null" >
+        monitor_address = #{record.monitorAddress,jdbcType=VARCHAR},
+      </if>
+       <if test="record.equipCoding != null" >
+        equip_coding = #{record.equipCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="record.simClip != null" >
+        sim_clip = #{record.simClip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.simClipOperator != null" >
+        sim_clip_operator = #{record.simClipOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buildTime != null" >
+        build_time = #{record.buildTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update water_survey_site
+    set id = #{record.id,jdbcType=BIGINT},
+      monitor_name = #{record.monitorName,jdbcType=VARCHAR},
+      coding = #{record.coding,jdbcType=VARCHAR},
+      longitude_latitude = #{record.longitudeLatitude,jdbcType=DECIMAL},
+      elevation = #{record.elevation,jdbcType=DECIMAL},
+      administrative_coding = #{record.administrativeCoding,jdbcType=VARCHAR},
+      riverway_coding = #{record.riverwayCoding,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      dynamic_id = #{record.dynamicId,jdbcType=BIGINT},
+      water_grade = #{record.waterGrade,jdbcType=VARCHAR},
+      monitor_address = #{record.monitorAddress,jdbcType=VARCHAR},
+      equip_coding = #{record.equipCoding,jdbcType=VARCHAR},
+      sim_clip = #{record.simClip,jdbcType=VARCHAR},
+      sim_clip_operator = #{record.simClipOperator,jdbcType=VARCHAR},
+      build_time = #{record.buildTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sitemanage.entity.WaterSurveySite" >
+    update water_survey_site
+    <set >
+      <if test="monitorName != null" >
+        monitor_name = #{monitorName,jdbcType=VARCHAR},
+      </if>
+      <if test="coding != null" >
+        coding = #{coding,jdbcType=VARCHAR},
+      </if>
+      <if test="longitudeLatitude != null" >
+        longitude_latitude = #{longitudeLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="elevation != null" >
+        elevation = #{elevation,jdbcType=DECIMAL},
+      </if>
+      <if test="administrativeCoding != null" >
+        administrative_coding = #{administrativeCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="riverwayCoding != null" >
+        riverway_coding = #{riverwayCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dynamicId != null" >
+        dynamic_id = #{dynamicId,jdbcType=BIGINT},
+      </if>
+      <if test="waterGrade != null" >
+        water_grade = #{waterGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="monitorAddress != null" >
+        monitor_address = #{monitorAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="equipCoding != null" >
+        equip_coding = #{equipCoding,jdbcType=VARCHAR},
+      </if>
+      <if test="simClip != null" >
+        sim_clip = #{simClip,jdbcType=VARCHAR},
+      </if>
+      <if test="simClipOperator != null" >
+        sim_clip_operator = #{simClipOperator,jdbcType=VARCHAR},
+      </if>
+      <if test="buildTime != null" >
+        build_time = #{buildTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sitemanage.entity.WaterSurveySite" >
+    update water_survey_site
+    set monitor_name = #{monitorName,jdbcType=VARCHAR},
+      coding = #{coding,jdbcType=VARCHAR},
+      longitude_latitude = #{longitudeLatitude,jdbcType=DECIMAL},
+      elevation = #{elevation,jdbcType=DECIMAL},
+      administrative_coding = #{administrativeCoding,jdbcType=VARCHAR},
+      riverway_coding = #{riverwayCoding,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      dynamic_id = #{dynamicId,jdbcType=VARCHAR},
+      water_grade = #{waterGrade,jdbcType=VARCHAR},
+      monitor_address = #{monitorAddress,jdbcType=VARCHAR},
+      water_image = #{waterImage,jdbcType=VARCHAR},
+       equip_coding = #{equipCoding,jdbcType=VARCHAR},
+      sim_clip = #{simClip,jdbcType=VARCHAR},
+      sim_clip_operator = #{simClipOperator,jdbcType=VARCHAR},
+      build_time = #{buildTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

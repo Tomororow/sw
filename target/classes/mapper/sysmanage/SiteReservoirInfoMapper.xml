@@ -1,0 +1,889 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.sysmanage.dao.SiteReservoirInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.sysmanage.entity.SiteReservoirInfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sysarea_code" property="sysareaCode" jdbcType="VARCHAR" />
+    <result column="syswaterarea_code" property="syswaterareaCode" jdbcType="VARCHAR" />
+    <result column="device_reservoir_code" property="deviceReservoirCode" jdbcType="VARCHAR" />
+    <result column="device_reservoir_name" property="deviceReservoirName" jdbcType="VARCHAR" />
+     <result column="site_water_id" property="siteWaterId" jdbcType="VARCHAR" />
+    
+    
+    <result column="water_resources_level_code" property="waterResourcesLevelCode" jdbcType="VARCHAR" />
+    <result column="contacts_people" property="contactsPeople" jdbcType="VARCHAR" />
+    <result column="content_phone" property="contentPhone" jdbcType="VARCHAR" />
+    <result column="belongs_canal_code" property="belongsCanalCode" jdbcType="VARCHAR" />
+    <result column="three_level_area_name" property="threeLevelAreaName" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="engineering_level" property="engineeringLevel" jdbcType="VARCHAR" />
+    <result column="sri_device_no" property="sriDeviceNo" jdbcType="VARCHAR" />
+    <result column="sri_devicemodel_code" property="sriDevicemodelCode" jdbcType="INTEGER" />
+    <result column="sri_addr" property="sriAddr" jdbcType="VARCHAR" />
+    <result column="sri_build_time" property="sriBuildTime" jdbcType="TIMESTAMP" />
+    <result column="sri_simcard" property="sriSimcard" jdbcType="VARCHAR" />
+    <result column="sri_simoperator" property="sriSimoperator" jdbcType="VARCHAR" />
+    <result column="sri_ip_port" property="sriIpPort" jdbcType="VARCHAR" />
+    <result column="sri_longitude" property="sriLongitude" jdbcType="DECIMAL" />
+    <result column="sri_latitude" property="sriLatitude" jdbcType="DECIMAL" />
+    <result column="sri_height" property="sriHeight" jdbcType="DECIMAL" />
+    <result column="reservoir_capacity" property="reservoirCapacity" jdbcType="DECIMAL" />
+    <result column="th_reservoir_capacity" property="thReservoirCapacity" jdbcType="DECIMAL" />
+    <result column="fh_reservoir_capacity" property="fhReservoirCapacity" jdbcType="DECIMAL" />
+    <result column="xl_reservoir_capacity" property="xlReservoirCapacity" jdbcType="DECIMAL" />
+    <result column="water_mouth" property="waterMouth" jdbcType="INTEGER" />
+    <result column="design_water_year_supply" property="designWaterYearSupply" jdbcType="DECIMAL" />
+    <result column="supply_object" property="supplyObject" jdbcType="VARCHAR" />
+    <result column="dam_function" property="damFunction" jdbcType="VARCHAR" />
+    <result column="dam_material_type" property="damMaterialType" jdbcType="VARCHAR" />
+    <result column="dam_structure_type" property="damStructureType" jdbcType="VARCHAR" />
+    <result column="release_flood_waters_building" property="releaseFloodWatersBuilding" jdbcType="VARCHAR" />
+    <result column="dam_control_basin_area" property="damControlBasinArea" jdbcType="DECIMAL" />
+    <result column="dam_average_flow_rate" property="damAverageFlowRate" jdbcType="DECIMAL" />
+    <result column="scaz_people_number" property="scazPeopleNumber" jdbcType="DECIMAL" />
+    <result column="bqaz_people_number" property="bqazPeopleNumber" jdbcType="DECIMAL" />
+    <result column="engineering_construction_situation" property="engineeringConstructionSituation" jdbcType="VARCHAR" />
+    <result column="reservoir_regulation_performance" property="reservoirRegulationPerformance" jdbcType="VARCHAR" />
+    <result column="main_dam_level" property="mainDamLevel" jdbcType="VARCHAR" />
+    <result column="main_dam_height" property="mainDamHeight" jdbcType="DECIMAL" />
+    <result column="main_dan_length" property="mainDanLength" jdbcType="DECIMAL" />
+    <result column="max_release_flood_waters" property="maxReleaseFloodWaters" jdbcType="DECIMAL" />
+    <result column="height_coefficient" property="heightCoefficient" jdbcType="VARCHAR" />
+    <result column="dam_top_height" property="damTopHeight" jdbcType="DECIMAL" />
+    <result column="sjhsbz" property="sjhsbz" jdbcType="DECIMAL" />
+    <result column="jzhsbz" property="jzhsbz" jdbcType="DECIMAL" />
+    <result column="sjhsw" property="sjhsw" jdbcType="DECIMAL" />
+    <result column="jzhsw" property="jzhsw" jdbcType="DECIMAL" />
+    <result column="fhgsw" property="fhgsw" jdbcType="DECIMAL" />
+    <result column="zcxsw" property="zcxsw" jdbcType="DECIMAL" />
+    <result column="fhxzsw" property="fhxzsw" jdbcType="DECIMAL" />
+    <result column="ssw" property="ssw" jdbcType="DECIMAL" />
+    <result column="skr" property="skr" jdbcType="DECIMAL" />
+    <result column="zcxswxysmmj" property="zcxswxysmmj" jdbcType="DECIMAL" />
+    <result column="zybhdx" property="zybhdx" jdbcType="VARCHAR" />
+    <result column="gxmc" property="gxmc" jdbcType="VARCHAR" />
+    <result column="skgkglbm" property="skgkglbm" jdbcType="VARCHAR" />
+    <result column="sfwchj" property="sfwchj" jdbcType="INTEGER" />
+    <result column="sfwcqq" property="sfwcqq" jdbcType="INTEGER" />
+    <result column="reservoir_irrigated_acreage" property="reservoirIrrigatedAcreage" jdbcType="DECIMAL" />
+    <result column="reservoirtype_code" property="reservoirtypeCode" jdbcType="INTEGER" />
+    <result column="reservoirusetype_code" property="reservoirusetypeCode" jdbcType="VARCHAR" />
+    <result column="sri_photo_before" property="sriPhotoBefore" jdbcType="VARCHAR" />
+    <result column="sri_photo_after" property="sriPhotoAfter" jdbcType="VARCHAR" />
+    <result column="sri_create_time" property="sriCreateTime" jdbcType="TIMESTAMP" />
+    <result column="sri_edit_time" property="sriEditTime" jdbcType="TIMESTAMP" />
+    <result column="sri_remark" property="sriRemark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, sysarea_code, syswaterarea_code, device_reservoir_code, device_reservoir_name,site_water_id, 
+    water_resources_level_code, contacts_people, content_phone, belongs_canal_code, three_level_area_name, 
+    code, engineering_level, sri_device_no, sri_devicemodel_code, sri_addr, sri_build_time, 
+    sri_simcard, sri_simoperator, sri_ip_port, sri_longitude, sri_latitude, sri_height, 
+    reservoir_capacity, th_reservoir_capacity, fh_reservoir_capacity, xl_reservoir_capacity, 
+    water_mouth, design_water_year_supply, supply_object, dam_function, dam_material_type, 
+    dam_structure_type, release_flood_waters_building, dam_control_basin_area, dam_average_flow_rate, 
+    scaz_people_number, bqaz_people_number, engineering_construction_situation, reservoir_regulation_performance, 
+    main_dam_level, main_dam_height, main_dan_length, max_release_flood_waters, height_coefficient, 
+    dam_top_height, sjhsbz, jzhsbz, sjhsw, jzhsw, fhgsw, zcxsw, fhxzsw, ssw, skr, zcxswxysmmj, 
+    zybhdx, gxmc, skgkglbm, sfwchj, sfwcqq, reservoir_irrigated_acreage, reservoirtype_code, 
+    reservoirusetype_code, sri_photo_before, sri_photo_after, sri_create_time, sri_edit_time, 
+    sri_remark
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_reservoir_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findAllReservoir" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from site_reservoir_info
+    order by sri_create_time desc
+  </select>
+
+  <select id="selectReservoirList" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    sri.*
+    from site_reservoir_info sri LEFT JOIN site_middle_canal smc
+    on sri.device_reservoir_code = smc.device_reservoir_code
+    where smc.canal_code = #{canalCode,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from site_reservoir_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zyjz.sysmanage.entity.SiteReservoirInfo" >
+    insert into site_reservoir_info (id, sysarea_code, syswaterarea_code, 
+      device_reservoir_code, device_reservoir_name, site_water_id,
+      water_resources_level_code, contacts_people, 
+      content_phone, belongs_canal_code, three_level_area_name, 
+      code, engineering_level, sri_device_no, 
+      sri_devicemodel_code, sri_addr, sri_build_time, 
+      sri_simcard, sri_simoperator, sri_ip_port, 
+      sri_longitude, sri_latitude, sri_height, 
+      reservoir_capacity, th_reservoir_capacity, 
+      fh_reservoir_capacity, xl_reservoir_capacity, 
+      water_mouth, design_water_year_supply, supply_object, 
+      dam_function, dam_material_type, dam_structure_type, 
+      release_flood_waters_building, dam_control_basin_area, 
+      dam_average_flow_rate, scaz_people_number, bqaz_people_number, 
+      engineering_construction_situation, reservoir_regulation_performance, 
+      main_dam_level, main_dam_height, main_dan_length, 
+      max_release_flood_waters, height_coefficient, 
+      dam_top_height, sjhsbz, jzhsbz, 
+      sjhsw, jzhsw, fhgsw, 
+      zcxsw, fhxzsw, ssw, 
+      skr, zcxswxysmmj, zybhdx, 
+      gxmc, skgkglbm, sfwchj, 
+      sfwcqq, reservoir_irrigated_acreage, reservoirtype_code, 
+      reservoirusetype_code, sri_photo_before, sri_photo_after, 
+      sri_create_time, sri_edit_time, sri_remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{sysareaCode,jdbcType=VARCHAR}, #{syswaterareaCode,jdbcType=VARCHAR}, 
+      #{deviceReservoirCode,jdbcType=VARCHAR}, #{deviceReservoirName,jdbcType=VARCHAR}, #{siteWaterId,jdbcType=VARCHAR},
+      #{waterResourcesLevelCode,jdbcType=VARCHAR}, #{contactsPeople,jdbcType=VARCHAR}, 
+      #{contentPhone,jdbcType=VARCHAR}, #{belongsCanalCode,jdbcType=VARCHAR}, #{threeLevelAreaName,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, #{engineeringLevel,jdbcType=VARCHAR}, #{sriDeviceNo,jdbcType=VARCHAR}, 
+      #{sriDevicemodelCode,jdbcType=INTEGER}, #{sriAddr,jdbcType=VARCHAR}, #{sriBuildTime,jdbcType=TIMESTAMP}, 
+      #{sriSimcard,jdbcType=VARCHAR}, #{sriSimoperator,jdbcType=VARCHAR}, #{sriIpPort,jdbcType=VARCHAR}, 
+      #{sriLongitude,jdbcType=DECIMAL}, #{sriLatitude,jdbcType=DECIMAL}, #{sriHeight,jdbcType=DECIMAL}, 
+      #{reservoirCapacity,jdbcType=DECIMAL}, #{thReservoirCapacity,jdbcType=DECIMAL}, 
+      #{fhReservoirCapacity,jdbcType=DECIMAL}, #{xlReservoirCapacity,jdbcType=DECIMAL}, 
+      #{waterMouth,jdbcType=INTEGER}, #{designWaterYearSupply,jdbcType=DECIMAL}, #{supplyObject,jdbcType=VARCHAR}, 
+      #{damFunction,jdbcType=VARCHAR}, #{damMaterialType,jdbcType=VARCHAR}, #{damStructureType,jdbcType=VARCHAR}, 
+      #{releaseFloodWatersBuilding,jdbcType=VARCHAR}, #{damControlBasinArea,jdbcType=DECIMAL}, 
+      #{damAverageFlowRate,jdbcType=DECIMAL}, #{scazPeopleNumber,jdbcType=DECIMAL}, #{bqazPeopleNumber,jdbcType=DECIMAL}, 
+      #{engineeringConstructionSituation,jdbcType=VARCHAR}, #{reservoirRegulationPerformance,jdbcType=VARCHAR}, 
+      #{mainDamLevel,jdbcType=VARCHAR}, #{mainDamHeight,jdbcType=DECIMAL}, #{mainDanLength,jdbcType=DECIMAL}, 
+      #{maxReleaseFloodWaters,jdbcType=DECIMAL}, #{heightCoefficient,jdbcType=VARCHAR}, 
+      #{damTopHeight,jdbcType=DECIMAL}, #{sjhsbz,jdbcType=DECIMAL}, #{jzhsbz,jdbcType=DECIMAL}, 
+      #{sjhsw,jdbcType=DECIMAL}, #{jzhsw,jdbcType=DECIMAL}, #{fhgsw,jdbcType=DECIMAL}, 
+      #{zcxsw,jdbcType=DECIMAL}, #{fhxzsw,jdbcType=DECIMAL}, #{ssw,jdbcType=DECIMAL}, 
+      #{skr,jdbcType=DECIMAL}, #{zcxswxysmmj,jdbcType=DECIMAL}, #{zybhdx,jdbcType=VARCHAR}, 
+      #{gxmc,jdbcType=VARCHAR}, #{skgkglbm,jdbcType=VARCHAR}, #{sfwchj,jdbcType=INTEGER}, 
+      #{sfwcqq,jdbcType=INTEGER}, #{reservoirIrrigatedAcreage,jdbcType=DECIMAL}, #{reservoirtypeCode,jdbcType=INTEGER}, 
+      #{reservoirusetypeCode,jdbcType=VARCHAR}, #{sriPhotoBefore,jdbcType=VARCHAR}, #{sriPhotoAfter,jdbcType=VARCHAR}, 
+      #{sriCreateTime,jdbcType=TIMESTAMP}, #{sriEditTime,jdbcType=TIMESTAMP}, #{sriRemark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.sysmanage.entity.SiteReservoirInfo" >
+  
+  	<selectKey keyColumn="id" keyProperty="id" order="BEFORE" resultType="java.lang.String">
+  		SELECT UUID()
+  		<!--  select replace(uuid(),'-','') from dual-->
+  	</selectKey>
+    insert into site_reservoir_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysareaCode != null" >
+        sysarea_code,
+      </if>
+      <if test="syswaterareaCode != null" >
+        syswaterarea_code,
+      </if>
+      <if test="deviceReservoirCode != null" >
+        device_reservoir_code,
+      </if>
+      <if test="deviceReservoirName != null" >
+        device_reservoir_name,
+      </if>
+       <if test="siteWaterId != null" >
+        site_water_id,
+      </if>
+      
+      
+      <if test="waterResourcesLevelCode != null" >
+        water_resources_level_code,
+      </if>
+      <if test="contactsPeople != null" >
+        contacts_people,
+      </if>
+      <if test="contentPhone != null" >
+        content_phone,
+      </if>
+      <if test="belongsCanalCode != null" >
+        belongs_canal_code,
+      </if>
+      <if test="threeLevelAreaName != null" >
+        three_level_area_name,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="engineeringLevel != null" >
+        engineering_level,
+      </if>
+      <if test="sriDeviceNo != null" >
+        sri_device_no,
+      </if>
+      <if test="sriDevicemodelCode != null" >
+        sri_devicemodel_code,
+      </if>
+      <if test="sriAddr != null" >
+        sri_addr,
+      </if>
+      <if test="sriBuildTime != null" >
+        sri_build_time,
+      </if>
+      <if test="sriSimcard != null" >
+        sri_simcard,
+      </if>
+      <if test="sriSimoperator != null" >
+        sri_simoperator,
+      </if>
+      <if test="sriIpPort != null" >
+        sri_ip_port,
+      </if>
+      <if test="sriLongitude != null" >
+        sri_longitude,
+      </if>
+      <if test="sriLatitude != null" >
+        sri_latitude,
+      </if>
+      <if test="sriHeight != null" >
+        sri_height,
+      </if>
+      <if test="reservoirCapacity != null" >
+        reservoir_capacity,
+      </if>
+      <if test="thReservoirCapacity != null" >
+        th_reservoir_capacity,
+      </if>
+      <if test="fhReservoirCapacity != null" >
+        fh_reservoir_capacity,
+      </if>
+      <if test="xlReservoirCapacity != null" >
+        xl_reservoir_capacity,
+      </if>
+      <if test="waterMouth != null" >
+        water_mouth,
+      </if>
+      <if test="designWaterYearSupply != null" >
+        design_water_year_supply,
+      </if>
+      <if test="supplyObject != null" >
+        supply_object,
+      </if>
+      <if test="damFunction != null" >
+        dam_function,
+      </if>
+      <if test="damMaterialType != null" >
+        dam_material_type,
+      </if>
+      <if test="damStructureType != null" >
+        dam_structure_type,
+      </if>
+      <if test="releaseFloodWatersBuilding != null" >
+        release_flood_waters_building,
+      </if>
+      <if test="damControlBasinArea != null" >
+        dam_control_basin_area,
+      </if>
+      <if test="damAverageFlowRate != null" >
+        dam_average_flow_rate,
+      </if>
+      <if test="scazPeopleNumber != null" >
+        scaz_people_number,
+      </if>
+      <if test="bqazPeopleNumber != null" >
+        bqaz_people_number,
+      </if>
+      <if test="engineeringConstructionSituation != null" >
+        engineering_construction_situation,
+      </if>
+      <if test="reservoirRegulationPerformance != null" >
+        reservoir_regulation_performance,
+      </if>
+      <if test="mainDamLevel != null" >
+        main_dam_level,
+      </if>
+      <if test="mainDamHeight != null" >
+        main_dam_height,
+      </if>
+      <if test="mainDanLength != null" >
+        main_dan_length,
+      </if>
+      <if test="maxReleaseFloodWaters != null" >
+        max_release_flood_waters,
+      </if>
+      <if test="heightCoefficient != null" >
+        height_coefficient,
+      </if>
+      <if test="damTopHeight != null" >
+        dam_top_height,
+      </if>
+      <if test="sjhsbz != null" >
+        sjhsbz,
+      </if>
+      <if test="jzhsbz != null" >
+        jzhsbz,
+      </if>
+      <if test="sjhsw != null" >
+        sjhsw,
+      </if>
+      <if test="jzhsw != null" >
+        jzhsw,
+      </if>
+      <if test="fhgsw != null" >
+        fhgsw,
+      </if>
+      <if test="zcxsw != null" >
+        zcxsw,
+      </if>
+      <if test="fhxzsw != null" >
+        fhxzsw,
+      </if>
+      <if test="ssw != null" >
+        ssw,
+      </if>
+      <if test="skr != null" >
+        skr,
+      </if>
+      <if test="zcxswxysmmj != null" >
+        zcxswxysmmj,
+      </if>
+      <if test="zybhdx != null" >
+        zybhdx,
+      </if>
+      <if test="gxmc != null" >
+        gxmc,
+      </if>
+      <if test="skgkglbm != null" >
+        skgkglbm,
+      </if>
+      <if test="sfwchj != null" >
+        sfwchj,
+      </if>
+      <if test="sfwcqq != null" >
+        sfwcqq,
+      </if>
+      <if test="reservoirIrrigatedAcreage != null" >
+        reservoir_irrigated_acreage,
+      </if>
+      <if test="reservoirtypeCode != null" >
+        reservoirtype_code,
+      </if>
+      <if test="reservoirusetypeCode != null" >
+        reservoirusetype_code,
+      </if>
+      <if test="sriPhotoBefore != null" >
+        sri_photo_before,
+      </if>
+      <if test="sriPhotoAfter != null" >
+        sri_photo_after,
+      </if>
+      <if test="sriCreateTime != null" >
+        sri_create_time,
+      </if>
+      <if test="sriEditTime != null" >
+        sri_edit_time,
+      </if>
+      <if test="sriRemark != null" >
+        sri_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sysareaCode != null" >
+        #{sysareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="syswaterareaCode != null" >
+        #{syswaterareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceReservoirCode != null" >
+        #{deviceReservoirCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceReservoirName != null" >
+        #{deviceReservoirName,jdbcType=VARCHAR},
+      </if>
+      <if test="siteWaterId != null" >
+        #{siteWaterId,jdbcType=VARCHAR},
+      </if>
+      
+      
+      
+      <if test="waterResourcesLevelCode != null" >
+        #{waterResourcesLevelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactsPeople != null" >
+        #{contactsPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="contentPhone != null" >
+        #{contentPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="belongsCanalCode != null" >
+        #{belongsCanalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="threeLevelAreaName != null" >
+        #{threeLevelAreaName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="engineeringLevel != null" >
+        #{engineeringLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="sriDeviceNo != null" >
+        #{sriDeviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sriDevicemodelCode != null" >
+        #{sriDevicemodelCode,jdbcType=INTEGER},
+      </if>
+      <if test="sriAddr != null" >
+        #{sriAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="sriBuildTime != null" >
+        #{sriBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sriSimcard != null" >
+        #{sriSimcard,jdbcType=VARCHAR},
+      </if>
+      <if test="sriSimoperator != null" >
+        #{sriSimoperator,jdbcType=VARCHAR},
+      </if>
+      <if test="sriIpPort != null" >
+        #{sriIpPort,jdbcType=VARCHAR},
+      </if>
+      <if test="sriLongitude != null" >
+        #{sriLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="sriLatitude != null" >
+        #{sriLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="sriHeight != null" >
+        #{sriHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="reservoirCapacity != null" >
+        #{reservoirCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="thReservoirCapacity != null" >
+        #{thReservoirCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="fhReservoirCapacity != null" >
+        #{fhReservoirCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="xlReservoirCapacity != null" >
+        #{xlReservoirCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="waterMouth != null" >
+        #{waterMouth,jdbcType=INTEGER},
+      </if>
+      <if test="designWaterYearSupply != null" >
+        #{designWaterYearSupply,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyObject != null" >
+        #{supplyObject,jdbcType=VARCHAR},
+      </if>
+      <if test="damFunction != null" >
+        #{damFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="damMaterialType != null" >
+        #{damMaterialType,jdbcType=VARCHAR},
+      </if>
+      <if test="damStructureType != null" >
+        #{damStructureType,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseFloodWatersBuilding != null" >
+        #{releaseFloodWatersBuilding,jdbcType=VARCHAR},
+      </if>
+      <if test="damControlBasinArea != null" >
+        #{damControlBasinArea,jdbcType=DECIMAL},
+      </if>
+      <if test="damAverageFlowRate != null" >
+        #{damAverageFlowRate,jdbcType=DECIMAL},
+      </if>
+      <if test="scazPeopleNumber != null" >
+        #{scazPeopleNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="bqazPeopleNumber != null" >
+        #{bqazPeopleNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="engineeringConstructionSituation != null" >
+        #{engineeringConstructionSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="reservoirRegulationPerformance != null" >
+        #{reservoirRegulationPerformance,jdbcType=VARCHAR},
+      </if>
+      <if test="mainDamLevel != null" >
+        #{mainDamLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="mainDamHeight != null" >
+        #{mainDamHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="mainDanLength != null" >
+        #{mainDanLength,jdbcType=DECIMAL},
+      </if>
+      <if test="maxReleaseFloodWaters != null" >
+        #{maxReleaseFloodWaters,jdbcType=DECIMAL},
+      </if>
+      <if test="heightCoefficient != null" >
+        #{heightCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="damTopHeight != null" >
+        #{damTopHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="sjhsbz != null" >
+        #{sjhsbz,jdbcType=DECIMAL},
+      </if>
+      <if test="jzhsbz != null" >
+        #{jzhsbz,jdbcType=DECIMAL},
+      </if>
+      <if test="sjhsw != null" >
+        #{sjhsw,jdbcType=DECIMAL},
+      </if>
+      <if test="jzhsw != null" >
+        #{jzhsw,jdbcType=DECIMAL},
+      </if>
+      <if test="fhgsw != null" >
+        #{fhgsw,jdbcType=DECIMAL},
+      </if>
+      <if test="zcxsw != null" >
+        #{zcxsw,jdbcType=DECIMAL},
+      </if>
+      <if test="fhxzsw != null" >
+        #{fhxzsw,jdbcType=DECIMAL},
+      </if>
+      <if test="ssw != null" >
+        #{ssw,jdbcType=DECIMAL},
+      </if>
+      <if test="skr != null" >
+        #{skr,jdbcType=DECIMAL},
+      </if>
+      <if test="zcxswxysmmj != null" >
+        #{zcxswxysmmj,jdbcType=DECIMAL},
+      </if>
+      <if test="zybhdx != null" >
+        #{zybhdx,jdbcType=VARCHAR},
+      </if>
+      <if test="gxmc != null" >
+        #{gxmc,jdbcType=VARCHAR},
+      </if>
+      <if test="skgkglbm != null" >
+        #{skgkglbm,jdbcType=VARCHAR},
+      </if>
+      <if test="sfwchj != null" >
+        #{sfwchj,jdbcType=INTEGER},
+      </if>
+      <if test="sfwcqq != null" >
+        #{sfwcqq,jdbcType=INTEGER},
+      </if>
+      <if test="reservoirIrrigatedAcreage != null" >
+        #{reservoirIrrigatedAcreage,jdbcType=DECIMAL},
+      </if>
+      <if test="reservoirtypeCode != null" >
+        #{reservoirtypeCode,jdbcType=INTEGER},
+      </if>
+      <if test="reservoirusetypeCode != null" >
+        #{reservoirusetypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sriPhotoBefore != null" >
+        #{sriPhotoBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="sriPhotoAfter != null" >
+        #{sriPhotoAfter,jdbcType=VARCHAR},
+      </if>
+      <if test="sriCreateTime != null" >
+        #{sriCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sriEditTime != null" >
+        #{sriEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sriRemark != null" >
+        #{sriRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.sysmanage.entity.SiteReservoirInfo" >
+    update site_reservoir_info
+    <set >
+      <if test="sysareaCode != null" >
+        sysarea_code = #{sysareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="syswaterareaCode != null" >
+        syswaterarea_code = #{syswaterareaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceReservoirCode != null" >
+        device_reservoir_code = #{deviceReservoirCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceReservoirName != null" >
+        device_reservoir_name = #{deviceReservoirName,jdbcType=VARCHAR},
+      </if>
+       <if test="siteWaterId != null" >
+        site_water_id = #{siteWaterId,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="waterResourcesLevelCode != null" >
+        water_resources_level_code = #{waterResourcesLevelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactsPeople != null" >
+        contacts_people = #{contactsPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="contentPhone != null" >
+        content_phone = #{contentPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="belongsCanalCode != null" >
+        belongs_canal_code = #{belongsCanalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="threeLevelAreaName != null" >
+        three_level_area_name = #{threeLevelAreaName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="engineeringLevel != null" >
+        engineering_level = #{engineeringLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="sriDeviceNo != null" >
+        sri_device_no = #{sriDeviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sriDevicemodelCode != null" >
+        sri_devicemodel_code = #{sriDevicemodelCode,jdbcType=INTEGER},
+      </if>
+      <if test="sriAddr != null" >
+        sri_addr = #{sriAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="sriBuildTime != null" >
+        sri_build_time = #{sriBuildTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sriSimcard != null" >
+        sri_simcard = #{sriSimcard,jdbcType=VARCHAR},
+      </if>
+      <if test="sriSimoperator != null" >
+        sri_simoperator = #{sriSimoperator,jdbcType=VARCHAR},
+      </if>
+      <if test="sriIpPort != null" >
+        sri_ip_port = #{sriIpPort,jdbcType=VARCHAR},
+      </if>
+      <if test="sriLongitude != null" >
+        sri_longitude = #{sriLongitude,jdbcType=DECIMAL},
+      </if>
+      <if test="sriLatitude != null" >
+        sri_latitude = #{sriLatitude,jdbcType=DECIMAL},
+      </if>
+      <if test="sriHeight != null" >
+        sri_height = #{sriHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="reservoirCapacity != null" >
+        reservoir_capacity = #{reservoirCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="thReservoirCapacity != null" >
+        th_reservoir_capacity = #{thReservoirCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="fhReservoirCapacity != null" >
+        fh_reservoir_capacity = #{fhReservoirCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="xlReservoirCapacity != null" >
+        xl_reservoir_capacity = #{xlReservoirCapacity,jdbcType=DECIMAL},
+      </if>
+      <if test="waterMouth != null" >
+        water_mouth = #{waterMouth,jdbcType=INTEGER},
+      </if>
+      <if test="designWaterYearSupply != null" >
+        design_water_year_supply = #{designWaterYearSupply,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyObject != null" >
+        supply_object = #{supplyObject,jdbcType=VARCHAR},
+      </if>
+      <if test="damFunction != null" >
+        dam_function = #{damFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="damMaterialType != null" >
+        dam_material_type = #{damMaterialType,jdbcType=VARCHAR},
+      </if>
+      <if test="damStructureType != null" >
+        dam_structure_type = #{damStructureType,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseFloodWatersBuilding != null" >
+        release_flood_waters_building = #{releaseFloodWatersBuilding,jdbcType=VARCHAR},
+      </if>
+      <if test="damControlBasinArea != null" >
+        dam_control_basin_area = #{damControlBasinArea,jdbcType=DECIMAL},
+      </if>
+      <if test="damAverageFlowRate != null" >
+        dam_average_flow_rate = #{damAverageFlowRate,jdbcType=DECIMAL},
+      </if>
+      <if test="scazPeopleNumber != null" >
+        scaz_people_number = #{scazPeopleNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="bqazPeopleNumber != null" >
+        bqaz_people_number = #{bqazPeopleNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="engineeringConstructionSituation != null" >
+        engineering_construction_situation = #{engineeringConstructionSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="reservoirRegulationPerformance != null" >
+        reservoir_regulation_performance = #{reservoirRegulationPerformance,jdbcType=VARCHAR},
+      </if>
+      <if test="mainDamLevel != null" >
+        main_dam_level = #{mainDamLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="mainDamHeight != null" >
+        main_dam_height = #{mainDamHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="mainDanLength != null" >
+        main_dan_length = #{mainDanLength,jdbcType=DECIMAL},
+      </if>
+      <if test="maxReleaseFloodWaters != null" >
+        max_release_flood_waters = #{maxReleaseFloodWaters,jdbcType=DECIMAL},
+      </if>
+      <if test="heightCoefficient != null" >
+        height_coefficient = #{heightCoefficient,jdbcType=VARCHAR},
+      </if>
+      <if test="damTopHeight != null" >
+        dam_top_height = #{damTopHeight,jdbcType=DECIMAL},
+      </if>
+      <if test="sjhsbz != null" >
+        sjhsbz = #{sjhsbz,jdbcType=DECIMAL},
+      </if>
+      <if test="jzhsbz != null" >
+        jzhsbz = #{jzhsbz,jdbcType=DECIMAL},
+      </if>
+      <if test="sjhsw != null" >
+        sjhsw = #{sjhsw,jdbcType=DECIMAL},
+      </if>
+      <if test="jzhsw != null" >
+        jzhsw = #{jzhsw,jdbcType=DECIMAL},
+      </if>
+      <if test="fhgsw != null" >
+        fhgsw = #{fhgsw,jdbcType=DECIMAL},
+      </if>
+      <if test="zcxsw != null" >
+        zcxsw = #{zcxsw,jdbcType=DECIMAL},
+      </if>
+      <if test="fhxzsw != null" >
+        fhxzsw = #{fhxzsw,jdbcType=DECIMAL},
+      </if>
+      <if test="ssw != null" >
+        ssw = #{ssw,jdbcType=DECIMAL},
+      </if>
+      <if test="skr != null" >
+        skr = #{skr,jdbcType=DECIMAL},
+      </if>
+      <if test="zcxswxysmmj != null" >
+        zcxswxysmmj = #{zcxswxysmmj,jdbcType=DECIMAL},
+      </if>
+      <if test="zybhdx != null" >
+        zybhdx = #{zybhdx,jdbcType=VARCHAR},
+      </if>
+      <if test="gxmc != null" >
+        gxmc = #{gxmc,jdbcType=VARCHAR},
+      </if>
+      <if test="skgkglbm != null" >
+        skgkglbm = #{skgkglbm,jdbcType=VARCHAR},
+      </if>
+      <if test="sfwchj != null" >
+        sfwchj = #{sfwchj,jdbcType=INTEGER},
+      </if>
+      <if test="sfwcqq != null" >
+        sfwcqq = #{sfwcqq,jdbcType=INTEGER},
+      </if>
+      <if test="reservoirIrrigatedAcreage != null" >
+        reservoir_irrigated_acreage = #{reservoirIrrigatedAcreage,jdbcType=DECIMAL},
+      </if>
+      <if test="reservoirtypeCode != null" >
+        reservoirtype_code = #{reservoirtypeCode,jdbcType=INTEGER},
+      </if>
+      <if test="reservoirusetypeCode != null" >
+        reservoirusetype_code = #{reservoirusetypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sriPhotoBefore != null" >
+        sri_photo_before = #{sriPhotoBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="sriPhotoAfter != null" >
+        sri_photo_after = #{sriPhotoAfter,jdbcType=VARCHAR},
+      </if>
+      <if test="sriCreateTime != null" >
+        sri_create_time = #{sriCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sriEditTime != null" >
+        sri_edit_time = #{sriEditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sriRemark != null" >
+        sri_remark = #{sriRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.sysmanage.entity.SiteReservoirInfo" >
+    update site_reservoir_info
+    set sysarea_code = #{sysareaCode,jdbcType=VARCHAR},
+      syswaterarea_code = #{syswaterareaCode,jdbcType=VARCHAR},
+      device_reservoir_code = #{deviceReservoirCode,jdbcType=VARCHAR},
+      device_reservoir_name = #{deviceReservoirName,jdbcType=VARCHAR},
+      water_resources_level_code = #{waterResourcesLevelCode,jdbcType=VARCHAR},
+      contacts_people = #{contactsPeople,jdbcType=VARCHAR},
+      content_phone = #{contentPhone,jdbcType=VARCHAR},
+      belongs_canal_code = #{belongsCanalCode,jdbcType=VARCHAR},
+      three_level_area_name = #{threeLevelAreaName,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      engineering_level = #{engineeringLevel,jdbcType=VARCHAR},
+      sri_device_no = #{sriDeviceNo,jdbcType=VARCHAR},
+      sri_devicemodel_code = #{sriDevicemodelCode,jdbcType=INTEGER},
+      sri_addr = #{sriAddr,jdbcType=VARCHAR},
+      sri_build_time = #{sriBuildTime,jdbcType=TIMESTAMP},
+      sri_simcard = #{sriSimcard,jdbcType=VARCHAR},
+      sri_simoperator = #{sriSimoperator,jdbcType=VARCHAR},
+      sri_ip_port = #{sriIpPort,jdbcType=VARCHAR},
+      sri_longitude = #{sriLongitude,jdbcType=DECIMAL},
+      sri_latitude = #{sriLatitude,jdbcType=DECIMAL},
+      sri_height = #{sriHeight,jdbcType=DECIMAL},
+      reservoir_capacity = #{reservoirCapacity,jdbcType=DECIMAL},
+      th_reservoir_capacity = #{thReservoirCapacity,jdbcType=DECIMAL},
+      fh_reservoir_capacity = #{fhReservoirCapacity,jdbcType=DECIMAL},
+      xl_reservoir_capacity = #{xlReservoirCapacity,jdbcType=DECIMAL},
+      water_mouth = #{waterMouth,jdbcType=INTEGER},
+      design_water_year_supply = #{designWaterYearSupply,jdbcType=DECIMAL},
+      supply_object = #{supplyObject,jdbcType=VARCHAR},
+      dam_function = #{damFunction,jdbcType=VARCHAR},
+      dam_material_type = #{damMaterialType,jdbcType=VARCHAR},
+      dam_structure_type = #{damStructureType,jdbcType=VARCHAR},
+      release_flood_waters_building = #{releaseFloodWatersBuilding,jdbcType=VARCHAR},
+      dam_control_basin_area = #{damControlBasinArea,jdbcType=DECIMAL},
+      dam_average_flow_rate = #{damAverageFlowRate,jdbcType=DECIMAL},
+      scaz_people_number = #{scazPeopleNumber,jdbcType=DECIMAL},
+      bqaz_people_number = #{bqazPeopleNumber,jdbcType=DECIMAL},
+      engineering_construction_situation = #{engineeringConstructionSituation,jdbcType=VARCHAR},
+      reservoir_regulation_performance = #{reservoirRegulationPerformance,jdbcType=VARCHAR},
+      main_dam_level = #{mainDamLevel,jdbcType=VARCHAR},
+      main_dam_height = #{mainDamHeight,jdbcType=DECIMAL},
+      main_dan_length = #{mainDanLength,jdbcType=DECIMAL},
+      max_release_flood_waters = #{maxReleaseFloodWaters,jdbcType=DECIMAL},
+      height_coefficient = #{heightCoefficient,jdbcType=VARCHAR},
+      dam_top_height = #{damTopHeight,jdbcType=DECIMAL},
+      sjhsbz = #{sjhsbz,jdbcType=DECIMAL},
+      jzhsbz = #{jzhsbz,jdbcType=DECIMAL},
+      sjhsw = #{sjhsw,jdbcType=DECIMAL},
+      jzhsw = #{jzhsw,jdbcType=DECIMAL},
+      fhgsw = #{fhgsw,jdbcType=DECIMAL},
+      zcxsw = #{zcxsw,jdbcType=DECIMAL},
+      fhxzsw = #{fhxzsw,jdbcType=DECIMAL},
+      ssw = #{ssw,jdbcType=DECIMAL},
+      skr = #{skr,jdbcType=DECIMAL},
+      zcxswxysmmj = #{zcxswxysmmj,jdbcType=DECIMAL},
+      zybhdx = #{zybhdx,jdbcType=VARCHAR},
+      gxmc = #{gxmc,jdbcType=VARCHAR},
+      skgkglbm = #{skgkglbm,jdbcType=VARCHAR},
+      sfwchj = #{sfwchj,jdbcType=INTEGER},
+      sfwcqq = #{sfwcqq,jdbcType=INTEGER},
+      reservoir_irrigated_acreage = #{reservoirIrrigatedAcreage,jdbcType=DECIMAL},
+      reservoirtype_code = #{reservoirtypeCode,jdbcType=INTEGER},
+      reservoirusetype_code = #{reservoirusetypeCode,jdbcType=VARCHAR},
+      sri_photo_before = #{sriPhotoBefore,jdbcType=VARCHAR},
+      sri_photo_after = #{sriPhotoAfter,jdbcType=VARCHAR},
+      sri_create_time = #{sriCreateTime,jdbcType=TIMESTAMP},
+      sri_edit_time = #{sriEditTime,jdbcType=TIMESTAMP},
+      sri_remark = #{sriRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

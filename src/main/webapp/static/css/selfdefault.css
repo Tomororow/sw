@@ -1,0 +1,21 @@
+.el-tree{border:none;background: none;}
+.el-icon-caret-right:before{content:none;}
+.ui-layout-column > .ui-splitbar{width:0px;}
+.el-form-item__content{width:180px;}
+.form-inline .form-group{width:113px;} 
+.form-inline .form-control{width:116px;padding:0;}
+.form-control{border:1px solid #bfcbd9;border-radius:4px;height:35px;}
+#fileText .el-upload-list{display:none;}
+#form1 .el-form-item__content,#form2 .el-form-item__content,#form3 .el-form-item__content{width:116px;}
+#tude1 .el-form-item__content,#tude2 .el-form-item__content{width:160px;}
+#seed:hover{border:solid 4px #1E9FFF;color:#ffffff;background-color: #1E9FFF}
+.demo-table-expand {font-size: 0;}
+.demo-table-expand label { width: 100px; color: #99a9bf; }
+.demo-table-expand .el-form-item {margin-right: 0;margin-bottom: 0;width: 30%;}
+.demo-table-expand .el-form-item__content{width:auto}
+#labelForm{width:85px;height: 32px;background: #f7f7f7;text-align:  center;font-weight: 100;font-size: 14px;border: solid 1px #ccc;border-radius: 2px;}
+#uploadExcel{width:85px;height: 34px;background: #f7f7f7;text-align:  center;line-height: 34px;font-weight: 100;font-size: 14px;border: solid 1px #ccc;border-radius: 2px;}
+#labelForm:hover,#uploadExcel:hover{cursor: pointer;background:  #e6e6e6;color:black;border:solid 1px #adadad }
+#labelText{width: 320px;height: 34px;border:1px solid #bfcbd9;border-radius:4px;padding-bottom:2px;}
+
+

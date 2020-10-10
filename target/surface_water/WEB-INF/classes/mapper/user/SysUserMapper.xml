@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.user.dao.SysUserMapper">
+	<resultMap id="BaseResultMap" type="com.zyjz.user.entity.SysUser">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="sysarea_id" property="sysareaId" jdbcType="VARCHAR" />
+		<result column="syswaterarea_id" property="syswaterareaId" jdbcType="VARCHAR" />
+		<result column="sysarea_code" property="sysareaCode" jdbcType="VARCHAR" />
+		<result column="syswaterarea_code" property="syswaterareaCode" jdbcType="VARCHAR" />
+		<result column="system_code" property="systemCode" jdbcType="INTEGER" />
+		<result column="canal_code" property="canalCode" jdbcType="VARCHAR" />
+		<result column="user_code" property="userCode" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+		<result column="pwd_ming" property="pwdMing" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="other_contact_way" property="otherContactWay" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR" />
+		<result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+		<result column="su_create_time" property="suCreateTime" jdbcType="TIMESTAMP" />
+		<result column="su_edit_time" property="suEditTime" jdbcType="TIMESTAMP" />
+		<result column="su_remark" property="suRemark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, sysarea_id, syswaterarea_id,sysarea_code, syswaterarea_code,
+		system_code, canal_code, user_code, user_name, user_pwd, pwd_ming,
+		real_name, mobile, other_contact_way, address, last_login_ip, last_login_time,
+		su_create_time,
+		su_edit_time, su_remark
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAllUser" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+	</select>
+
+	<select id="findSysUserByUserNameAndUserPwd" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where user_name = #{userName,jdbcType=VARCHAR}
+		and user_pwd = #{userPwd,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from sys_user
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.zyjz.user.entity.SysUser">
+		insert into sys_user (id, sysarea_code, syswaterarea_code,
+		system_code, user_code, user_name,
+		user_pwd, pwd_ming, real_name,
+		mobile, other_contact_way, address,
+		last_login_ip, last_login_time, su_create_time,
+		su_edit_time, su_remark)
+		values (#{id,jdbcType=VARCHAR}, #{sysareaCode,jdbcType=VARCHAR},
+		#{syswaterareaCode,jdbcType=VARCHAR},
+		#{systemCode,jdbcType=INTEGER}, #{userCode,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR},
+		#{userPwd,jdbcType=VARCHAR}, #{pwdMing,jdbcType=VARCHAR},
+		#{realName,jdbcType=VARCHAR},
+		#{mobile,jdbcType=VARCHAR}, #{otherContactWay,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+		#{lastLoginIp,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP},
+		#{suCreateTime,jdbcType=TIMESTAMP},
+		#{suEditTime,jdbcType=TIMESTAMP}, #{suRemark,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.zyjz.user.entity.SysUser">
+
+		<selectKey keyColumn="id" keyProperty="id" order="BEFORE"
+			resultType="java.lang.String">
+			SELECT UUID()
+			<!-- select replace(uuid(),'-','') from dual -->
+		</selectKey>
+		insert into sys_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="sysareaId != null">
+				sysarea_id,
+			</if>
+			<if test="syswaterareaId != null">
+				syswaterarea_id,
+			</if>
+			<if test="sysareaCode != null">
+				sysarea_code,
+			</if>
+			<if test="syswaterareaCode != null">
+				syswaterarea_code,
+			</if>
+			<if test="systemCode != null">
+				system_code,
+			</if>
+			<if test="userCode != null">
+				user_code,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="userPwd != null">
+				user_pwd,
+			</if>
+			<if test="pwdMing != null">
+				pwd_ming,
+			</if>
+			<if test="realName != null">
+				real_name,
+			</if>
+			<if test="mobile != null">
+				mobile,
+			</if>
+			<if test="otherContactWay != null">
+				other_contact_way,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="lastLoginIp != null">
+				last_login_ip,
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time,
+			</if>
+			<if test="suCreateTime != null">
+				su_create_time,
+			</if>
+			<if test="suEditTime != null">
+				su_edit_time,
+			</if>
+			<if test="suRemark != null">
+				su_remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="sysareaId != null">
+				#{sysareaId,jdbcType=VARCHAR},
+			</if>
+			<if test="syswaterareaId != null">
+				#{syswaterareaId,jdbcType=VARCHAR},
+			</if>
+			<if test="sysareaCode != null">
+				#{sysareaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="syswaterareaCode != null">
+				#{syswaterareaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="systemCode != null">
+				#{systemCode,jdbcType=INTEGER},
+			</if>
+			<if test="userCode != null">
+				#{userCode,jdbcType=INTEGER},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userPwd != null">
+				#{userPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="pwdMing != null">
+				#{pwdMing,jdbcType=VARCHAR},
+			</if>
+			<if test="realName != null">
+				#{realName,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				#{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="otherContactWay != null">
+				#{otherContactWay,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="lastLoginIp != null">
+				#{lastLoginIp,jdbcType=VARCHAR},
+			</if>
+			<if test="lastLoginTime != null">
+				#{lastLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="suCreateTime != null">
+				#{suCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="suEditTime != null">
+				#{suEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="suRemark != null">
+				#{suRemark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.zyjz.user.entity.SysUser">
+		update sys_user
+		<set>
+			<if test="sysareaId != null">
+				sysarea_id = #{sysareaId,jdbcType=VARCHAR},
+			</if>
+			<if test="syswaterareaId != null">
+				syswaterarea_id = #{syswaterareaId,jdbcType=VARCHAR},
+			</if>
+			<if test="sysareaCode != null">
+				sysarea_code = #{sysareaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="syswaterareaCode != null">
+				syswaterarea_code = #{syswaterareaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="systemCode != null">
+				system_code = #{systemCode,jdbcType=INTEGER},
+			</if>
+			<if test="userCode != null">
+				user_code = #{userCode,jdbcType=INTEGER},
+			</if>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userPwd != null">
+				user_pwd = #{userPwd,jdbcType=VARCHAR},
+			</if>
+			<if test="pwdMing != null">
+				pwd_ming = #{pwdMing,jdbcType=VARCHAR},
+			</if>
+			<if test="realName != null">
+				real_name = #{realName,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				mobile = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="otherContactWay != null">
+				other_contact_way = #{otherContactWay,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="lastLoginIp != null">
+				last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="suCreateTime != null">
+				su_create_time = #{suCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="suEditTime != null">
+				su_edit_time = #{suEditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="suRemark != null">
+				su_remark = #{suRemark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="com.zyjz.user.entity.SysUser">
+		update sys_user
+		set sysarea_code = #{sysareaCode,jdbcType=VARCHAR},
+		syswaterarea_code = #{syswaterareaCode,jdbcType=VARCHAR},
+		system_code = #{systemCode,jdbcType=INTEGER},
+		user_code = #{userCode,jdbcType=INTEGER},
+		user_name = #{userName,jdbcType=VARCHAR},
+		user_pwd = #{userPwd,jdbcType=VARCHAR},
+		pwd_ming = #{pwdMing,jdbcType=VARCHAR},
+		real_name = #{realName,jdbcType=VARCHAR},
+		mobile = #{mobile,jdbcType=VARCHAR},
+		other_contact_way = #{otherContactWay,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+		last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+		su_create_time = #{suCreateTime,jdbcType=TIMESTAMP},
+		su_edit_time = #{suEditTime,jdbcType=TIMESTAMP},
+		su_remark = #{suRemark,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

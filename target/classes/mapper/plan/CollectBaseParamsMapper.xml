@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyjz.plan.dao.CollectBaseParamsMapper" >
+  <resultMap id="BaseResultMap" type="com.zyjz.plan.entity.CollectBaseParams" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="base_name" property="baseName" jdbcType="VARCHAR" />
+    <result column="base_code" property="baseCode" jdbcType="VARCHAR" />
+    <result column="level_min" property="levelMin" jdbcType="DECIMAL" />
+    <result column="level_max" property="levelMax" jdbcType="DECIMAL" />
+    <result column="flow" property="flow" jdbcType="DECIMAL" />
+    <result column="water_num" property="waterNum" jdbcType="DECIMAL" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, base_name, base_code, level_min, level_max, flow,water_num, createTime, remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from collect_base_params
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryBaseName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from collect_base_params
+    where base_name = #{baseName,jdbcType=VARCHAR} order by createTime desc limit 0,1
+  </select>
+  
+   <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from collect_base_params where base_name = #{base_name}
+  </select>
+  
+   <select id="selectByPrimaryBaseOne" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from collect_base_params
+    WHERE base_name = #{baseName} AND #{level}<![CDATA[>]]>level_min and #{level}<![CDATA[<= ]]>level_max
+  </select>
+  
+  <select id="selectBaseInclude" resultMap="BaseResultMap">
+  	SELECT  <include refid="Base_Column_List" /> FROM collect_base_params GROUP BY base_name ORDER BY createTime desc  
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from collect_base_params
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zyjz.plan.entity.CollectBaseParams" >
+    insert into collect_base_params (id, base_name, base_code, 
+      level_min, level_max, flow, water_num,
+      createTime, remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{baseName,jdbcType=VARCHAR}, #{baseCode,jdbcType=VARCHAR}, 
+      #{levelMin,jdbcType=DECIMAL}, #{levelMax,jdbcType=DECIMAL}, #{flow,jdbcType=DECIMAL}, #{waterNum,jdbcType=DECIMAL}
+      #{createtime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyjz.plan.entity.CollectBaseParams" >
+    insert into collect_base_params
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="baseName != null" >
+        base_name,
+      </if>
+      <if test="baseCode != null" >
+        base_code,
+      </if>
+      <if test="levelMin != null" >
+        level_min,
+      </if>
+      <if test="levelMax != null" >
+        level_max,
+      </if>
+      <if test="flow!= null" >
+        flow,
+      </if>
+       <if test="waterNum!= null" >
+        water_num,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="baseName != null" >
+        #{baseName,jdbcType=VARCHAR},
+      </if>
+      <if test="baseCode != null" >
+        #{baseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="levelMin != null" >
+        #{levelMin,jdbcType=DECIMAL},
+      </if>
+      <if test="levelMax != null" >
+        #{levelMax,jdbcType=DECIMAL},
+      </if>
+      <if test="flow != null" >
+        #{flow,jdbcType=DECIMAL},
+      </if>
+       <if test="waterNum != null" >
+        #{waterNum,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update collect_base_params
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.baseName != null" >
+        base_name = #{record.baseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.baseCode != null" >
+        base_code = #{record.baseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.levelMin != null" >
+        level_min = #{record.levelMin,jdbcType=DECIMAL},
+      </if>
+      <if test="record.levelMax != null" >
+        level_max = #{record.levelMax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.flow != null" >
+        flow = #{record.flow,jdbcType=DECIMAL},
+      </if>
+      <if test="record.waterNum != null" >
+        waterNum = #{record.waterNum,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createtime != null" >
+        createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update collect_base_params
+    set id = #{record.id,jdbcType=VARCHAR},
+      base_name = #{record.baseName,jdbcType=VARCHAR},
+      base_code = #{record.baseCode,jdbcType=VARCHAR},
+      level_min = #{record.levelMin,jdbcType=DECIMAL},
+      level_max = #{record.levelMax,jdbcType=DECIMAL},
+      flow = #{record.flow,jdbcType=DECIMAL},
+       water_num = #{record.waterNum,jdbcType=DECIMAL},
+      createTime = #{record.createtime,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyjz.plan.entity.CollectBaseParams" >
+    update collect_base_params
+    <set >
+      <if test="baseName != null" >
+        base_name = #{baseName,jdbcType=VARCHAR},
+      </if>
+      <if test="baseCode != null" >
+        base_code = #{baseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="levelMin != null" >
+        level_min = #{levelMin,jdbcType=DECIMAL},
+      </if>
+      <if test="levelMax != null" >
+        level_max = #{levelMax,jdbcType=DECIMAL},
+      </if>
+      <if test="flow != null" >
+        flow= #{flow,jdbcType=DECIMAL},
+      </if>
+      <if test="waterNum != null" >
+        water_num= #{waterNum,jdbcType=DECIMAL},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyjz.plan.entity.CollectBaseParams" >
+    update collect_base_params
+    set base_name = #{baseName,jdbcType=VARCHAR},
+      base_code = #{baseCode,jdbcType=VARCHAR},
+      level_min = #{levelMin,jdbcType=DECIMAL},
+      level_max = #{levelMax,jdbcType=DECIMAL},
+      flow = #{flow,jdbcType=DECIMAL},
+      water_num = #{waterNum,jdbcType=DECIMAL},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
